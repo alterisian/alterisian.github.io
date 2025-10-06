@@ -1,0 +1,139 @@
+    <!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Malaga Ecofestival Calendar</title>
+<style>
+  body { font-family: Arial, sans-serif; margin: 20px; }
+  table { border-collapse: collapse; width: 100%; }
+  th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+  th { background-color: #f4f4f4; }
+  .gcal-icon { 
+    cursor: pointer; 
+    text-decoration: none;
+    font-size: 18px;
+  }
+  .now { background-color: yellow; }
+  .next { background-color: lightgreen; }
+</style>
+</head>
+<body>
+<h2>Malaga Ecofestival Calendar (Unofficial)</h2>
+<table id="calendar">
+  <thead>
+    <tr>
+      <th>Día / Fecha / Hora</th>
+      <th>Descripción (ES)</th>
+      <th>Description (EN)</th>
+      <th>Add</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr data-datetime="2025-09-21T10:00"><td>Domingo, 21 Sep. 10:00</td><td>Jornada lanzamiento Ecofestival | Baños del Carmen</td><td>Ecofestival launch day | Baños del Carmen</td><td><a href="#" class="gcal-icon" onclick="addToGoogleCalendar(event, this.closest('tr'))">📅</a></td></tr>
+    <tr data-datetime="2025-09-29T18:30"><td>Lunes, 29 Sep. 18:30</td><td>Taller 'La Lista Verde de los Barrios' | Parroquia Virgen del Camino</td><td>Workshop 'The Green List of Neighbourhoods' | Parish Virgen del Camino</td><td><a href="#" class="gcal-icon" onclick="addToGoogleCalendar(event, this.closest('tr'))">📅</a></td></tr>
+    <tr data-datetime="2025-10-03T19:00"><td>Viernes, 3 Oct. 19:00</td><td>Recital: Salvar la Naturaleza | Biblioteca Provincial</td><td>Recital: Save Nature | Provincial Library</td><td><a href="#" class="gcal-icon" onclick="addToGoogleCalendar(event, this.closest('tr'))">📅</a></td></tr>
+    <tr data-datetime="2025-10-04T09:00"><td>Sábado, 4 Oct. 09:00</td><td>Yoga + ruta por el huerto + desayuno | Huerto El Caminito</td><td>Yoga + garden walk + breakfast | Huerto El Caminito</td><td><a href="#" class="gcal-icon" onclick="addToGoogleCalendar(event, this.closest('tr'))">📅</a></td></tr>
+    <tr data-datetime="2025-10-05T10:00"><td>Domingo, 5 Oct. 10:00</td><td>Encuentro de Permacultura: Sintropía y Regeneración | BUM</td><td>Permaculture Meeting: Syntropy and Regeneration | BUM</td><td><a href="#" class="gcal-icon" onclick="addToGoogleCalendar(event, this.closest('tr'))">📅</a></td></tr>
+    <tr data-datetime="2025-10-09T18:00"><td>Jueves, 9 Oct. 18:00</td><td>Cineforum: "Pueblo a Tierra" | Huerto El Caminito</td><td>Cineforum: 'Pueblo a Tierra' | Huerto El Caminito</td><td><a href="#" class="gcal-icon" onclick="addToGoogleCalendar(event, this.closest('tr'))">📅</a></td></tr>
+    <tr data-datetime="2025-10-10T11:00"><td>Viernes, 10 Oct. 11:00</td><td>De la semilla a la tableta de chocolate, paseo por Málaga | Plaza de Toros</td><td>From seed to chocolate bar, walk through Málaga | Plaza de Toros</td><td><a href="#" class="gcal-icon" onclick="addToGoogleCalendar(event, this.closest('tr'))">📅</a></td></tr>
+    <tr data-datetime="2025-10-10T14:00"><td>Viernes, 10 Oct. 14:00</td><td>Conoce Rancho Limón y sus entidades + Picnic | Rancho Limón</td><td>Meet Rancho Limón and its entities + Picnic | Rancho Limón</td><td><a href="#" class="gcal-icon" onclick="addToGoogleCalendar(event, this.closest('tr'))">📅</a></td></tr>
+    <tr data-datetime="2025-10-10T16:30"><td>Viernes, 10 Oct. 16:30</td><td>IV Jornada Conservación Marina | Facultad de Ciencias</td><td>4th Marine Conservation Day | Faculty of Sciences</td><td><a href="#" class="gcal-icon" onclick="addToGoogleCalendar(event, this.closest('tr'))">📅</a></td></tr>
+    <tr data-datetime="2025-10-11T16:00"><td>Sábado, 11 Oct. 16:00</td><td>Permacultura Urbana: Ciudades que florecen | La Invisible</td><td>Urban Permaculture: Cities that Flourish | La Invisible</td><td><a href="#" class="gcal-icon" onclick="addToGoogleCalendar(event, this.closest('tr'))">📅</a></td></tr>
+    <tr data-datetime="2025-10-11T20:30"><td>Sábado, 11 Oct. 20:30</td><td>Noche Internacional de la Observación de la Luna | Centro Cultural Rafael Teruel</td><td>International Night of Moon Observation | Rafael Teruel Cultural Centre</td><td><a href="#" class="gcal-icon" onclick="addToGoogleCalendar(event, this.closest('tr'))">📅</a></td></tr>
+    <tr data-datetime="2025-10-12T10:00"><td>Domingo, 12 Oct. 10:00</td><td>Conociendo el Bosque Victoria | Bosque Victoria</td><td>Getting to know Victoria Forest | Victoria Forest</td><td><a href="#" class="gcal-icon" onclick="addToGoogleCalendar(event, this.closest('tr'))">📅</a></td></tr>
+    <tr data-datetime="2025-10-12T18:30"><td>Domingo, 12 Oct. 18:30</td><td>Taller alimentos kilométricos | Merkaético</td><td>Workshop on 'kilometric' (local) foods | Merkaético</td><td><a href="#" class="gcal-icon" onclick="addToGoogleCalendar(event, this.closest('tr'))">📅</a></td></tr>
+    <tr data-datetime="2025-10-15T17:00"><td>Miércoles, 15 Oct. 17:00</td><td>Mural del Clima | Huerto El Caminito</td><td>Climate Mural | Huerto El Caminito</td><td><a href="#" class="gcal-icon" onclick="addToGoogleCalendar(event, this.closest('tr'))">📅</a></td></tr>
+    <tr data-datetime="2025-10-16T19:30"><td>Jueves, 16 Oct. 19:30</td><td>Mesa redonda: logros de movimientos vecinales ecosociales | Asoc. Vecinal del Palo</td><td>Roundtable: achievements of community eco-social movements | Asoc. Vecinal del Palo</td><td><a href="#" class="gcal-icon" onclick="addToGoogleCalendar(event, this.closest('tr'))">📅</a></td></tr>
+    <tr data-datetime="2025-10-17T18:15"><td>Viernes, 17 Oct. 18:15</td><td>Proyección 3º Capítulo "Hope! Estamos a Tiempo" | Facultad de Ciencias</td><td>Screening 3rd Episode 'Hope! We Are on Time' | Faculty of Sciences</td><td><a href="#" class="gcal-icon" onclick="addToGoogleCalendar(event, this.closest('tr'))">📅</a></td></tr>
+    <tr data-datetime="2025-10-18T10:30"><td>Sábado, 18 Oct. 10:30</td><td>Senderismo por el Paraje Natural Guadalhorce | Desembocadura del Guadalhorce</td><td>Hiking in Guadalhorce Natural Area | Guadalhorce Mouth</td><td><a href="#" class="gcal-icon" onclick="addToGoogleCalendar(event, this.closest('tr'))">📅</a></td></tr>
+    <tr data-datetime="2025-10-18T16:00"><td>Sábado, 18 Oct. 16:00</td><td>Refugios Climáticos y Humedales Urbanos | Cruce Navarro/Ledesma/M. Llopart</td><td>Climate Shelters and Urban Wetlands | Intersection Navarro/Ledesma/M. Llopart</td><td><a href="#" class="gcal-icon" onclick="addToGoogleCalendar(event, this.closest('tr'))">📅</a></td></tr>
+    <tr data-datetime="2025-10-19T09:00"><td>Domingo, 19 Oct. 09:00</td><td>Limpieza en los terrenos del BUM | C/Bodegueros</td><td>Cleanup on BUM grounds | C/Bodegueros</td><td><a href="#" class="gcal-icon" onclick="addToGoogleCalendar(event, this.closest('tr'))">📅</a></td></tr>
+    <tr data-datetime="2025-10-19T09:00"><td>Domingo, 19 Oct. 09:00</td><td>Ruta naturalista + Taller de pintura | Av. Escritor Antonio Soler</td><td>Nature walk + Painting workshop | Av. Escritor Antonio Soler</td><td><a href="#" class="gcal-icon" onclick="addToGoogleCalendar(event, this.closest('tr'))">📅</a></td></tr>
+    <tr data-datetime="2025-10-19T09:00"><td>Domingo, 19 Oct. 09:00</td><td>Plantación y riego en el BUM | C/Bodegueros</td><td>Planting and watering at BUM | C/Bodegueros</td><td><a href="#" class="gcal-icon" onclick="addToGoogleCalendar(event, this.closest('tr'))">📅</a></td></tr>
+    <tr data-datetime="2025-10-20T17:30"><td>Lunes, 20 Oct. 17:30</td><td>Suelo vivo y microbiota intestinal | Facultad de Ciencias</td><td>Living Soil and Gut Microbiota | Faculty of Sciences</td><td><a href="#" class="gcal-icon" onclick="addToGoogleCalendar(event, this.closest('tr'))">📅</a></td></tr>
+    <tr data-datetime="2025-10-20T18:30"><td>Lunes, 20 Oct. 18:30</td><td>Avispas invasoras: un desafío para el medio ambiente | Centro de Recursos Participativos</td><td>Invasive Wasps: an environmental challenge | Community Resources Centre</td><td><a href="#" class="gcal-icon" onclick="addToGoogleCalendar(event, this.closest('tr'))">📅</a></td></tr>
+    <tr data-datetime="2025-10-21T18:00"><td>Martes, 21 Oct. 18:00</td><td>Taracea Ecosocial: ciudades y pueblos al rojo vivo | (Lugar a confirmar)</td><td>Ecosocial Inlay: cities and villages on fire | (Venue TBC)</td><td><a href="#" class="gcal-icon" onclick="addToGoogleCalendar(event, this.closest('tr'))">📅</a></td></tr>
+    <tr data-datetime="2025-10-21T18:30"><td>Martes, 21 Oct. 18:30</td><td>Taller sobre pérdidas alimentarias | Merkaético</td><td>Workshop on food loss | Merkaético</td><td><a href="#" class="gcal-icon" onclick="addToGoogleCalendar(event, this.closest('tr'))">📅</a></td></tr>
+    <tr data-datetime="2025-10-24T18:00"><td>Viernes, 24 Oct. 18:00</td><td>Proyección documental "Ocean" | Facultad de Ciencias</td><td>Screening documentary 'Ocean' | Faculty of Sciences</td><td><a href="#" class="gcal-icon" onclick="addToGoogleCalendar(event, this.closest('tr'))">📅</a></td></tr>
+    <tr data-datetime="2025-10-25T10:00"><td>Sábado, 25 Oct. 10:00</td><td>Ecomercado Parque Huelin | Faro Parque de Huelin</td><td>Eco-market Parque Huelin | Lighthouse Parque Huelin</td><td><a href="#" class="gcal-icon" onclick="addToGoogleCalendar(event, this.closest('tr'))">📅</a></td></tr>
+    <tr data-datetime="2025-10-25T10:00"><td>Sábado, 25 Oct. 10:00</td><td>Recogida de residuos en Arraijanal | Arraijanal</td><td>Waste collection in Arraijanal | Arraijanal</td><td><a href="#" class="gcal-icon" onclick="addToGoogleCalendar(event, this.closest('tr'))">📅</a></td></tr>
+    <tr data-datetime="2025-10-25T11:00"><td>Sábado, 25 Oct. 11:00</td><td>Honrando a l@s abuel@s de la Alameda | C/Córdoba 1</td><td>Honouring the grandparents of the Alameda | C/Córdoba 1</td><td><a href="#" class="gcal-icon" onclick="addToGoogleCalendar(event, this.closest('tr'))">📅</a></td></tr>
+    <tr data-datetime="2025-10-25T17:00"><td>Sábado, 25 Oct. 17:00</td><td>Merienda Vegana + Mapeo de luchas ecosociales | La Invisible</td><td>Vegan Snack + Mapping eco-social struggles | La Invisible</td><td><a href="#" class="gcal-icon" onclick="addToGoogleCalendar(event, this.closest('tr'))">📅</a></td></tr>
+    <tr data-datetime="2025-10-25T17:30"><td>Sábado, 25 Oct. 17:30</td><td>Refugios Climáticos: de la teoría a la acción | Asoc. Vecinal del Palo</td><td>Climate Shelters: from theory to action | Asoc. Vecinal del Palo</td><td><a href="#" class="gcal-icon" onclick="addToGoogleCalendar(event, this.closest('tr'))">📅</a></td></tr>
+    <tr data-datetime="2025-10-29T16:00"><td>Miércoles, 29 Oct. 16:00</td><td>Claves para cuidar tus plantas y taller de bolas de semillas | Bosque Victoria</td><td>Tips to care for your plants + seed balls workshop | Victoria Forest</td><td><a href="#" class="gcal-icon" onclick="addToGoogleCalendar(event, this.closest('tr'))">📅</a></td></tr>
+    <tr data-datetime="2025-10-29T18:00"><td>Miércoles, 29 Oct. 18:00</td><td>Taller de dinamización de comunidades energéticas | Huerto El Caminito</td><td>Workshop on energ. community facilitation | Huerto El Caminito</td><td><a href="#" class="gcal-icon" onclick="addToGoogleCalendar(event, this.closest('tr'))">📅</a></td></tr>
+    <tr data-datetime="2025-10-30T18:00"><td>Jueves, 30 Oct. 18:00</td><td>Ruta interpretativa sobre fauna y flora urbana | Parque del Oeste</td><td>Interpretive walk on urban fauna and flora | Parque del Oeste</td><td><a href="#" class="gcal-icon" onclick="addToGoogleCalendar(event, this.closest('tr'))">📅</a></td></tr>
+    <tr data-datetime="2025-11-01T20:00"><td>Sábado, 1 Nov. 20:00</td><td>Fiesta de Cierre | La Nave</td><td>Closing Party | La Nave</td><td><a href="#" class="gcal-icon" onclick="addToGoogleCalendar(event, this.closest('tr'))">📅</a></td></tr>
+  </tbody>
+</table>
+
+<h3>Venues / Lugares</h3>
+<ol>
+  <li><strong>Arraijanal</strong> – <a href="https://www.google.com/maps/search/Arraijanal+Málaga" target="_blank">Google Maps</a></li>
+  <li><strong>Asoc. Vecinal del Palo</strong> – <a href="https://www.google.com/maps/search/Asociación+Vecinal+del+Palo+Málaga" target="_blank">Google Maps</a></li>
+  <li><strong>Av. Escritor Antonio Soler</strong> – <a href="https://www.google.com/maps/search/Av.+Escritor+Antonio+Soler+Málaga" target="_blank">Google Maps</a></li>
+  <li><strong>Baños del Carmen</strong> – <a href="https://www.google.com/maps/search/Baños+del+Carmen+Málaga" target="_blank">Google Maps</a></li>
+  <li><strong>Biblioteca Provincial</strong> – <a href="https://www.google.com/maps/search/Biblioteca+Provincial+Málaga" target="_blank">Google Maps</a></li>
+  <li><strong>Bosque Victoria</strong> – <a href="https://www.google.com/maps/search/Bosque+Victoria+Málaga" target="_blank">Google Maps</a></li>
+  <li><strong>BUM / C/Bodegueros</strong> – <a href="https://www.google.com/maps/search/C/Bodegueros+Málaga" target="_blank">Google Maps</a></li>
+  <li><strong>C/Córdoba 1</strong> – <a href="https://www.google.com/maps/search/C/Córdoba+1+Málaga" target="_blank">Google Maps</a></li>
+  <li><strong>Centro Cultural Rafael Teruel</strong> – <a href="https://www.google.com/maps/search/Centro+Cultural+Rafael+Teruel+Málaga" target="_blank">Google Maps</a></li>
+  <li><strong>Centro de Recursos Participativos</strong> – <a href="https://www.google.com/maps/search/Centro+de+Recursos+Participativos+Málaga" target="_blank">Google Maps</a></li>
+  <li><strong>Cruce Navarro/Ledesma/M. Llopart</strong> – <a href="https://www.google.com/maps/search/Cruce+Navarro+Ledesma+M.+Llopart+Málaga" target="_blank">Google Maps</a></li>
+  <li><strong>Desembocadura del Guadalhorce</strong> – <a href="https://www.google.com/maps/search/Desembocadura+del+Guadalhorce+Málaga" target="_blank">Google Maps</a></li>
+  <li><strong>Facultad de Ciencias</strong> – <a href="https://www.google.com/maps/search/Facultad+de+Ciencias+Málaga" target="_blank">Google Maps</a></li>
+  <li><strong>Faro Parque de Huelin</strong> – <a href="https://www.google.com/maps/search/Faro+Parque+de+Huelin+Málaga" target="_blank">Google Maps</a></li>
+  <li><strong>Huerto El Caminito</strong> – <a href="https://www.google.com/maps/search/Huerto+El+Caminito+Málaga" target="_blank">Google Maps</a></li>
+  <li><strong>La Invisible</strong> – <a href="https://www.google.com/maps/search/La+Invisible+Málaga" target="_blank">Google Maps</a></li>
+  <li><strong>La Nave</strong> – <a href="https://www.google.com/maps/search/La+Nave+Málaga" target="_blank">Google Maps</a></li>
+  <li><strong>Merkaético</strong> – <a href="https://www.google.com/maps/search/Merkaético+Málaga" target="_blank">Google Maps</a></li>
+  <li><strong>Parque del Oeste</strong> – <a href="https://www.google.com/maps/search/Parque+del+Oeste+Málaga" target="_blank">Google Maps</a></li>
+  <li><strong>Parroquia Virgen del Camino</strong> – <a href="https://www.google.com/maps/search/Parroquia+Virgen+del+Camino+Málaga" target="_blank">Google Maps</a></li>
+  <li><strong>Plaza de Toros</strong> – <a href="https://www.google.com/maps/search/Plaza+de+Toros+Málaga" target="_blank">Google Maps</a></li>
+  <li><strong>Rancho Limón</strong> – <a href="https://www.google.com/maps/search/Rancho+Limón+Málaga" target="_blank">Google Maps</a></li>
+  <li><strong>(Lugar a confirmar / Venue TBC)</strong> – <a href="https://www.google.com/maps/search/Málaga" target="_blank">Google Maps</a></li>
+</ol>
+
+<script>
+function addToGoogleCalendar(e, row) {
+  e.preventDefault();
+  const datetime = row.dataset.datetime;
+  const startDate = new Date(datetime);
+  const endDate = new Date(startDate.getTime() + 2*60*60*1000);
+  
+  const titleES = row.cells[1].textContent;
+  const titleEN = row.cells[2].textContent;
+  const title = encodeURIComponent(titleES + ' / ' + titleEN);
+  
+  const startStr = startDate.toISOString().replace(/-|:|\.\d+/g, '');
+  const endStr = endDate.toISOString().replace(/-|:|\.\d+/g, '');
+  
+  const url = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${startStr}/${endStr}&location=Málaga&sf=true&output=xml`;
+  
+  window.open(url, '_blank');
+}
+
+function highlightEvents() {
+  const rows = document.querySelectorAll('#calendar tbody tr');
+  const now = new Date();
+  let foundNext = false;
+  rows.forEach(row => {
+    row.classList.remove('now', 'next');
+    const eventTime = new Date(row.dataset.datetime);
+    if (!foundNext) {
+      if (now >= eventTime && now < new Date(eventTime.getTime() + 2*60*60*1000)) {
+        row.classList.add('now');
+      } else if (now < eventTime) {
+        row.classList.add('next');
+        foundNext = true;
+      }
+    }
+  });
+}
+
+highlightEvents();
+setInterval(highlightEvents, 60000);
+</script>
+</body>
+</html>
