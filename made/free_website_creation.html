@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Your Free Website | GitHub Pages & Claude</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        body {
+            overflow-x: hidden;
+        }
+        
+        .hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 100px 0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+        }
+        
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+        }
+        
+        .hero p {
+            font-size: 1.3rem;
+            opacity: 0.95;
+            margin-bottom: 2rem;
+        }
+        
+        .btn-custom {
+            background: white;
+            color: #667eea;
+            padding: 15px 40px;
+            font-weight: 600;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            border: none;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .btn-custom:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            color: #667eea;
+        }
+        
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 3rem;
+            text-align: center;
+            color: #2d3748;
+        }
+        
+        .step-card {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.07);
+            transition: all 0.3s ease;
+            border: 1px solid #e2e8f0;
+        }
+        
+        .step-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        
+        .step-number {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .step-card h3 {
+            color: #2d3748;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+        
+        .feature-box {
+            text-align: center;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        
+        .benefits-section {
+            background: #f7fafc;
+            padding: 80px 0;
+        }
+        
+        .domain-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 80px 0;
+        }
+        
+        .code-box {
+            background: #2d3748;
+            color: #48bb78;
+            padding: 1.5rem;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            margin: 1rem 0;
+            overflow-x: auto;
+        }
+        
+        .navbar-custom {
+            background: white !important;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .navbar-brand {
+            font-weight: 700;
+            color: #667eea !important;
+        }
+        
+        .nav-link {
+            color: #4a5568 !important;
+            font-weight: 500;
+            margin: 0 10px;
+            transition: color 0.3s ease;
+        }
+        
+        .nav-link:hover {
+            color: #667eea !important;
+        }
+        
+        .checklist {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .checklist li {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+        
+        .checkbox {
+            min-width: 24px;
+            width: 24px;
+            height: 24px;
+            border: 2px solid #cbd5e0;
+            border-radius: 6px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-top: 2px;
+            background: white;
+        }
+        
+        .checkbox:hover {
+            border-color: #667eea;
+            transform: scale(1.05);
+        }
+        
+        .checkbox.in-progress {
+            background: #667eea;
+        }
+        
+        .checkbox.in-progress::after {
+            content: '';
+            width: 8px;
+            height: 8px;
+            background: white;
+            border-radius: 50%;
+        }
+        
+        .checkbox.completed {
+            background: #48bb78;
+            border-color: #48bb78;
+        }
+        
+        .checkbox.completed::after {
+            content: '✓';
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+        }
+        
+        footer {
+            background: #2d3748;
+            color: white;
+            padding: 40px 0;
+            text-align: center;
+        }
+        
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .hero p {
+                font-size: 1.1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light navbar-custom fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">🚀 Free Website Guide By Ian Moss.</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="#overview">Overview</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#steps">Steps</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#domain">Custom Domain</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#benefits">Benefits</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-8">
+                    <h1>Create Your Free Website in Minutes</h1>
+                    <p>I should not be telling you this, but if you are budget constrained, there is a perfectly acceptable way to make your website, for free, and have it hosted for free, and attached to your domain name!!! Check the details out below and please do give me some feedback.</p>
+                    <p>Build beautiful, professional websites using GitHub Pages and Claude AI. No coding experience required. Completely free forever.</p>
+                    <a href="#steps" class="btn-custom">Get Started Now</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="overview" class="py-5">
+        <div class="container">
+            <h2 class="section-title">What You'll Need</h2>
+            <div class="row">
+                <div class="col-md-4 feature-box">
+                    <div class="feature-icon">💻</div>
+                    <h4>A Free GitHub Account</h4>
+                    <p>Sign up at github.com in minutes</p>
+                </div>
+                <div class="col-md-4 feature-box">
+                    <div class="feature-icon">🤖</div>
+                    <h4>Claude AI</h4>
+                    <p>You're already using it!</p>
+                </div>
+                <div class="col-md-4 feature-box">
+                    <div class="feature-icon">⏱️</div>
+                    <h4>15 Minutes</h4>
+                    <p>That's all it takes to get live</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="steps" class="py-5 bg-light">
+        <div class="container">
+            <h2 class="section-title">Step-by-Step Guide</h2>
+            
+            <div class="step-card">
+                <div class="step-number">1</div>
+                <h3>Create Your Website with Claude</h3>
+                <ul class="checklist">
+                    <li><span class="checkbox" onclick="toggleCheck(this)"></span>Ask Claude to build your webpage using a prompt like:</li>
+                </ul>
+                <div class="code-box">
+                    Create a modern, professional portfolio website using Bootstrap 5 and Google Fonts (use Inter). 
+                    Include: hero section, about, projects, and contact. Make it mobile-responsive.
+                </div>
+                <p>Claude will create an artifact with your complete HTML, CSS, and JavaScript. You can refine it through conversation until it's perfect.</p>
+            </div>
+
+            <div class="step-card">
+                <div class="step-number">2</div>
+                <h3>Download Your Code</h3>
+                <ul class="checklist">
+                    <li><span class="checkbox" onclick="toggleCheck(this)"></span>Copy all the code from Claude's artifact and save it as <strong>index.html</strong> on your computer.</li>
+                </ul>
+            </div>
+
+            <div class="step-card">
+                <div class="step-number">3</div>
+                <h3>Set Up GitHub</h3>
+                <ul class="checklist">
+                    <li><span class="checkbox" onclick="toggleCheck(this)"></span>Go to <strong>github.com</strong> and create a free account</li>
+                    <li><span class="checkbox" onclick="toggleCheck(this)"></span>Click the "+" icon → "New repository"</li>
+                    <li><span class="checkbox" onclick="toggleCheck(this)"></span>Name it <strong>yourusername.github.io</strong> (use your actual username)</li>
+                    <li><span class="checkbox" onclick="toggleCheck(this)"></span>Make it Public and check "Add a README file"</li>
+                    <li><span class="checkbox" onclick="toggleCheck(this)"></span>Click "Create repository"</li>
+                </ul>
+            </div>
+
+            <div class="step-card">
+                <div class="step-number">4</div>
+                <h3>Upload Your Website</h3>
+                <ul class="checklist">
+                    <li><span class="checkbox" onclick="toggleCheck(this)"></span>In your repository, click "Add file" → "Upload files"</li>
+                    <li><span class="checkbox" onclick="toggleCheck(this)"></span>Drag and drop your <strong>index.html</strong> file</li>
+                    <li><span class="checkbox" onclick="toggleCheck(this)"></span>Click "Commit changes"</li>
+                    <li><span class="checkbox" onclick="toggleCheck(this)"></span>Your site will be live at <strong>https://yourusername.github.io</strong> in minutes!</li>
+                </ul>
+            </div>
+
+            <div class="step-card">
+                <div class="step-number">5</div>
+                <h3>Update Anytime</h3>
+                <p>To make changes:</p>
+                <ol class="checklist">
+                    <li><span class="checkbox" onclick="toggleCheck(this)"></span>Ask Claude to modify your webpage</li>
+                    <li><span class="checkbox" onclick="toggleCheck(this)"></span>Copy the updated code</li>
+                    <li><span class="checkbox" onclick="toggleCheck(this)"></span>Go to your repository, click on index.html</li>
+                    <li><span class="checkbox" onclick="toggleCheck(this)"></span>Click the pencil icon (Edit)</li>
+                    <li><span class="checkbox" onclick="toggleCheck(this)"></span>Replace content and click "Commit changes"</li>
+                </ol>
+                <p>Changes appear live within seconds!</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="domain" class="domain-section">
+        <div class="container">
+            <h2 class="section-title text-white">Part 2: Add a Custom Domain</h2>
+            <div class="row">
+                <div class="col-lg-8 mx-auto">
+                    <p class="lead text-center mb-5">Want to use your own domain like <strong>ianmoss.com</strong>? Here's how:</p>
+                    
+                    <div class="step-card text-dark">
+                        <h4>Step 1: Configure GitHub</h4>
+                        <ul class="checklist">
+                            <li><span class="checkbox" onclick="toggleCheck(this)"></span>Go to your repository Settings → Pages</li>
+                            <li><span class="checkbox" onclick="toggleCheck(this)"></span>Under "Custom domain," enter your domain (e.g., ianmoss.com)</li>
+                            <li><span class="checkbox" onclick="toggleCheck(this)"></span>Click Save and enable "Enforce HTTPS"</li>
+                        </ul>
+                    </div>
+
+                    <div class="step-card text-dark">
+                        <h4>Step 2: Configure Your DNS</h4>
+                        <ul class="checklist">
+                            <li><span class="checkbox" onclick="toggleCheck(this)"></span>At your domain registrar, add these A records:</li>
+                        </ul>
+                        <div class="code-box">
+185.199.108.153
+185.199.109.153
+185.199.110.153
+185.199.111.153
+                        </div>
+                        <ul class="checklist">
+                            <li><span class="checkbox" onclick="toggleCheck(this)"></span>Add a CNAME record:</li>
+                        </ul>
+                        <div class="code-box">
+www.ianmoss.com → yourusername.github.io
+                        </div>
+                    </div>
+
+                    <div class="step-card text-dark">
+                        <h4>Step 3: Wait for DNS Propagation</h4>
+                        <ul class="checklist">
+                            <li><span class="checkbox" onclick="toggleCheck(this)"></span>Wait up to 24-48 hours for DNS changes (usually works within a few hours)</li>
+                            <li><span class="checkbox" onclick="toggleCheck(this)"></span>Once propagated, your custom domain will show your GitHub Pages site with free HTTPS!</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="benefits" class="benefits-section">
+        <div class="container">
+            <h2 class="section-title">Why This Is Amazing</h2>
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <div class="step-card text-center">
+                        <h4>💰 Completely Free</h4>
+                        <p>Free hosting forever with GitHub Pages. Only pay for a domain if you want one.</p>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="step-card text-center">
+                        <h4>🔒 Free SSL Certificate</h4>
+                        <p>Automatic HTTPS security for your site. Professional and secure.</p>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="step-card text-center">
+                        <h4>⚡ Fast & Reliable</h4>
+                        <p>Powered by GitHub's infrastructure. Your site loads quickly worldwide.</p>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="step-card text-center">
+                        <h4>🎨 Easy Updates</h4>
+                        <p>Just talk to Claude, copy the code, and push the changes. Takes seconds.</p>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="step-card text-center">
+                        <h4>📱 Mobile Responsive</h4>
+                        <p>Claude creates sites that look great on all devices automatically.</p>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="step-card text-center">
+                        <h4>🛠️ No Maintenance</h4>
+                        <p>GitHub handles all the server maintenance. You just create content.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-5 bg-light">
+        <div class="container text-center">
+            <h2 class="section-title">Ready to Get Started?</h2>
+            <p class="lead mb-4">You have everything you need right now. Start building your free website today!</p>
+            <a href="#steps" class="btn-custom">View the Guide Again</a>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Free Website Guide. Built with GitHub Pages, Claude & Bootstrap.</p>
+            <p class="mt-2"><small>This guide is open source and free to share.</small></p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+        
+        function toggleCheck(element) {
+            if (element.classList.contains('completed')) {
+                element.classList.remove('completed');
+            } else if (element.classList.contains('in-progress')) {
+                element.classList.remove('in-progress');
+                element.classList.add('completed');
+            } else {
+                element.classList.add('in-progress');
+            }
+        }
+    </script>
+</body>
+</html>
