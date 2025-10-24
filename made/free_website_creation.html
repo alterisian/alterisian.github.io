@@ -1,480 +1,436 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create Your Free Website | GitHub Pages & Claude</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title data-en="Create Your Free Website | GitHub Pages & Claude" data-es="Crea Tu Sitio Web Gratis | GitHub Pages & Claude">Create Your Free Website | GitHub Pages & Claude</title>
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
     <style>
-        * {
-            font-family: 'Inter', sans-serif;
+        * { font-family: 'Inter', sans-serif; }
+        body { overflow-x: hidden; }
+        .lang-switcher {
+            position: fixed;
+            top: 80px;
+            right: 20px;
+            z-index: 1000;
+            cursor: pointer;
+            font-size: 2.2rem;
+            background: white;
+            border-radius: 50%;
+            width: 56px;
+            height: 56px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            transition: all 0.25s ease;
         }
-        
-        body {
-            overflow-x: hidden;
-        }
-        
+        .lang-switcher:hover { transform: scale(1.06); box-shadow: 0 6px 20px rgba(0,0,0,0.18); }
+
         .hero {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             padding: 100px 0;
             min-height: 100vh;
-            display: flex;
-            align-items: center;
+            display:flex;
+            align-items:center;
         }
-        
-        .hero h1 {
-            font-size: 3.5rem;
-            font-weight: 700;
-            margin-bottom: 1.5rem;
-        }
-        
-        .hero p {
-            font-size: 1.3rem;
-            opacity: 0.95;
-            margin-bottom: 2rem;
-        }
-        
+        .hero h1 { font-size: 3.5rem; font-weight:700; margin-bottom:1.2rem; }
+        .hero p { font-size:1.2rem; opacity:0.95; margin-bottom:1rem; }
+
         .btn-custom {
             background: white;
             color: #667eea;
-            padding: 15px 40px;
-            font-weight: 600;
-            border-radius: 50px;
-            transition: all 0.3s ease;
-            border: none;
-            text-decoration: none;
-            display: inline-block;
+            padding: 12px 30px;
+            font-weight:600;
+            border-radius:50px;
+            border:none;
+            text-decoration:none;
+            display:inline-block;
         }
-        
-        .btn-custom:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-            color: #667eea;
-        }
-        
-        .section-title {
-            font-size: 2.5rem;
-            font-weight: 700;
-            margin-bottom: 3rem;
-            text-align: center;
-            color: #2d3748;
-        }
-        
-        .step-card {
-            background: white;
-            border-radius: 15px;
-            padding: 2rem;
-            margin-bottom: 2rem;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.07);
-            transition: all 0.3s ease;
-            border: 1px solid #e2e8f0;
-        }
-        
-        .step-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-        }
-        
+        .btn-custom:hover { transform: translateY(-3px); box-shadow: 0 10px 25px rgba(0,0,0,0.15); }
+
+        .section-title { font-size:2.5rem; font-weight:700; margin-bottom:2rem; text-align:center; color:#2d3748; }
+
+        .step-card { background:white; border-radius:12px; padding:1.6rem; margin-bottom:1.6rem; box-shadow:0 4px 6px rgba(0,0,0,0.06); border:1px solid #e2e8f0; }
         .step-number {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg,#667eea 0%,#764ba2 100%);
             color: white;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
+            width:44px;height:44px;border-radius:50%;
+            display:inline-flex;align-items:center;justify-content:center;font-weight:700;margin-right:10px;
         }
-        
-        .step-card h3 {
-            color: #2d3748;
-            font-weight: 600;
-            margin-bottom: 1rem;
-        }
-        
-        .feature-box {
-            text-align: center;
-            padding: 2rem;
-            margin-bottom: 2rem;
-        }
-        
-        .feature-icon {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-        }
-        
-        .benefits-section {
-            background: #f7fafc;
-            padding: 80px 0;
-        }
-        
-        .domain-section {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 80px 0;
-        }
-        
-        .code-box {
-            background: #2d3748;
-            color: #48bb78;
-            padding: 1.5rem;
-            border-radius: 10px;
-            font-family: 'Courier New', monospace;
-            margin: 1rem 0;
-            overflow-x: auto;
-        }
-        
-        .navbar-custom {
-            background: white !important;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-        
-        .navbar-brand {
-            font-weight: 700;
-            color: #667eea !important;
-        }
-        
-        .nav-link {
-            color: #4a5568 !important;
-            font-weight: 500;
-            margin: 0 10px;
-            transition: color 0.3s ease;
-        }
-        
-        .nav-link:hover {
-            color: #667eea !important;
-        }
-        
-        .checklist {
-            list-style: none;
-            padding-left: 0;
-        }
-        
-        .checklist li {
-            margin-bottom: 15px;
-            display: flex;
-            align-items: flex-start;
-            gap: 12px;
-        }
-        
+        .feature-box { text-align:center; padding:1.6rem; }
+        .code-box { background:#2d3748; color:#48bb78; padding:1rem; border-radius:8px; font-family:'Courier New',monospace; overflow-x:auto; }
+
+        .navbar-custom { background:white!important; box-shadow:0 2px 4px rgba(0,0,0,0.08); }
+        .navbar-brand { font-weight:700; color:#667eea!important; }
+        .nav-link { color:#4a5568!important; font-weight:500; margin:0 8px; }
+        .nav-link:hover { color:#667eea!important; }
+
+        .checklist { list-style:none; padding-left:0; }
+        .checklist li { margin-bottom:12px; display:flex; align-items:flex-start; gap:12px; }
         .checkbox {
-            min-width: 24px;
-            width: 24px;
-            height: 24px;
-            border: 2px solid #cbd5e0;
-            border-radius: 6px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            margin-top: 2px;
-            background: white;
+            min-width:22px;width:22px;height:22px;border:2px solid #cbd5e0;border-radius:6px;display:inline-flex;align-items:center;justify-content:center;
+            cursor:pointer; transition:all .15s ease;background:white;margin-top:2px;
         }
-        
-        .checkbox:hover {
-            border-color: #667eea;
-            transform: scale(1.05);
-        }
-        
-        .checkbox.in-progress {
-            background: #667eea;
-        }
-        
-        .checkbox.in-progress::after {
-            content: '';
-            width: 8px;
-            height: 8px;
-            background: white;
-            border-radius: 50%;
-        }
-        
-        .checkbox.completed {
-            background: #48bb78;
-            border-color: #48bb78;
-        }
-        
-        .checkbox.completed::after {
-            content: '✓';
-            color: white;
-            font-size: 16px;
-            font-weight: bold;
-        }
-        
-        footer {
-            background: #2d3748;
-            color: white;
-            padding: 40px 0;
-            text-align: center;
-        }
-        
-        @media (max-width: 768px) {
-            .hero h1 {
-                font-size: 2.5rem;
-            }
-            
-            .hero p {
-                font-size: 1.1rem;
-            }
+        .checkbox:hover { border-color:#667eea; transform:scale(1.04); }
+        .checkbox.completed { background:#48bb78;border-color:#48bb78; }
+        .checkbox.completed::after { content:'✓'; color:white; font-size:14px; font-weight:700; }
+
+        footer { background:#2d3748; color:white; padding:32px 0; text-align:center; }
+        footer a { color:#667eea; text-decoration:none; }
+        footer a:hover { color:#764ba2; text-decoration:underline; }
+
+        @media (max-width:768px) {
+            .hero h1 { font-size:2.4rem; }
+            .lang-switcher { top:72px; right:16px; width:50px; height:50px; font-size:1.9rem; }
         }
     </style>
 </head>
 <body>
+
+    <!-- Language toggle -->
+    <div class="lang-switcher" onclick="toggleLanguage()" title="Switch language / Cambiar idioma">
+        <span id="flag">🇬🇧</span>
+    </div>
+
+    <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-light navbar-custom fixed-top">
         <div class="container">
-            <a class="navbar-brand" href="#">🚀 Free Website Guide By Ian Moss.</a>
+            <a class="navbar-brand" href="#" data-en="🚀 Free Website Guide By Ian Moss." data-es="🚀 Guía de Sitio Web Gratis por Ian Moss.">🚀 Free Website Guide By Ian Moss.</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link" href="#overview">Overview</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#steps">Steps</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#domain">Custom Domain</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#benefits">Benefits</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#overview" data-en="Overview" data-es="Resumen">Overview</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#steps" data-en="Steps" data-es="Pasos">Steps</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#domain" data-en="Custom Domain" data-es="Dominio Propio">Custom Domain</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#benefits" data-en="Benefits" data-es="Beneficios">Benefits</a></li>
                 </ul>
             </div>
         </div>
     </nav>
 
+    <!-- Hero -->
     <section class="hero">
-        <div class="container">
+        <div class="container" style="padding-top:80px;">
             <div class="row align-items-center">
                 <div class="col-lg-8">
-                    <h1>Create Your Free Website in Minutes</h1>
-                    <p>I should not be telling you this, but if you are budget constrained, there is a perfectly acceptable way to make your website, for free, and have it hosted for free, and attached to your domain name!!! Check the details out below and please do give me some feedback.</p>
-                    <p>Build beautiful, professional websites using GitHub Pages and Claude AI. No coding experience required. Completely free forever.</p>
-                    <a href="#steps" class="btn-custom">Get Started Now</a>
+                    <h1 data-en="Create Your Free Website in Minutes" data-es="Crea Tu Sitio Web Gratis en Minutos">Create Your Free Website in Minutes</h1>
+                    <p data-en="I should not be telling you this, but if you are budget constrained, there is a perfectly acceptable way to make your website, for free, and have it hosted for free, and attached to your domain name! Check the details out below and please do give me some feedback." data-es="No debería estar diciéndote esto, pero si tienes un presupuesto limitado, hay una manera perfectamente aceptable de crear tu sitio web, gratis, alojarlo gratis y vincularlo a tu dominio. ¡Revisa los detalles a continuación y por favor dame tu opinión!">
+                        I should not be telling you this, but if you are budget constrained, there is a perfectly acceptable way to make your website, for free, and have it hosted for free, and attached to your domain name! Check the details out below and please do give me some feedback.
+                    </p>
+                    <p data-en="Build beautiful, professional websites using GitHub Pages and Claude AI. No coding experience required. Completely free forever." data-es="Construye sitios web hermosos y profesionales usando GitHub Pages y Claude AI. No se requiere experiencia en programación. Completamente gratis para siempre.">
+                        Build beautiful, professional websites using GitHub Pages and Claude AI. No coding experience required. Completely free forever.
+                    </p>
+                    <a href="#steps" class="btn-custom" data-en="Get Started Now" data-es="Empezar Ahora">Get Started Now</a>
                 </div>
             </div>
         </div>
     </section>
 
+    <!-- Overview -->
     <section id="overview" class="py-5">
         <div class="container">
-            <h2 class="section-title">What You'll Need</h2>
+            <h2 class="section-title" data-en="What You'll Need" data-es="Lo Que Necesitarás">What You'll Need</h2>
             <div class="row">
                 <div class="col-md-4 feature-box">
                     <div class="feature-icon">💻</div>
-                    <h4>A Free GitHub Account</h4>
-                    <p>Sign up at github.com in minutes</p>
+                    <h4 data-en="A Free GitHub Account" data-es="Una Cuenta Gratis de GitHub">A Free GitHub Account</h4>
+                    <p data-en="Sign up at github.com in minutes" data-es="Regístrate en github.com en minutos">Sign up at github.com in minutes</p>
                 </div>
                 <div class="col-md-4 feature-box">
                     <div class="feature-icon">🤖</div>
-                    <h4>Claude AI</h4>
-                    <p>You're already using it!</p>
+                    <h4 data-en="Claude AI" data-es="Claude AI">Claude AI</h4>
+                    <p data-en="You're already using it!" data-es="¡Ya lo estás usando!">You're already using it!</p>
                 </div>
                 <div class="col-md-4 feature-box">
                     <div class="feature-icon">⏱️</div>
-                    <h4>15 Minutes</h4>
-                    <p>That's all it takes to get live</p>
+                    <h4 data-en="15 Minutes" data-es="15 Minutos">15 Minutes</h4>
+                    <p data-en="That's all it takes to get live" data-es="Eso es todo lo que se necesita para estar en línea">That's all it takes to get live</p>
                 </div>
             </div>
         </div>
     </section>
 
+    <!-- Steps -->
     <section id="steps" class="py-5 bg-light">
         <div class="container">
-            <h2 class="section-title">Step-by-Step Guide</h2>
-            
+            <h2 class="section-title" data-en="Step-by-Step Guide" data-es="Guía Paso a Paso">Step-by-Step Guide</h2>
+
             <div class="step-card">
-                <div class="step-number">1</div>
-                <h3>Create Your Website with Claude</h3>
-                <ul class="checklist">
-                    <li><span class="checkbox" onclick="toggleCheck(this)"></span>Ask Claude to build your webpage using a prompt like:</li>
-                </ul>
-                <div class="code-box">
-                    Create a modern, professional portfolio website using Bootstrap 5 and Google Fonts (use Inter). 
-                    Include: hero section, about, projects, and contact. Make it mobile-responsive.
+                <div class="d-flex align-items-center mb-2">
+                    <div class="step-number">1</div>
+                    <h3 data-en="Create Your Website with Claude" data-es="Crea Tu Sitio Web con Claude">Create Your Website with Claude</h3>
                 </div>
-                <p>Claude will create an artifact with your complete HTML, CSS, and JavaScript. You can refine it through conversation until it's perfect.</p>
+                <ul class="checklist">
+                    <li>
+                        <span class="checkbox" onclick="toggleCheck(this)"></span>
+                        <span data-en="Ask Claude to build your webpage using a prompt like:" data-es="Pide a Claude que construya tu página web usando un prompt como:">Ask Claude to build your webpage using a prompt like:</span>
+                    </li>
+                </ul>
+
+                <div class="code-box" data-en="Create a modern, professional portfolio website using Bootstrap 5 and Google Fonts (use Inter). Include: hero section, about, projects, and contact. Make it mobile-responsive." data-es="Crea un sitio web de portafolio moderno y profesional usando Bootstrap 5 y Google Fonts (usa Inter). Incluye: sección hero, sobre mí, proyectos y contacto. Hazlo responsive para móviles.">
+                    Create a modern, professional portfolio website using Bootstrap 5 and Google Fonts (use Inter). Include: hero section, about, projects, and contact. Make it mobile-responsive.
+                </div>
+
+                <p data-en="Claude will create an artifact with your complete HTML, CSS, and JavaScript. You can refine it through the conversation until it's perfect." data-es="Claude creará un artefacto con tu HTML, CSS y JavaScript completo. Puedes refinarlo a través de la conversación hasta que sea perfecto.">
+                    Claude will create an artifact with your complete HTML, CSS, and JavaScript. You can refine it through the conversation until it's perfect.
+                </p>
             </div>
 
             <div class="step-card">
-                <div class="step-number">2</div>
-                <h3>Download Your Code</h3>
+                <div class="d-flex align-items-center mb-2">
+                    <div class="step-number">2</div>
+                    <h3 data-en="Download Your Code" data-es="Descarga Tu Código">Download Your Code</h3>
+                </div>
                 <ul class="checklist">
-                    <li><span class="checkbox" onclick="toggleCheck(this)"></span>Copy all the code from Claude's artifact and save it as <strong>index.html</strong> on your computer.</li>
+                    <li>
+                        <span class="checkbox" onclick="toggleCheck(this)"></span>
+                        <span data-en='Copy all the code from Claude\'s artifact and save it as <strong>index.html</strong> on your computer.' data-es='Copia todo el código del artefacto de Claude y guárdalo como <strong>index.html</strong> en tu computadora.'>
+                            Copy all the code from Claude's artifact and save it as <strong>index.html</strong> on your computer.
+                        </span>
+                    </li>
                 </ul>
             </div>
 
             <div class="step-card">
-                <div class="step-number">3</div>
-                <h3>Set Up GitHub</h3>
+                <div class="d-flex align-items-center mb-2">
+                    <div class="step-number">3</div>
+                    <h3 data-en="Set Up GitHub" data-es="Configura GitHub">Set Up GitHub</h3>
+                </div>
                 <ul class="checklist">
-                    <li><span class="checkbox" onclick="toggleCheck(this)"></span>Go to <strong>github.com</strong> and create a free account</li>
-                    <li><span class="checkbox" onclick="toggleCheck(this)"></span>Click the "+" icon → "New repository"</li>
-                    <li><span class="checkbox" onclick="toggleCheck(this)"></span>Name it <strong>yourusername.github.io</strong> (use your actual username)</li>
-                    <li><span class="checkbox" onclick="toggleCheck(this)"></span>Make it Public and check "Add a README file"</li>
-                    <li><span class="checkbox" onclick="toggleCheck(this)"></span>Click "Create repository"</li>
+                    <li><span class="checkbox" onclick="toggleCheck(this)"></span><span data-en="Go to github.com and create a free account" data-es="Ve a github.com y crea una cuenta gratuita">Go to github.com and create a free account</span></li>
+                    <li><span class="checkbox" onclick="toggleCheck(this)"></span><span data-en='Click the "+" icon → "New repository"' data-es='Haz clic en el icono "+" → "New repository"'>Click the "+" icon → "New repository"</span></li>
+                    <li><span class="checkbox" onclick="toggleCheck(this)"></span><span data-en='Name it <strong>yourusername.github.io</strong> (use your actual username)' data-es='Nómbralo <strong>tuusuario.github.io</strong> (usa tu nombre de usuario real)'>Name it <strong>yourusername.github.io</strong> (use your actual username)</span></li>
+                    <li><span class="checkbox" onclick="toggleCheck(this)"></span><span data-en='Make it Public and check "Add a README file"' data-es='Hazlo Público y marca "Add a README file"'>Make it Public and check "Add a README file"</span></li>
+                    <li><span class="checkbox" onclick="toggleCheck(this)"></span><span data-en='Click "Create repository"' data-es='Haz clic en "Create repository"'>Click "Create repository"</span></li>
                 </ul>
             </div>
 
             <div class="step-card">
-                <div class="step-number">4</div>
-                <h3>Upload Your Website</h3>
+                <div class="d-flex align-items-center mb-2">
+                    <div class="step-number">4</div>
+                    <h3 data-en="Upload Your Website" data-es="Sube Tu Sitio Web">Upload Your Website</h3>
+                </div>
                 <ul class="checklist">
-                    <li><span class="checkbox" onclick="toggleCheck(this)"></span>In your repository, click "Add file" → "Upload files"</li>
-                    <li><span class="checkbox" onclick="toggleCheck(this)"></span>Drag and drop your <strong>index.html</strong> file</li>
-                    <li><span class="checkbox" onclick="toggleCheck(this)"></span>Click "Commit changes"</li>
-                    <li><span class="checkbox" onclick="toggleCheck(this)"></span>Your site will be live at <strong>https://yourusername.github.io</strong> in minutes!</li>
+                    <li><span class="checkbox" onclick="toggleCheck(this)"></span><span data-en='In your repository, click "Add file" → "Upload files"' data-es='En tu repositorio, haz clic en "Add file" → "Upload files"'>In your repository, click "Add file" → "Upload files"</span></li>
+                    <li><span class="checkbox" onclick="toggleCheck(this)"></span><span data-en='Drag and drop your <strong>index.html</strong> file' data-es='Arrastra y suelta tu archivo <strong>index.html</strong>'>Drag and drop your <strong>index.html</strong> file</span></li>
+                    <li><span class="checkbox" onclick="toggleCheck(this)"></span><span data-en='Click "Commit changes"' data-es='Haz clic en "Commit changes"'>Click "Commit changes"</span></li>
+                    <li><span class="checkbox" onclick="toggleCheck(this)"></span><span data-en='Your site will be live at <strong>https://yourusername.github.io</strong> in minutes!' data-es='¡Tu sitio estará en línea en <strong>https://tuusuario.github.io</strong> en minutos!'>Your site will be live at <strong>https://yourusername.github.io</strong> in minutes!</span></li>
                 </ul>
             </div>
 
             <div class="step-card">
-                <div class="step-number">5</div>
-                <h3>Update Anytime</h3>
-                <p>To make changes:</p>
+                <div class="d-flex align-items-center mb-2">
+                    <div class="step-number">5</div>
+                    <h3 data-en="Update Anytime" data-es="Actualiza en Cualquier Momento">Update Anytime</h3>
+                </div>
+                <p data-en="To make changes:" data-es="Para hacer cambios:">To make changes:</p>
                 <ol class="checklist">
-                    <li><span class="checkbox" onclick="toggleCheck(this)"></span>Ask Claude to modify your webpage</li>
-                    <li><span class="checkbox" onclick="toggleCheck(this)"></span>Copy the updated code</li>
-                    <li><span class="checkbox" onclick="toggleCheck(this)"></span>Go to your repository, click on index.html</li>
-                    <li><span class="checkbox" onclick="toggleCheck(this)"></span>Click the pencil icon (Edit)</li>
-                    <li><span class="checkbox" onclick="toggleCheck(this)"></span>Replace content and click "Commit changes"</li>
+                    <li><span class="checkbox" onclick="toggleCheck(this)"></span><span data-en="Ask Claude to modify your webpage" data-es="Pide a Claude que modifique tu página web">Ask Claude to modify your webpage</span></li>
+                    <li><span class="checkbox" onclick="toggleCheck(this)"></span><span data-en="Copy the updated code" data-es="Copia el código actualizado">Copy the updated code</span></li>
+                    <li><span class="checkbox" onclick="toggleCheck(this)"></span><span data-en="Go to your repository, click on index.html" data-es="Ve a tu repositorio, haz clic en index.html">Go to your repository, click on index.html</span></li>
+                    <li><span class="checkbox" onclick="toggleCheck(this)"></span><span data-en="Click the pencil icon (Edit)" data-es="Haz clic en el icono del lápiz (Editar)">Click the pencil icon (Edit)</span></li>
+                    <li><span class="checkbox" onclick="toggleCheck(this)"></span><span data-en='Replace the content and click "Commit changes"' data-es='Reemplaza el contenido y haz clic en "Commit changes"'>Replace the content and click "Commit changes"</span></li>
                 </ol>
-                <p>Changes appear live within seconds!</p>
+                <p data-en="Changes appear live within seconds!" data-es="¡Los cambios aparecen en línea en segundos!">Changes appear live within seconds!</p>
             </div>
+
         </div>
     </section>
 
+    <!-- Custom domain part -->
     <section id="domain" class="domain-section">
         <div class="container">
-            <h2 class="section-title text-white">Part 2: Add a Custom Domain</h2>
+            <h2 class="section-title text-white" data-en="Part 2: Add a Custom Domain" data-es="Parte 2: Añade un Dominio Propio">Part 2: Add a Custom Domain</h2>
+
             <div class="row">
                 <div class="col-lg-8 mx-auto">
-                    <p class="lead text-center mb-5">Want to use your own domain like <strong>ianmoss.com</strong>? Here's how:</p>
-                    
+                    <p class="lead text-center mb-4 text-white" data-en="Want to use your own domain like ianmoss.com? Here's how:" data-es="¿Quieres usar tu propio dominio como ianmoss.com? Así es como:">Want to use your own domain like ianmoss.com? Here's how:</p>
+
                     <div class="step-card text-dark">
-                        <h4>Step 1: Configure GitHub</h4>
+                        <h4 data-en="Step 1: Configure GitHub" data-es="Paso 1: Configura GitHub">Step 1: Configure GitHub</h4>
                         <ul class="checklist">
-                            <li><span class="checkbox" onclick="toggleCheck(this)"></span>Go to your repository Settings → Pages</li>
-                            <li><span class="checkbox" onclick="toggleCheck(this)"></span>Under "Custom domain," enter your domain (e.g., ianmoss.com)</li>
-                            <li><span class="checkbox" onclick="toggleCheck(this)"></span>Click Save and enable "Enforce HTTPS"</li>
+                            <li><span class="checkbox" onclick="toggleCheck(this)"></span><span data-en="Go to your repository Settings → Pages" data-es="Ve a la configuración de tu repositorio → Pages">Go to your repository Settings → Pages</span></li>
+                            <li><span class="checkbox" onclick="toggleCheck(this)"></span><span data-en='Under "Custom domain," enter your domain (e.g., ianmoss.com)' data-es='Bajo "Custom domain," ingresa tu dominio (ej., ianmoss.com)'>Under "Custom domain," enter your domain (e.g., ianmoss.com)</span></li>
+                            <li><span class="checkbox" onclick="toggleCheck(this)"></span><span data-en='Click Save and enable "Enforce HTTPS"' data-es='Haz clic en Save y activa "Enforce HTTPS"'>Click Save and enable "Enforce HTTPS"</span></li>
                         </ul>
                     </div>
 
                     <div class="step-card text-dark">
-                        <h4>Step 2: Configure Your DNS</h4>
+                        <h4 data-en="Step 2: Configure Your DNS" data-es="Paso 2: Configura Tu DNS">Step 2: Configure Your DNS</h4>
                         <ul class="checklist">
-                            <li><span class="checkbox" onclick="toggleCheck(this)"></span>At your domain registrar, add these A records:</li>
+                            <li><span class="checkbox" onclick="toggleCheck(this)"></span><span data-en="At your domain registrar, add these A records:" data-es="En tu registrador de dominios, añade estos registros A:">At your domain registrar, add these A records:</span></li>
                         </ul>
                         <div class="code-box">
-185.199.108.153
-185.199.109.153
-185.199.110.153
+185.199.108.153<br>
+185.199.109.153<br>
+185.199.110.153<br>
 185.199.111.153
                         </div>
                         <ul class="checklist">
-                            <li><span class="checkbox" onclick="toggleCheck(this)"></span>Add a CNAME record:</li>
+                            <li><span class="checkbox" onclick="toggleCheck(this)"></span><span data-en="Add a CNAME record:" data-es="Añade un registro CNAME:">Add a CNAME record:</span></li>
                         </ul>
                         <div class="code-box">
-www.ianmoss.com → yourusername.github.io
+www.yourdomain.com → yourusername.github.io
                         </div>
                     </div>
 
                     <div class="step-card text-dark">
-                        <h4>Step 3: Wait for DNS Propagation</h4>
+                        <h4 data-en="Step 3: Wait for DNS Propagation" data-es="Paso 3: Espera la Propagación del DNS">Step 3: Wait for DNS Propagation</h4>
                         <ul class="checklist">
-                            <li><span class="checkbox" onclick="toggleCheck(this)"></span>Wait up to 24-48 hours for DNS changes (usually works within a few hours)</li>
-                            <li><span class="checkbox" onclick="toggleCheck(this)"></span>Once propagated, your custom domain will show your GitHub Pages site with free HTTPS!</li>
+                            <li><span class="checkbox" onclick="toggleCheck(this)"></span><span data-en="Wait up to 24-48 hours for DNS changes (usually works within a few hours)" data-es="Espera hasta 24-48 horas para cambios DNS (normalmente funciona en pocas horas)">Wait up to 24-48 hours for DNS changes (usually works within a few hours)</span></li>
+                            <li><span class="checkbox" onclick="toggleCheck(this)"></span><span data-en="Once propagated, your custom domain will show your GitHub Pages site with free HTTPS!" data-es="Una vez propagado, ¡tu dominio personalizado mostrará tu sitio de GitHub Pages con HTTPS gratis!">Once propagated, your custom domain will show your GitHub Pages site with free HTTPS!</span></li>
                         </ul>
                     </div>
+
                 </div>
             </div>
         </div>
     </section>
 
+    <!-- Benefits -->
     <section id="benefits" class="benefits-section">
         <div class="container">
-            <h2 class="section-title">Why This Is Amazing</h2>
+            <h2 class="section-title" data-en="Why This Is Amazing" data-es="Por Qué Esto Es Increíble">Why This Is Amazing</h2>
             <div class="row">
                 <div class="col-md-4 mb-4">
                     <div class="step-card text-center">
-                        <h4>💰 Completely Free</h4>
-                        <p>Free hosting forever with GitHub Pages. Only pay for a domain if you want one.</p>
+                        <h4 data-en="💰 Completely Free" data-es="💰 Completamente Gratis">💰 Completely Free</h4>
+                        <p data-en="Free hosting forever with GitHub Pages. Only pay for a domain if you want one." data-es="Alojamiento gratis para siempre con GitHub Pages. Solo paga por un dominio si quieres uno.">Free hosting forever with GitHub Pages. Only pay for a domain if you want one.</p>
                     </div>
                 </div>
+
                 <div class="col-md-4 mb-4">
                     <div class="step-card text-center">
-                        <h4>🔒 Free SSL Certificate</h4>
-                        <p>Automatic HTTPS security for your site. Professional and secure.</p>
+                        <h4 data-en="🔒 Free SSL Certificate" data-es="🔒 Certificado SSL Gratis">🔒 Free SSL Certificate</h4>
+                        <p data-en="Automatic HTTPS security for your site. Professional and secure." data-es="Seguridad HTTPS automática para tu sitio. Profesional y seguro.">Automatic HTTPS security for your site. Professional and secure.</p>
                     </div>
                 </div>
+
                 <div class="col-md-4 mb-4">
                     <div class="step-card text-center">
-                        <h4>⚡ Fast & Reliable</h4>
-                        <p>Powered by GitHub's infrastructure. Your site loads quickly worldwide.</p>
+                        <h4 data-en="⚡ Fast & Reliable" data-es="⚡ Rápido y Confiable">⚡ Fast & Reliable</h4>
+                        <p data-en="Powered by GitHub's infrastructure. Your site loads quickly worldwide." data-es="Impulsado por la infraestructura de GitHub. Tu sitio carga rápidamente en todo el mundo.">Powered by GitHub's infrastructure. Your site loads quickly worldwide.</p>
                     </div>
                 </div>
+
                 <div class="col-md-4 mb-4">
                     <div class="step-card text-center">
-                        <h4>🎨 Easy Updates</h4>
-                        <p>Just talk to Claude, copy the code, and push the changes. Takes seconds.</p>
+                        <h4 data-en="🎨 Easy Updates" data-es="🎨 Actualizaciones Fáciles">🎨 Easy Updates</h4>
+                        <p data-en="Just talk to Claude, copy the code, and push the changes. Takes seconds." data-es="Solo habla con Claude, copia el código y sube los cambios. Toma segundos.">Just talk to Claude, copy the code, and push the changes. Takes seconds.</p>
                     </div>
                 </div>
+
                 <div class="col-md-4 mb-4">
                     <div class="step-card text-center">
-                        <h4>📱 Mobile Responsive</h4>
-                        <p>Claude creates sites that look great on all devices automatically.</p>
+                        <h4 data-en="📱 Mobile Responsive" data-es="📱 Responsive Móvil">📱 Mobile Responsive</h4>
+                        <p data-en="Claude creates sites that look great on all devices automatically." data-es="Claude crea sitios que se ven geniales en todos los dispositivos automáticamente.">Claude creates sites that look great on all devices automatically.</p>
                     </div>
                 </div>
+
                 <div class="col-md-4 mb-4">
                     <div class="step-card text-center">
-                        <h4>🛠️ No Maintenance</h4>
-                        <p>GitHub handles all the server maintenance. You just create content.</p>
+                        <h4 data-en="🛠️ No Maintenance" data-es="🛠️ Sin Mantenimiento">🛠️ No Maintenance</h4>
+                        <p data-en="GitHub handles all the server maintenance. You just create content." data-es="GitHub maneja todo el mantenimiento del servidor. Tú solo creas contenido.">GitHub handles all the server maintenance. You just create content.</p>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
+    <!-- Extra short section and CTA (preserving structure) -->
     <section class="py-5 bg-light">
         <div class="container text-center">
-            <h2 class="section-title">Ready to Get Started?</h2>
-            <p class="lead mb-4">You have everything you need right now. Start building your free website today!</p>
-            <a href="#steps" class="btn-custom">View the Guide Again</a>
+            <h3 data-en="Want me to help create a template for you?" data-es="¿Quieres que te ayude a crear una plantilla?">Want me to help create a template for you?</h3>
+            <p data-en="I can help craft the initial prompt for Claude and refine the HTML if you paste it back here." data-es="Puedo ayudar a crear el prompt inicial para Claude y refinar el HTML si lo pegas aquí.">I can help craft the initial prompt for Claude and refine the HTML if you paste it back here.</p>
+            <a class="btn-custom" href="#steps" data-en="Let's Start" data-es="Empecemos">Let's Start</a>
         </div>
     </section>
 
+    <!-- Footer -->
     <footer>
         <div class="container">
-            <p>&copy; 2025 Free Website Guide. Built with GitHub Pages, Claude & Bootstrap.</p>
-            <p class="mt-2"><small>This guide was built by Ian Moss. He <a href="https://www.linkedin.com/in/alteris/">consults financed startups</a> at <a href="https://alter.is">alteris</a>, and is also available to run 2 hour startup workshops.</small></p>
+            <p data-en="Made with ❤️ by Ian Moss. Open source on GitHub." data-es="Hecho con ❤️ por Ian Moss. Código abierto en GitHub.">Made with ❤️ by Ian Moss. Open source on GitHub.</p>
+            <p><a href="https://ianmoss.com" target="_blank" rel="noopener" data-en="Visit ianmoss.com" data-es="Visita ianmoss.com">Visit ianmoss.com</a></p>
         </div>
     </footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Scripts -->
     <script>
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
+        // Toggle checkboxes
+        function toggleCheck(el){
+            el.classList.toggle('completed');
+        }
+
+        // Language switching
+        function setLanguage(lang) {
+            // Update all elements that have data-en/data-es attributes
+            document.querySelectorAll('[data-en]').forEach(function(node) {
+                // Use innerHTML to allow <strong> etc. to be preserved
+                var attr = 'data-' + lang;
+                if (node.hasAttribute(attr)) {
+                    node.innerHTML = node.getAttribute(attr);
+                } else {
+                    // fallback: if missing, keep existing text
                 }
             });
-        });
-        
-        function toggleCheck(element) {
-            if (element.classList.contains('completed')) {
-                element.classList.remove('completed');
-            } else if (element.classList.contains('in-progress')) {
-                element.classList.remove('in-progress');
-                element.classList.add('completed');
-            } else {
-                element.classList.add('in-progress');
+
+            // Update document title if data-en/data-es exists
+            var titleNode = document.querySelector('title');
+            if (titleNode && titleNode.hasAttribute('data-' + lang)) {
+                titleNode.textContent = titleNode.getAttribute('data-' + lang);
             }
+
+            // Update flag
+            var flag = document.getElementById('flag');
+            if (flag) flag.textContent = (lang === 'es') ? '🇪🇸' : '🇬🇧';
+
+            // Update html lang attribute
+            document.documentElement.lang = (lang === 'es') ? 'es' : 'en';
+
+            // Persist
+            try { localStorage.setItem('site_lang', lang); } catch(e){/* ignore */}
         }
+
+        function toggleLanguage() {
+            var current = (localStorage.getItem('site_lang') || 'en');
+            var next = current === 'en' ? 'es' : 'en';
+            setLanguage(next);
+        }
+
+        // Initialize language on DOMContentLoaded
+        document.addEventListener('DOMContentLoaded', function(){
+            var saved = 'en';
+            try { saved = localStorage.getItem('site_lang') || 'en'; } catch(e){ saved = 'en'; }
+            setLanguage(saved);
+
+            // Update nav collapse behaviour for anchor clicks (mobile)
+            document.querySelectorAll('.navbar-nav .nav-link').forEach(function(link){
+                link.addEventListener('click', function(){
+                    var bsCollapse = document.querySelector('.navbar-collapse');
+                    if (bsCollapse && bsCollapse.classList.contains('show')) {
+                        // Use Bootstrap collapse if available
+                        var collapseEl = document.querySelector('#navbarNav');
+                        if (collapseEl) {
+                            // Attempt to collapse - if bootstrap JS loaded it will work
+                            var bs = bootstrap && bootstrap.Collapse ? bootstrap.Collapse.getInstance(collapseEl) : null;
+                            if (bs) bs.hide();
+                            else collapseEl.classList.remove('show');
+                        }
+                    }
+                });
+            });
+        });
     </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
