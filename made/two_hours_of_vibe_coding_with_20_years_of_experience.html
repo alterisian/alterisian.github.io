@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2-Hour Vibe Coding Session | €100</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-color: #6366f1;
+            --secondary-color: #8b5cf6;
+            --dark-bg: #0f172a;
+            --light-bg: #f8fafc;
+            --text-dark: #1e293b;
+            --text-light: #64748b;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--text-dark);
+            overflow-x: hidden;
+        }
+        
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+        }
+        
+        .hero-section {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            padding: 100px 0 80px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            top: -250px;
+            right: -150px;
+        }
+        
+        .hero-section::after {
+            content: '';
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 50%;
+            bottom: -100px;
+            left: -100px;
+        }
+        
+        .hero-section .container {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+        }
+        
+        .hero-subtitle {
+            font-size: 1.5rem;
+            font-weight: 600;
+            opacity: 0.95;
+            margin-bottom: 2rem;
+        }
+        
+        .price-tag {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 12px 32px;
+            border-radius: 50px;
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            backdrop-filter: blur(10px);
+        }
+        
+        .cta-button {
+            background: white;
+            color: var(--primary-color);
+            padding: 16px 48px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            border: none;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+            color: var(--primary-color);
+        }
+        
+        .timeline-section {
+            padding: 80px 0;
+            background: var(--light-bg);
+        }
+        
+        .timeline-item {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 24px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            border-left: 5px solid var(--primary-color);
+        }
+        
+        .timeline-item:hover {
+            transform: translateX(8px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        }
+        
+        .timeline-time {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 12px;
+        }
+        
+        .timeline-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: var(--text-dark);
+        }
+        
+        .timeline-output {
+            background: #f1f5f9;
+            padding: 12px 20px;
+            border-radius: 8px;
+            margin-top: 12px;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+        
+        .tool-section {
+            padding: 80px 0;
+            background: var(--dark-bg);
+            color: white;
+        }
+        
+        .tool-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 40px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .outcomes-section {
+            padding: 80px 0;
+        }
+        
+        .outcome-card {
+            text-align: center;
+            padding: 40px 20px;
+            border-radius: 16px;
+            transition: all 0.3s ease;
+            background: white;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            height: 100%;
+        }
+        
+        .outcome-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+        }
+        
+        .outcome-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+        
+        .disclaimer-section {
+            padding: 80px 0;
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+        }
+        
+        .disclaimer-card {
+            background: white;
+            border-radius: 16px;
+            padding: 50px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        }
+        
+        .footer-cta {
+            padding: 80px 0;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            text-align: center;
+        }
+        
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 3rem;
+            text-align: center;
+        }
+        
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1.2rem;
+            }
+            
+            .timeline-item:hover {
+                transform: none;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-8 mx-auto text-center">
+                    <h1 class="hero-title">2-Hour Vibe Coding Session</h1>
+                    <p class="hero-subtitle">Problem to Prototype</p>
+                    <div class="price-tag">€100</div>
+                    <p class="lead mb-4">Turn your idea into a live, working prototype in just 120 minutes</p>
+                    <button class="cta-button">Book Your Session</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Timeline Section -->
+    <section class="timeline-section">
+        <div class="container">
+            <h2 class="section-title">Session Timeline</h2>
+            
+            <div class="row">
+                <div class="col-lg-10 mx-auto">
+                    
+                    <div class="timeline-item">
+                        <span class="timeline-time">Minutes 0-15</span>
+                        <h3 class="timeline-title">Introductions & Problem Discovery</h3>
+                        <ul class="mb-0">
+                            <li>Quick intros and energy check</li>
+                            <li>You pitch your problem/idea (what frustrates you? what needs to exist?)</li>
+                            <li>I ask clarifying questions to understand the core pain point</li>
+                            <li>We identify who this is for and what success looks like</li>
+                        </ul>
+                        <div class="timeline-output">✓ Output: A clear problem statement we both believe in</div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <span class="timeline-time">Minutes 15-30</span>
+                        <h3 class="timeline-title">Solution Shaping & PRD Drafting</h3>
+                        <ul class="mb-0">
+                            <li>Brainstorm the simplest solution that could work</li>
+                            <li>Define 3-5 core features (we're ruthless about scope)</li>
+                            <li>Draft a mini Product Requirements Document using Claude or ChatGPT</li>
+                            <li>Sketch the user flow: what happens when someone opens this?</li>
+                        </ul>
+                        <div class="timeline-output">✓ Output: A tight PRD that guides our build</div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <span class="timeline-time">Minutes 30-45</span>
+                        <h3 class="timeline-title">PRD Refinement & Technical Planning</h3>
+                        <ul class="mb-0">
+                            <li>Iterate on the PRD based on feasibility and impact</li>
+                            <li>Remove nice-to-haves, double down on must-haves</li>
+                            <li>Decide on key interactions and data structure</li>
+                            <li>Set up our build environment (Lovable.dev + GitHub repo)</li>
+                        </ul>
+                        <div class="timeline-output">✓ Output: Final PRD and a GitHub repo ready to receive code</div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <span class="timeline-time">Minutes 45-60</span>
+                        <h3 class="timeline-title">Build Sprint 1 - Foundation</h3>
+                        <ul class="mb-0">
+                            <li>Spin up the project in Lovable (React + deployment pipeline)</li>
+                            <li>Build the landing/main view</li>
+                            <li>Implement basic layout and navigation</li>
+                            <li>Get something visible on screen</li>
+                        </ul>
+                        <div class="timeline-output">✓ Output: A deployed URL with your app's skeleton</div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <span class="timeline-time">Minutes 60-75</span>
+                        <h3 class="timeline-title">Build Sprint 2 - Core Feature</h3>
+                        <ul class="mb-0">
+                            <li>Implement the #1 most important feature</li>
+                            <li>Add interactivity and basic state management</li>
+                            <li>Quick visual polish (it should feel real, not wireframe-y)</li>
+                        </ul>
+                        <div class="timeline-output">✓ Output: The main feature working end-to-end</div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <span class="timeline-time">Minutes 75-90</span>
+                        <h3 class="timeline-title">Build Sprint 3 - Essential Features</h3>
+                        <ul class="mb-0">
+                            <li>Add 1-2 supporting features from the PRD</li>
+                            <li>Implement any critical data persistence (localStorage or simple backend)</li>
+                            <li>Handle edge cases and basic error states</li>
+                        </ul>
+                        <div class="timeline-output">✓ Output: A prototype that feels complete enough to demo</div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <span class="timeline-time">Minutes 90-105</span>
+                        <h3 class="timeline-title">Polish & Deploy</h3>
+                        <ul class="mb-0">
+                            <li>Visual refinement (colors, spacing, responsive design)</li>
+                            <li>Add helpful microcopy and instructions</li>
+                            <li>Test the critical user path together</li>
+                            <li>Ensure deployment is live and stable</li>
+                        </ul>
+                        <div class="timeline-output">✓ Output: A polished, publicly accessible prototype</div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <span class="timeline-time">Minutes 105-120</span>
+                        <h3 class="timeline-title">Demo, Debrief & Next Steps</h3>
+                        <ul class="mb-0">
+                            <li>You test the live prototype, I watch and take notes</li>
+                            <li>We discuss what worked and what surprised us</li>
+                            <li>I outline what you'd need to build next for a production version</li>
+                            <li>We talk through feedback collection and iteration strategies</li>
+                        </ul>
+                        <div class="timeline-output">✓ Output: A working prototype + a roadmap for what comes next</div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tool Section -->
+    <section class="tool-section">
+        <div class="container">
+            <h2 class="section-title text-white">Why Lovable.dev?</h2>
+            <div class="row">
+                <div class="col-lg-8 mx-auto">
+                    <div class="tool-card">
+                        <p class="lead mb-4">For this session, we'll use <strong>Lovable.dev</strong> as our primary building tool because:</p>
+                        <div class="row mt-4">
+                            <div class="col-md-6 mb-3">
+                                <h5>🔗 GitHub Integration</h5>
+                                <p>Every change is committed, so you own the code</p>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <h5>⚡ Instant Deployment</h5>
+                                <p>See your app live on the web in seconds</p>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <h5>🤖 AI-Assisted Development</h5>
+                                <p>Speeds up the repetitive stuff</p>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <h5>⚛️ Real React Code</h5>
+                                <p>Not a no-code toy—this is production-ready architecture</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Outcomes Section -->
+    <section class="outcomes-section">
+        <div class="container">
+            <h2 class="section-title">What You'll Walk Away With</h2>
+            <div class="row g-4">
+                <div class="col-md-6 col-lg-3">
+                    <div class="outcome-card">
+                        <div class="outcome-icon">🚀</div>
+                        <h4>Live Prototype</h4>
+                        <p>A working prototype accessible via URL</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <div class="outcome-card">
+                        <div class="outcome-icon">💻</div>
+                        <h4>GitHub Repository</h4>
+                        <p>Complete code ownership in your own repo</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <div class="outcome-card">
+                        <div class="outcome-icon">📋</div>
+                        <h4>Clear PRD</h4>
+                        <p>Documentation of your product vision</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <div class="outcome-card">
+                        <div class="outcome-icon">⚡</div>
+                        <h4>Momentum</h4>
+                        <p>The hardest part (starting) is done</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Disclaimer Section -->
+    <section class="disclaimer-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 mx-auto">
+                    <div class="disclaimer-card">
+                        <h2 class="mb-4">Important: This Is a Prototype</h2>
+                        <p class="lead mb-4">Let's be clear: <strong>this is not a finished product.</strong> In 2 hours, we're proving the idea works and creating something you can show to users, investors, or teammates.</p>
+                        
+                        <h4 class="mt-4 mb-3">What happens next is up to you:</h4>
+                        <ul class="mb-4">
+                            <li>Collect feedback from real users</li>
+                            <li>Iterate on features based on what you learn</li>
+                            <li>Add authentication, databases, payments, or integrations</li>
+                            <li>Refine the design and UX</li>
+                            <li>Scale the infrastructure</li>
+                        </ul>
+                        
+                        <p class="lead">Think of this session as <strong>lighting the fire</strong>. You'll leave with something real, something you can build on—but the journey from prototype to product is where the real work (and magic) happens.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer CTA -->
+    <section class="footer-cta">
+        <div class="container">
+            <h2 class="display-4 mb-4">Ready to turn your idea into reality in 120 minutes?</h2>
+            <!-- <a href="mailto:contact@ianmoss.com" class="cta-button" role="button">Book Your Vibe Coding Session</a> -->
+            <a href="https://wa.me/447427242195" class="cta-button" role="button" target="_blank" rel="noopener noreferrer">WhatsApp me</a>
+        </div>
+    </section>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Smooth scroll animation for buttons
+        document.querySelectorAll('.cta-button').forEach(button => {
+            button.addEventListener('click', function() {
+                // Replace with your booking link or form
+                alert('Contact us to book your session!\n\nEmail: your@email.com\nOr add your booking system here.');
+            });
+        });
+
+        // Add scroll animation to timeline items
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.timeline-item, .outcome-card').forEach(item => {
+            item.style.opacity = '0';
+            item.style.transform = 'translateY(20px)';
+            item.style.transition = 'all 0.6s ease';
+            observer.observe(item);
+        });
+    </script>
+
+</body>
+</html>
