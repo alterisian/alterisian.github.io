@@ -1,0 +1,38 @@
+/* Basic common styles for /made pages */
+:root {
+  --bg: #ffffff;
+  --text: #222;
+  --muted: #666;
+  --accent: #0a66c2;
+  --max-width: 900px;
+}
+
+html,body{
+  height:100%;
+}
+body{
+  margin:0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+  background:var(--bg);
+  color:var(--text);
+  line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+}
+
+.container{
+  max-width:var(--max-width);
+  margin:32px auto;
+  padding:24px;
+}
+
+h1{ font-size:1.6rem; margin:0 0 0.5rem 0; }
+h2{ font-size:1.1rem; margin:1.25rem 0 0.5rem 0; color:var(--muted); }
+
+ul{ padding-left:1.2rem; }
+li{ margin:0.35rem 0; }
+
+a{ color:var(--accent); text-decoration:none; }
+a:hover{ text-decoration:underline; }
+
+/* small helpers */
+.note{ color:var(--muted); font-size:0.95rem; }
