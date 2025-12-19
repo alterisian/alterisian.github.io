@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Awesome Product - Build. Measure. Learn.</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #ffffff;
+            color: #1a1a1a;
+            overflow-x: hidden;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+        }
+
+        .gradient-orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(100px);
+            opacity: 0.12;
+            z-index: -1;
+            animation: float 20s infinite ease-in-out;
+        }
+
+        .orb-1 {
+            top: -10%;
+            right: -5%;
+            width: 600px;
+            height: 600px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+        }
+
+        .orb-2 {
+            bottom: -10%;
+            left: -5%;
+            width: 500px;
+            height: 500px;
+            background: linear-gradient(135deg, #f093fb, #f5576c);
+            animation-delay: -10s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            25% { transform: translate(30px, -30px) scale(1.1); }
+            50% { transform: translate(-20px, 20px) scale(0.9); }
+            75% { transform: translate(20px, 30px) scale(1.05); }
+        }
+
+        .container {
+            max-width: 1000px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .logo {
+            font-size: clamp(3rem, 8vw, 6rem);
+            font-weight: 800;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 2rem;
+            letter-spacing: -0.02em;
+        }
+
+        h1 {
+            font-size: clamp(2rem, 5vw, 4rem);
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
+            color: #1a1a1a;
+            font-weight: 800;
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            font-size: clamp(1.1rem, 2vw, 1.4rem);
+            color: #666;
+            max-width: 800px;
+            margin: 0 auto 4rem;
+            line-height: 1.6;
+        }
+
+        .entry-points {
+            display: flex;
+            justify-content: center;
+            align-items: stretch;
+            gap: 2rem;
+            margin-top: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .entry-card {
+            background: white;
+            border: 3px solid rgba(102, 126, 234, 0.2);
+            border-radius: 24px;
+            padding: 3rem 2.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+            text-decoration: none;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            flex: 1;
+            min-width: 250px;
+            max-width: 320px;
+        }
+
+        .entry-card:hover {
+            transform: translateY(-12px) scale(1.05);
+            border-color: #667eea;
+            box-shadow: 0 25px 60px rgba(102, 126, 234, 0.3);
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.05), rgba(118, 75, 162, 0.05));
+        }
+
+        .entry-icon {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+            display: block;
+        }
+
+        .entry-card h2 {
+            font-size: 1.75rem;
+            color: #1a1a1a;
+            margin-bottom: 0.75rem;
+            font-weight: 700;
+        }
+
+        .entry-card p {
+            color: #666;
+            font-size: 1.1rem;
+            line-height: 1.5;
+        }
+
+        @media (max-width: 768px) {
+            .entry-points {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .entry-card {
+                max-width: 100%;
+                width: 100%;
+            }
+            
+            body {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="gradient-orb orb-1"></div>
+    <div class="gradient-orb orb-2"></div>
+
+    <div class="container">
+        <div class="logo">Awesome Product</div>
+        
+        <h1>
+            Build. Measure. Learn.<br>
+            <span class="gradient-text">At Lightning Speed.</span>
+        </h1>
+        
+        <p class="subtitle">
+            The only product builder that doesn't just create apps—it launches businesses. 
+            From idea to revenue-generating product with users, feedback, and growth campaigns. All automated.
+        </p>
+
+        <div class="entry-points">
+            <a href="/marketing" class="entry-card">
+                <span class="entry-icon">📊</span>
+                <h2>Get Users</h2>
+                <p>Market research & automated campaigns</p>
+            </a>
+            
+            <a href="/feedback" class="entry-card">
+                <span class="entry-icon">💬</span>
+                <h2>Capture Feedback</h2>
+                <p>Collect & analyze user insights</p>
+            </a>
+            
+            <a href="/build" class="entry-card">
+                <span class="entry-icon">⚡</span>
+                <h2>Build Application</h2>
+                <p>Production-ready Rails apps with tests</p>
+            </a>
+        </div>
+    </div>
+</body>
+</html>

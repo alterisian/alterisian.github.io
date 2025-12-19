@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Capture Feedback - Awesome Product</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #ffffff;
+            color: #1a1a1a;
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .gradient-orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(100px);
+            opacity: 0.12;
+            z-index: -1;
+            animation: float 20s infinite ease-in-out;
+        }
+
+        .orb-1 {
+            top: -10%;
+            right: -5%;
+            width: 600px;
+            height: 600px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+        }
+
+        .orb-2 {
+            bottom: -10%;
+            left: -5%;
+            width: 500px;
+            height: 500px;
+            background: linear-gradient(135deg, #f093fb, #f5576c);
+            animation-delay: -10s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            25% { transform: translate(30px, -30px) scale(1.1); }
+            50% { transform: translate(-20px, 20px) scale(0.9); }
+            75% { transform: translate(20px, 30px) scale(1.05); }
+        }
+
+        nav {
+            max-width: 1200px;
+            margin: 0 auto 3rem;
+            padding: 1rem 0;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+        }
+
+        .back-link:hover {
+            gap: 0.75rem;
+            color: #764ba2;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .icon {
+            font-size: 5rem;
+            margin-bottom: 1rem;
+        }
+
+        h1 {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 800;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .description {
+            font-size: 1.25rem;
+            color: #666;
+            line-height: 1.6;
+            max-width: 600px;
+            margin: 0 auto 3rem;
+        }
+
+        .form-card {
+            background: white;
+            border: 3px solid rgba(102, 126, 234, 0.2);
+            border-radius: 24px;
+            padding: 3rem;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+        }
+
+        .form-group {
+            margin-bottom: 2rem;
+        }
+
+        label {
+            display: block;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 0.75rem;
+        }
+
+        .label-hint {
+            font-weight: 400;
+            color: #666;
+            font-size: 0.95rem;
+            margin-top: 0.25rem;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 200px;
+            padding: 1.25rem;
+            font-size: 1.05rem;
+            font-family: inherit;
+            border: 2px solid rgba(102, 126, 234, 0.2);
+            border-radius: 16px;
+            resize: vertical;
+            transition: all 0.3s;
+            background: white;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+        }
+
+        textarea::placeholder {
+            color: #999;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 1.5rem;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: white;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            border-radius: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.35);
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(102, 126, 234, 0.45);
+        }
+
+        .submit-btn:active {
+            transform: translateY(-1px);
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 3rem;
+        }
+
+        .feature {
+            text-align: center;
+            padding: 1.5rem;
+        }
+
+        .feature-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .feature-title {
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 0.25rem;
+        }
+
+        .feature-text {
+            color: #666;
+            font-size: 0.95rem;
+        }
+
+        @media (max-width: 768px) {
+            .form-card {
+                padding: 2rem;
+            }
+
+            body {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="gradient-orb orb-1"></div>
+    <div class="gradient-orb orb-2"></div>
+
+    <nav>
+        <a href="/" class="back-link">← Back to Home</a>
+    </nav>
+
+    <div class="container">
+        <div class="header">
+            <div class="icon">💬</div>
+            <h1>Capture Feedback</h1>
+            <p class="description">
+                Intelligent feedback collection and analysis system. 
+                Set up automated feedback loops to understand what your users really need.
+            </p>
+        </div>
+
+        <div class="form-card">
+            <form action="https://base44.app/api/feedback" method="POST">
+                <div class="form-group">
+                    <label for="prompt">
+                        What do you want to learn from your users?
+                        <div class="label-hint">Describe your product and what insights you need to gather</div>
+                    </label>
+                    <textarea 
+                        id="prompt" 
+                        name="prompt" 
+                        placeholder="Example: I have a fitness app for seniors. I want to understand what features they use most, what confuses them, and what would make them recommend it to friends..."
+                        required
+                    ></textarea>
+                </div>
+
+                <button type="submit" class="submit-btn">
+                    Generate Feedback System →
+                </button>
+            </form>
+        </div>
+
+        <div class="features">
+            <div class="feature">
+                <div class="feature-icon">📝</div>
+                <div class="feature-title">Smart Surveys</div>
+                <div class="feature-text">Context-aware questions at the right time</div>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">🤖</div>
+                <div class="feature-title">AI Analysis</div>
+                <div class="feature-text">Pattern detection & sentiment analysis</div>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">📈</div>
+                <div class="feature-title">Actionable Insights</div>
+                <div class="feature-text">Prioritized recommendations for improvement</div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
