@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Community Roadmap</title>
+<style>
+  body {
+    margin: 0;
+    font-family: 'Arial', sans-serif;
+    background: white;
+    color: black;
+    line-height: 1.5;
+    padding: 20px;
+  }
+  .roadmap {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 40px;
+    position: relative;
+  }
+  .roadmap::before {
+    content: '';
+    position: absolute;
+    top: 15px;
+    left: 50px;
+    right: 50px;
+    height: 2px;
+    background: black;
+    z-index: 0;
+  }
+  .circle-container {
+    text-align: center;
+    position: relative;
+    z-index: 1;
+    cursor: pointer;
+  }
+  .circle {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: black;
+    margin: 0 auto 5px auto;
+    transition: transform 0.2s;
+  }
+  .circle-container.active .circle {
+    transform: scale(1.4);
+    background: #444;
+  }
+  .version-label {
+    font-weight: bold;
+  }
+  .version-summary {
+    font-size: 0.85em;
+  }
+  .details {
+    padding-top: 20px;
+    border-top: 1px solid black;
+  }
+</style>
+</head>
+<body>
+
+<h1>Community Roadmap</h1>
+
+<div class="roadmap">
+  <div class="circle-container" data-index="0">
+    <div class="circle"></div>
+    <div class="version-label">v0</div>
+    <div class="version-summary">Initial invite-only group</div>
+  </div>
+  <div class="circle-container" data-index="1">
+    <div class="circle"></div>
+    <div class="version-label">v1</div>
+    <div class="version-summary">Introduce points & perks</div>
+  </div>
+  <div class="circle-container" data-index="2">
+    <div class="circle"></div>
+    <div class="version-label">v2</div>
+    <div class="version-summary">Organisation-backed referrals</div>
+  </div>
+  <div class="circle-container" data-index="3">
+    <div class="circle"></div>
+    <div class="version-label">v3</div>
+    <div class="version-summary">Multi-city nodes</div>
+  </div>
+</div>
+
+<div id="version-details" class="details"></div>
+
+<script>
+  const versionData = [
+    `<h2>v0 – Initial invite-only group</h2>
+     <ul>
+       <li>Single city, WhatsApp primary channel</li>
+       <li>Members share jobs, intros, and help</li>
+       <li>Monthly meetups</li>
+       <li>Scoreboard tracks contribution</li>
+     </ul>`,
+    `<h2>v1 – Introduce points & perks</h2>
+     <ul>
+       <li>Lightweight points for contributions</li>
+       <li>Small local perks from friendly businesses</li>
+       <li>Status recognition on scoreboard</li>
+     </ul>`,
+    `<h2>v2 – Organisation-backed referrals</h2>
+     <ul>
+       <li>Employees can mark “I can refer”</li>
+       <li>Company-supported contributions</li>
+       <li>Enhanced trust signals</li>
+     </ul>`,
+    `<h2>v3 – Multi-city nodes</h2>
+     <ul>
+       <li>Same framework replicated in multiple cities</li>
+       <li>City nodes independent but follow common rules</li>
+       <li>Local perks, meetups, and trust system per city</li>
+     </ul>`
+  ];
+
+  const circles = document.querySelectorAll('.circle-container');
+  const details = document.getElementById('version-details');
+
+  function showDetails(index) {
+    // Remove active class from all
+    circles.forEach(c => c.classList.remove('active'));
+    // Add active to clicked
+    circles[index].classList.add('active');
+    // Update details
+    details.innerHTML = versionData[index];
+  }
+
+  // Add click handlers
+  circles.forEach(c => {
+    c.addEventListener('click', () => showDetails(c.dataset.index));
+  });
+
+  // Display first version by default
+  showDetails(0);
+</script>
+
+</body>
+</html>
