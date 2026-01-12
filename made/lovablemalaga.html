@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Lovable Málaga</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta http-equiv="refresh" content="3;url=https://chat.whatsapp.com/CN4vJaMMMyAK1vCuXSzBSY">
+  <style>
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      text-align: center;
+      padding: 3rem 1rem;
+    }
+  </style>
+</head>
+<body>
+  <h1>Lovable Málaga</h1>
+  <p>Redirecting you…</p>
+
+  <script>
+    // 🔧 CONFIG
+    const whatsappUrl = "https://chat.whatsapp.com/CN4vJaMMMyAK1vCuXSzBSY";
+    const surveyUrl = "https://chat.whatsapp.com/CN4vJaMMMyAK1vCuXSzBSY"; // ← replace with your survey URL
+
+    // 50 / 50 random redirect
+    const goToSurvey = Math.random() < 0.5;
+
+    // redirect without tracking
+    window.location.replace(goToSurvey ? surveyUrl : whatsappUrl);
+  </script>
+</body>
+</html>
