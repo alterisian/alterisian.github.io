@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>European Rail Break Nodes</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"/>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', sans-serif; }
+    #map { height: 100vh; width: 100%; }
+    .city-icon {
+      border-radius: 50%;
+      width: 20px; height: 20px;
+      border: 3px solid rgba(255,255,255,0.85);
+      box-shadow: 0 0 0 2px rgba(0,0,0,0.25), 0 2px 6px rgba(0,0,0,0.3);
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+    .city-icon:hover { transform: scale(1.35); }
+    .legend {
+      background: white;
+      padding: 12px 16px;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+      font-size: 13px;
+      line-height: 2em;
+      min-width: 160px;
+    }
+    .legend h4 { margin-bottom: 4px; font-size: 13px; color: #444; text-transform: uppercase; letter-spacing: 0.05em; }
+    .legend-row { display: flex; align-items: center; gap: 8px; }
+    .dot {
+      width: 13px; height: 13px;
+      border-radius: 50%;
+      border: 2px solid white;
+      box-shadow: 0 0 0 1px #aaa;
+      flex-shrink: 0;
+    }
+    #back-btn {
+      display: none;
+      position: absolute;
+      top: 12px; left: 50%;
+      transform: translateX(-50%);
+      z-index: 1000;
+      background: #1a1a2e;
+      color: white;
+      border: none;
+      padding: 8px 20px;
+      border-radius: 20px;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    }
+    #back-btn:hover { background: #e94560; }
+    .leaflet-tooltip.city-label {
+      background: transparent;
+      border: none;
+      box-shadow: none;
+      font-weight: 600;
+      font-size: 11px;
+      color: #1a1a2e;
+      white-space: nowrap;
+    }
+    .dest-icon {
+      width: 26px; height: 26px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px;
+      cursor: pointer;
+      filter: drop-shadow(0 2px 3px rgba(0,0,0,0.4));
+      transition: transform 0.2s;
+      line-height: 1;
+    }
+    .dest-icon:hover { transform: scale(1.3); }
+    .leaflet-tooltip.dest-label {
+      background: transparent;
+      border: none;
+      box-shadow: none;
+      font-weight: 700;
+      font-size: 11px;
+      color: #7b2d8b;
+      white-space: nowrap;
+    }
+    .popup-link {
+      display: inline-block;
+      margin-top: 6px;
+      font-size: 12px;
+      color: #4a90d9;
+      text-decoration: none;
+    }
+    .popup-link:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+<div id="map"></div>
+<button id="back-btn">← Back to all cities</button>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script>
+  var map = L.map('map', { zoomControl: true }).setView([50, 10], 5);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '© <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors',
+    maxZoom: 19
+  }).addTo(map);
+
+  var categoryColors = {
+    "Budget":    "#4a90d9",
+    "Mid-range": "#5cb85c",
+    "Upper-mid": "#f0ad4e",
+    "Luxury":    "#d9534f"
+  };
+
+  var priceBands = [
+    { max: 90,  color: "#2ecc71", label: "Under €90"   },
+    { max: 130, color: "#f1c40f", label: "€90 – €130"  },
+    { max: 180, color: "#e67e22", label: "€130 – €180" },
+    { max: 999, color: "#e74c3c", label: "Over €180"   },
+  ];
+
+  function getPriceBand(city) {
+    var minPrice = Math.min.apply(null, city.hotels.map(function(h) { return h.price; }));
+    for (var i = 0; i < priceBands.length; i++) {
+      if (minPrice <= priceBands[i].max) return priceBands[i];
+    }
+    return priceBands[priceBands.length - 1];
+  }
+
+  var cities = [
+    { name: "Frankfurt", station: "Frankfurt Hauptbahnhof", lat: 50.1072, lon: 8.6638,
+      hotels: [
+        { name: "a&o Frankfurt Galluswarte", category: "Budget", price: 70, dist: 500, url: "https://www.aohostels.com/en/frankfurt/frankfurt-galluswarte/", lat: 50.1072, lon: 8.6658 },
+        { name: "Five Elements Hostel Frankfurt", category: "Budget", price: 70, dist: 300, url: "https://www.5elementshostel.de/", lat: 50.109257, lon: 8.666632 },
+        { name: "easyHotel Frankfurt City Center", category: "Budget", price: 70, dist: 400, url: "https://easyhotel.com/", lat: 50.111955, lon: 8.665345 },
+        { name: "MEININGER Hotel Frankfurt", category: "Budget", price: 70, dist: 450, url: "https://www.meininger-hotels.com/", lat: 50.109102, lon: 8.663182 },
+        { name: "Toyoko Inn Frankfurt", category: "Budget", price: 70, dist: 350, url: "https://www.toyoko-inn.com/", lat: 50.109257, lon: 8.660968 },
+        { name: "Hotel Monopol", category: "Mid-range", price: 160, dist: 100, url: "https://www.monopol-frankfurt.de/", lat: 50.1072, lon: 8.6588 },
+        { name: "Leonardo Hotel Frankfurt City Center", category: "Mid-range", price: 160, dist: 200, url: "https://www.leonardo-hotels.com/", lat: 50.106024, lon: 8.662182 },
+        { name: "IntercityHotel Frankfurt", category: "Mid-range", price: 160, dist: 150, url: "https://www.intercityhotel.com/", lat: 50.103871, lon: 8.662718 },
+        { name: "Premier Inn Frankfurt Hauptbahnhof", category: "Mid-range", price: 160, dist: 250, url: "https://www.premierinn.com/", lat: 50.102445, lon: 8.665345 },
+        { name: "Hotel Concorde", category: "Mid-range", price: 160, dist: 200, url: "https://www.concorde-frankfurt.de/", lat: 50.106024, lon: 8.665418 },
+      ]
+    },
+    { name: "Berlin", station: "Berlin Hauptbahnhof", lat: 52.5251, lon: 13.3694,
+      hotels: [
+        { name: "Berlin Central Hostel",  category: "Budget",    price: 80,  lat: 52.5238, lon: 13.3670 },
+        { name: "Berlin Mitte Hotel",     category: "Mid-range", price: 160, lat: 52.5265, lon: 13.3710 },
+        { name: "Radisson Blu Berlin",    category: "Upper-mid", price: 220, lat: 52.5245, lon: 13.3720 },
+      ]
+    },
+    { name: "Munich", station: "München Hauptbahnhof", lat: 48.1402, lon: 11.5600,
+      hotels: [
+        { name: "a&o München Hauptbahnhof", category: "Budget", price: 70, dist: 200, url: "https://www.aohostels.com/", lat: 48.1402, lon: 11.562 },
+        { name: "Euro Youth Hotel Munich", category: "Budget", price: 70, dist: 150, url: "https://www.euro-youth-hotel.de/", lat: 48.142257, lon: 11.562832 },
+        { name: "MEININGER Hotel München City Center", category: "Budget", price: 70, dist: 400, url: "https://www.meininger-hotels.com/", lat: 48.144955, lon: 11.561545 },
+        { name: "easyHotel Munich", category: "Budget", price: 70, dist: 500, url: "https://easyhotel.com/", lat: 48.142102, lon: 11.559382 },
+        { name: "Jaeger's Munich", category: "Budget", price: 70, dist: 250, url: "https://www.jaegershostel.de/", lat: 48.142257, lon: 11.557168 },
+        { name: "IntercityHotel München", category: "Mid-range", price: 160, dist: 100, url: "https://www.intercityhotel.com/", lat: 48.1402, lon: 11.555 },
+        { name: "Leonardo Hotel München City Center", category: "Mid-range", price: 160, dist: 300, url: "https://www.leonardo-hotels.com/", lat: 48.139024, lon: 11.558382 },
+        { name: "Hotel Europäischer Hof", category: "Mid-range", price: 160, dist: 200, url: "https://www.europaeischerhof.com/", lat: 48.136871, lon: 11.558918 },
+        { name: "Marc München", category: "Mid-range", price: 160, dist: 250, url: "https://www.marcmunich.com/", lat: 48.135445, lon: 11.561545 },
+        { name: "Hotel Cocoon Hauptbahnhof", category: "Mid-range", price: 160, dist: 300, url: "https://cocoon-hotels.de/", lat: 48.139024, lon: 11.561618 },
+      ]
+    },
+    { name: "Cologne", station: "Köln Hauptbahnhof", lat: 50.9428, lon: 6.9584,
+      hotels: [
+        { name: "Cologne Budget Hotel",   category: "Budget",    price: 90,  lat: 50.9415, lon: 6.9565 },
+        { name: "Maritim Hotel Köln",     category: "Upper-mid", price: 200, lat: 50.9440, lon: 6.9600 },
+      ]
+    },
+    { name: "Hamburg", station: "Hamburg Hauptbahnhof", lat: 53.5530, lon: 10.0065,
+      hotels: [
+        { name: "Hamburg Budget Rooms",   category: "Budget",    price: 95,  lat: 53.5518, lon: 10.0045 },
+        { name: "Hamburg Mid Hotel",      category: "Mid-range", price: 155, lat: 53.5542, lon: 10.0080 },
+      ]
+    },
+    { name: "Zürich", station: "Zürich Hauptbahnhof", lat: 47.3782, lon: 8.5401,
+      hotels: [
+        { name: "Oldtown Hostel Otter", category: "Budget", price: 70, dist: 600, url: "https://www.oldtownhostel.ch/", lat: 47.3782, lon: 8.5421 },
+        { name: "Youth Hostel Zurich", category: "Budget", price: 70, dist: 900, url: "https://www.youthhostel.ch/", lat: 47.380257, lon: 8.542932 },
+        { name: "easyHotel Zürich", category: "Budget", price: 70, dist: 700, url: "https://easyhotel.com/", lat: 47.382955, lon: 8.541645 },
+        { name: "ibis budget Zurich City West", category: "Budget", price: 70, dist: 850, url: "https://all.accor.com/", lat: 47.380102, lon: 8.539482 },
+        { name: "Green Marmot Capsule Hotel", category: "Budget", price: 70, dist: 500, url: "https://greenmarmot.ch/", lat: 47.380257, lon: 8.537268 },
+        { name: "Hotel Montana Zürich", category: "Mid-range", price: 160, dist: 400, url: "https://hotelmontana.ch/", lat: 47.3782, lon: 8.5351 },
+        { name: "Hotel Bristol Zürich", category: "Mid-range", price: 160, dist: 300, url: "https://www.hotelbristol.ch/", lat: 47.377024, lon: 8.538482 },
+        { name: "Central Plaza Hotel", category: "Mid-range", price: 160, dist: 200, url: "https://www.central-plaza.ch/", lat: 47.374871, lon: 8.539018 },
+        { name: "Ruby Mimi Hotel Zurich", category: "Mid-range", price: 160, dist: 250, url: "https://www.ruby-hotels.com/", lat: 47.373445, lon: 8.541645 },
+        { name: "Hotel St. Gotthard", category: "Mid-range", price: 160, dist: 150, url: "https://hotelstgotthard.ch/", lat: 47.377024, lon: 8.541718 },
+      ]
+    },
+    { name: "Basel", station: "Basel SBB", lat: 47.5476, lon: 7.5898,
+      hotels: [
+        { name: "Basel Budget Stay",      category: "Budget",    price: 120, lat: 47.5463, lon: 7.5878 },
+        { name: "Basel Mid Hotel",        category: "Mid-range", price: 170, lat: 47.5488, lon: 7.5915 },
+      ]
+    },
+    { name: "Geneva", station: "Geneva Cornavin", lat: 46.2100, lon: 6.1424,
+      hotels: [
+        { name: "Geneva Budget Stay",     category: "Budget",    price: 130, lat: 46.2088, lon: 6.1405 },
+        { name: "Ibis Geneva Centre",     category: "Mid-range", price: 180, lat: 46.2112, lon: 6.1440 },
+      ]
+    },
+    { name: "Paris", station: "Paris Gare du Nord", lat: 48.8809, lon: 2.3553,
+      hotels: [
+        { name: "Paris Budget Hotel",         category: "Budget",    price: 100, lat: 48.8795, lon: 2.3530 },
+        { name: "Hotel Terminus Nord",        category: "Mid-range", price: 190, lat: 48.8820, lon: 2.3570 },
+        { name: "Mercure Paris Gare de Lyon", category: "Upper-mid", price: 220, lat: 48.8448, lon: 2.3735 },
+      ]
+    },
+    { name: "Lyon", station: "Lyon Part-Dieu", lat: 45.7605, lon: 4.8597,
+      hotels: [
+        { name: "Lyon Budget Rooms",      category: "Budget",    price: 85,  lat: 45.7592, lon: 4.8578 },
+        { name: "Lyon Mid Hotel",         category: "Mid-range", price: 150, lat: 45.7618, lon: 4.8615 },
+      ]
+    },
+    { name: "Marseille", station: "Marseille Saint-Charles", lat: 43.3027, lon: 5.3810,
+      hotels: [
+        { name: "Marseille Budget Inn",   category: "Budget",    price: 85,  lat: 43.3015, lon: 5.3792 },
+        { name: "Marseille City Hotel",   category: "Mid-range", price: 140, lat: 43.3040, lon: 5.3828 },
+      ]
+    },
+    { name: "Bordeaux", station: "Bordeaux Saint-Jean", lat: 44.8259, lon: -0.5561,
+      hotels: [
+        { name: "Bordeaux Budget Stay",   category: "Budget",    price: 80,  lat: 44.8247, lon: -0.5578 },
+        { name: "Bordeaux City Hotel",    category: "Mid-range", price: 145, lat: 44.8270, lon: -0.5545 },
+      ]
+    },
+    { name: "Lille", station: "Lille-Flandres", lat: 50.6365, lon: 3.0694,
+      hotels: [
+        { name: "Lille Budget Stay",      category: "Budget",    price: 80,  lat: 50.6352, lon: 3.0675 },
+        { name: "Grand Hotel Lille",      category: "Mid-range", price: 150, lat: 50.6378, lon: 3.0710 },
+      ]
+    },
+    { name: "Brussels", station: "Brussels Midi", lat: 50.8356, lon: 4.3366,
+      hotels: [
+        { name: "Brussels Budget Hotel", category: "Budget",    price: 90,  lat: 50.8343, lon: 4.3348 },
+        { name: "Brussels Midi Hotel",   category: "Mid-range", price: 160, lat: 50.8368, lon: 4.3382 },
+      ]
+    },
+    { name: "Amsterdam", station: "Amsterdam Centraal", lat: 52.3791, lon: 4.9003,
+      hotels: [
+        { name: "Amsterdam Budget Hostel",category: "Budget",    price: 90,  lat: 52.3778, lon: 4.8982 },
+        { name: "NH Amsterdam Centraal", category: "Upper-mid", price: 210, lat: 52.3804, lon: 4.9022 },
+      ]
+    },
+    { name: "London", station: "London St Pancras", lat: 51.5308, lon: -0.1238,
+      hotels: [
+        { name: "London Budget Hotel",        category: "Budget",    price: 120, lat: 51.5295, lon: -0.1255 },
+        { name: "St Pancras Renaissance",     category: "Upper-mid", price: 245, lat: 51.5320, lon: -0.1222 },
+      ]
+    },
+    { name: "Madrid", station: "Madrid Atocha", lat: 40.4069, lon: -3.6891,
+      hotels: [
+        { name: "Madrid Budget Stay",     category: "Budget",    price: 75,  lat: 40.4057, lon: -3.6908 },
+        { name: "Hotel Silken Atocha",    category: "Mid-range", price: 140, lat: 40.4081, lon: -3.6875 },
+      ]
+    },
+    { name: "Barcelona", station: "Barcelona Sants", lat: 41.3791, lon: 2.1401,
+      hotels: [
+        { name: "Meeting Point Hostel", category: "Budget", price: 70, dist: 300, url: "https://www.meetingpointhostel.com/", lat: 41.3791, lon: 2.1421 },
+        { name: "Ten To Go Hostel", category: "Budget", price: 70, dist: 400, url: "https://www.tentogohostel.com/", lat: 41.381157, lon: 2.142932 },
+        { name: "Hostel One Sants", category: "Budget", price: 70, dist: 500, url: "https://www.hostelone.com/", lat: 41.383855, lon: 2.141645 },
+        { name: "Generator Barcelona", category: "Budget", price: 70, dist: 2000, url: "https://staygenerator.com/", lat: 41.381002, lon: 2.139482 },
+        { name: "Alberg Pere Tarrés", category: "Budget", price: 70, dist: 1500, url: "https://www.pere-tarres.org/", lat: 41.381157, lon: 2.137268 },
+        { name: "Hotel Barceló Sants", category: "Mid-range", price: 160, dist: 50, url: "https://www.barcelo.com/", lat: 41.3791, lon: 2.1351 },
+        { name: "AC Hotel Sants", category: "Mid-range", price: 160, dist: 200, url: "https://www.marriott.com/", lat: 41.377924, lon: 2.138482 },
+        { name: "Expo Hotel Barcelona", category: "Mid-range", price: 160, dist: 150, url: "https://www.expohotelbarcelona.com/", lat: 41.375771, lon: 2.139018 },
+        { name: "NH Sants Barcelona", category: "Mid-range", price: 160, dist: 400, url: "https://www.nh-hotels.com/", lat: 41.374345, lon: 2.141645 },
+        { name: "Abba Sants Hotel", category: "Mid-range", price: 160, dist: 300, url: "https://www.abbahoteles.com/", lat: 41.377924, lon: 2.141718 },
+      ]
+    },
+    { name: "Milan", station: "Milano Centrale", lat: 45.4840, lon: 9.2040,
+      hotels: [
+        { name: "Ostello Bello Grande", category: "Budget", price: 70, dist: 100, url: "https://ostellobello.com/", lat: 45.484, lon: 9.206 },
+        { name: "Babila Hostel", category: "Budget", price: 70, dist: 900, url: "https://babilahostel.it/", lat: 45.486057, lon: 9.206832 },
+        { name: "MEININGER Milano Centrale", category: "Budget", price: 70, dist: 300, url: "https://www.meininger-hotels.com/", lat: 45.488755, lon: 9.205545 },
+        { name: "Hotel Central Station", category: "Budget", price: 70, dist: 200, url: "https://www.hotelcentralstation.it/", lat: 45.485902, lon: 9.203382 },
+        { name: "Spice Hotel Milano", category: "Budget", price: 70, dist: 150, url: "https://www.spicehotelmilano.it/", lat: 45.486057, lon: 9.201168 },
+        { name: "Hotel Berna", category: "Mid-range", price: 160, dist: 300, url: "https://www.hotelberna.com/", lat: 45.484, lon: 9.199 },
+        { name: "NYX Hotel Milan", category: "Mid-range", price: 160, dist: 200, url: "https://www.leonardo-hotels.com/", lat: 45.482824, lon: 9.202382 },
+        { name: "Hotel Glam Milano", category: "Mid-range", price: 160, dist: 100, url: "https://www.glamhotelmilano.com/", lat: 45.480671, lon: 9.202918 },
+        { name: "Starhotels Anderson", category: "Mid-range", price: 160, dist: 150, url: "https://www.starhotels.com/", lat: 45.479245, lon: 9.205545 },
+        { name: "B&B Hotel Milano Centrale", category: "Mid-range", price: 160, dist: 250, url: "https://www.hotel-bb.com/", lat: 45.482824, lon: 9.205618 },
+      ]
+    },
+    { name: "Rome", station: "Roma Termini", lat: 41.9009, lon: 12.5009,
+      hotels: [
+        { name: "Rome Budget Hotel",      category: "Budget",    price: 80,  lat: 41.8997, lon: 12.4990 },
+        { name: "Hotel Palatino Roma",    category: "Mid-range", price: 155, lat: 41.9021, lon: 12.5025 },
+      ]
+    },
+    { name: "Florence", station: "Firenze Santa Maria Novella", lat: 43.7762, lon: 11.2490,
+      hotels: [
+        { name: "Florence Budget Stay",   category: "Budget",    price: 90,  lat: 43.7750, lon: 11.2472 },
+        { name: "Florence Mid Hotel",     category: "Mid-range", price: 170, lat: 43.7775, lon: 11.2508 },
+      ]
+    },
+    { name: "Venice", station: "Venezia Santa Lucia", lat: 45.4414, lon: 12.3202,
+      hotels: [
+        { name: "Venice Budget Rooms",    category: "Budget",    price: 110, lat: 45.4402, lon: 12.3185 },
+        { name: "Hotel Canal Venice",     category: "Mid-range", price: 195, lat: 45.4426, lon: 12.3218 },
+      ]
+    },
+    { name: "Vienna", station: "Wien Hauptbahnhof", lat: 48.1851, lon: 16.3768,
+      hotels: [
+        { name: "a&o Wien Hauptbahnhof", category: "Budget", price: 70, dist: 300, url: "https://www.aohostels.com/", lat: 48.1851, lon: 16.3788 },
+        { name: "MEININGER Hotel Vienna Hauptbahnhof", category: "Budget", price: 70, dist: 400, url: "https://www.meininger-hotels.com/", lat: 48.187157, lon: 16.379632 },
+        { name: "ibis budget Wien Hauptbahnhof", category: "Budget", price: 70, dist: 200, url: "https://all.accor.com/", lat: 48.189855, lon: 16.378345 },
+        { name: "JO&JOE Vienna", category: "Budget", price: 70, dist: 600, url: "https://www.joandjoe.com/", lat: 48.187002, lon: 16.376182 },
+        { name: "Do Step Inn Central", category: "Budget", price: 70, dist: 700, url: "https://www.dostepinn.at/", lat: 48.187157, lon: 16.373968 },
+        { name: "Novotel Wien Hauptbahnhof", category: "Mid-range", price: 160, dist: 100, url: "https://all.accor.com/", lat: 48.1851, lon: 16.3718 },
+        { name: "Hotel Schani Wien", category: "Mid-range", price: 160, dist: 200, url: "https://www.hotelschani.com/", lat: 48.183924, lon: 16.375182 },
+        { name: "Leonardo Hotel Vienna Hauptbahnhof", category: "Mid-range", price: 160, dist: 150, url: "https://www.leonardo-hotels.com/", lat: 48.181771, lon: 16.375718 },
+        { name: "Motel One Wien Hauptbahnhof", category: "Mid-range", price: 160, dist: 100, url: "https://www.motel-one.com/", lat: 48.180345, lon: 16.378345 },
+        { name: "Premier Inn Wien Hauptbahnhof", category: "Mid-range", price: 160, dist: 250, url: "https://www.premierinn.com/", lat: 48.183924, lon: 16.378418 },
+      ]
+    },
+    { name: "Prague", station: "Praha Hlavní nádraží", lat: 50.0831, lon: 14.4353,
+      hotels: [
+        { name: "Prague Budget Stay",     category: "Budget",    price: 60,  lat: 50.0819, lon: 14.4335 },
+        { name: "Prague City Hotel",      category: "Mid-range", price: 120, lat: 50.0843, lon: 14.4370 },
+      ]
+    },
+    { name: "Copenhagen", station: "Copenhagen Central", lat: 55.6726, lon: 12.5647,
+      hotels: [
+        { name: "Copenhagen Budget Hotel",category: "Budget",    price: 130, lat: 55.6714, lon: 12.5628 },
+        { name: "CPH Midrange Stay",      category: "Mid-range", price: 190, lat: 55.6738, lon: 12.5665 },
+      ]
+    },
+
+    { name: "Innsbruck", station: "Innsbruck Hauptbahnhof", lat: 47.2639, lon: 11.4006,
+      hotels: [
+        { name: "Innsbruck Budget Rooms",  category: "Budget",    price: 85,  lat: 47.2627, lon: 11.3988 },
+        { name: "Hotel Innsbruck",         category: "Mid-range", price: 145, lat: 47.2651, lon: 11.4022 },
+      ]
+    },
+    { name: "Salzburg", station: "Salzburg Hauptbahnhof", lat: 47.8126, lon: 13.0449,
+      hotels: [
+        { name: "Salzburg Budget Stay",    category: "Budget",    price: 90,  lat: 47.8114, lon: 13.0430 },
+        { name: "Hotel Markus Sittikus",   category: "Mid-range", price: 155, lat: 47.8138, lon: 13.0465 },
+      ]
+    },
+    { name: "Interlaken", station: "Interlaken Ost", lat: 46.6863, lon: 7.8632,
+      hotels: [
+        { name: "Interlaken Budget Hostel",category: "Budget",    price: 95,  lat: 46.6851, lon: 7.8615 },
+        { name: "Hotel Interlaken",        category: "Mid-range", price: 175, lat: 46.6875, lon: 7.8648 },
+      ]
+    },
+    { name: "Ljubljana", station: "Ljubljana Central", lat: 46.0569, lon: 14.5058,
+      hotels: [
+        { name: "Ljubljana Budget Inn",    category: "Budget",    price: 65,  lat: 46.0557, lon: 14.5040 },
+        { name: "Hotel Cubo Ljubljana",    category: "Mid-range", price: 130, lat: 46.0581, lon: 14.5075 },
+      ]
+    },
+    { name: "Budapest", station: "Budapest Keleti", lat: 47.5001, lon: 19.0839,
+      hotels: [
+        { name: "Budapest Budget Stay",    category: "Budget",    price: 60,  lat: 47.4989, lon: 19.0820 },
+        { name: "Hotel Corinthia Budapest",category: "Mid-range", price: 140, lat: 47.5013, lon: 19.0855 },
+      ]
+    },
+
+  ];
+
+  var cityMarkers = [];
+  var hotelMarkers = [];
+  var activeCity = null;
+
+  function showCityMarkers() {
+    hotelMarkers.forEach(function(m) { map.removeLayer(m); });
+    hotelMarkers = [];
+    cityMarkers.forEach(function(m) { map.addLayer(m); });
+    activeCity = null;
+    document.getElementById('back-btn').style.display = 'none';
+  }
+
+  function showHotels(city) {
+    activeCity = city;
+    cityMarkers.forEach(function(m) { map.removeLayer(m); });
+    map.flyTo([city.lat, city.lon], 14, { duration: 1 });
+
+    city.hotels.forEach(function(hotel) {
+      var color = categoryColors[hotel.category] || "#999";
+      var hotelTitle = hotel.url
+        ? "<a href='" + hotel.url + "' target='_blank' style='font-size:14px;color:#1a1a2e;text-decoration:none;border-bottom:2px solid #4a90d9;padding-bottom:1px;'>" + hotel.name + "</a>"
+        : hotel.name;
+
+      var popupContent =
+        "<b style='font-size:14px'>" + hotelTitle + "</b><br>" +
+        "<span style='color:#777;font-size:12px'>📍 " + city.station + "</span><br><br>" +
+        "<span style='background:" + color + ";color:#fff;padding:2px 8px;border-radius:4px;font-size:12px'>" + hotel.category + "</span>";
+
+      if (hotel.dist) {
+        popupContent += "&nbsp; <span style='color:#888;font-size:12px'>🚶 " + hotel.dist + "m from station</span>";
+      }
+
+      var m = L.circleMarker([hotel.lat, hotel.lon], {
+        radius: 10,
+        fillColor: color,
+        color: "#fff",
+        weight: 2,
+        opacity: 1,
+        fillOpacity: 0.92
+      }).bindPopup(popupContent).addTo(map);
+      hotelMarkers.push(m);
+    });
+    document.getElementById('back-btn').style.display = 'block';
+  }
+
+  cities.forEach(function(city) {
+    var band = getPriceBand(city);
+    var minPrice = Math.min.apply(null, city.hotels.map(function(h) { return h.price; }));
+    var icon = L.divIcon({
+      className: '',
+      html: '<div class="city-icon" style="background:' + band.color + '"></div>',
+      iconSize: [20, 20],
+      iconAnchor: [10, 10]
+    });
+    var marker = L.marker([city.lat, city.lon], { icon: icon })
+      .bindTooltip(city.name + ' <span style="opacity:0.7">from €' + minPrice + '</span>', {
+        permanent: true,
+        direction: 'top',
+        offset: [0, -13],
+        className: 'city-label'
+      })
+      .on('click', function() { showHotels(city); });
+    marker.addTo(map);
+    cityMarkers.push(marker);
+  });
+
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(function(pos) {
+      var lat = pos.coords.latitude;
+      var lon = pos.coords.longitude;
+      var pulseIcon = L.divIcon({
+        className: '',
+        html: '<div style="width:16px;height:16px;background:#4a90d9;border:3px solid white;border-radius:50%;box-shadow:0 0 0 3px rgba(74,144,217,0.4), 0 2px 6px rgba(0,0,0,0.3)"></div>',
+        iconSize: [16, 16],
+        iconAnchor: [8, 8]
+      });
+      L.marker([lat, lon], { icon: pulseIcon })
+        .bindPopup("<b>You are here</b>")
+        .addTo(map);
+    });
+  }
+
+  document.getElementById('back-btn').addEventListener('click', function() {
+    showCityMarkers();
+    map.flyTo([50, 10], 5, { duration: 1 });
+  });
+
+  var destinations = [
+    { name: "Málaga",    lat: 36.7213, lon: -4.4216, desc: "Sun-soaked Costa del Sol gateway" },
+    { name: "Seville",   lat: 37.3886, lon: -5.9823, desc: "Flamenco, tapas & the Alcázar" },
+    { name: "Granada",   lat: 37.1773, lon: -3.5986, desc: "Alhambra palace & Sierra Nevada" },
+    { name: "Lisbon",    lat: 38.7169, lon: -9.1399, desc: "Fado, trams & Atlantic coastline" },
+    { name: "Porto",     lat: 41.1495, lon: -8.6108, desc: "Port wine & riverside old town" },
+    { name: "Nice",      lat: 43.7102, lon: 7.2620,  desc: "Promenade des Anglais & azure sea" },
+    { name: "Monaco",    lat: 43.7384, lon: 7.4246,  desc: "Grand Prix circuit & Monte Carlo" },
+    { name: "Cannes",    lat: 43.5528, lon: 7.0174,  desc: "Film festival & sandy beaches" },
+    { name: "Naples",    lat: 40.8518, lon: 14.2681, desc: "Pizza birthplace & Vesuvius views" },
+    { name: "Palermo",   lat: 38.1157, lon: 13.3615, desc: "Sicilian culture & street food" },
+    { name: "Bari",      lat: 41.1171, lon: 16.8719, desc: "Adriatic port & old town labyrinth" },
+    { name: "Catania",   lat: 37.5079, lon: 15.0830, desc: "Mount Etna & baroque architecture" },
+    { name: "Split",     lat: 43.5081, lon: 16.4402, desc: "Diocletian's Palace & Dalmatian coast" },
+    { name: "Dubrovnik", lat: 42.6507, lon: 18.0944, desc: "Pearl of the Adriatic & city walls" },
+    { name: "Oslo",      lat: 59.9109, lon: 10.7528, desc: "Fjords, Vikings & vibrant waterfront" },
+    { name: "Stockholm", lat: 59.3306, lon: 18.0586, desc: "Nordic elegance across 14 islands" },
+  ];
+
+  var destIcon = L.divIcon({
+    className: '',
+    html: '<div class="dest-icon">★</div>',
+    iconSize: [26, 26],
+    iconAnchor: [13, 13]
+  });
+
+  destinations.forEach(function(dest) {
+    L.marker([dest.lat, dest.lon], { icon: destIcon })
+      .bindTooltip(dest.name, {
+        permanent: true,
+        direction: 'top',
+        offset: [0, -14],
+        className: 'dest-label'
+      })
+      .bindPopup(
+        "<b style='font-size:14px'>★ " + dest.name + "</b><br>" +
+        "<span style='color:#777;font-size:12px'>" + dest.desc + "</span>"
+      )
+      .addTo(map);
+  });
+
+  var legend = L.control({ position: "bottomright" });
+  legend.onAdd = function() {
+    var div = L.DomUtil.create("div", "legend");
+    div.innerHTML = "<h4>Transit nodes — cheapest/night</h4>";
+    priceBands.forEach(function(band) {
+      div.innerHTML +=
+        '<div class="legend-row"><div class="dot" style="background:' + band.color + '"></div>' + band.label + '</div>';
+    });
+    div.innerHTML += '<div style="margin-top:10px;padding-top:8px;border-top:1px solid #eee">';
+    div.innerHTML += '<div class="legend-row"><span style="font-size:16px;line-height:1;color:#7b2d8b">★</span> <span style="color:#7b2d8b;font-weight:600">Destination</span></div>';
+    div.innerHTML += '</div>';
+    div.innerHTML += '<div style="margin-top:8px;font-size:11px;color:#888">Click a city node to explore hotels</div>';
+    div.innerHTML += '<div style="margin-top:8px;padding-top:8px;border-top:1px solid #eee">';
+    div.innerHTML += '<div class="legend-row"><div class="dot" style="background:#4a90d9;box-shadow:0 0 0 3px rgba(74,144,217,0.35)"></div> Your location</div>';
+    div.innerHTML += '</div>';
+    return div;
+  };
+  legend.addTo(map);
+</script>
+</body>
+</html>
