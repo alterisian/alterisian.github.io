@@ -2,6 +2,7 @@
 // This file sets window.PROJECTS_MD which the app will use if fetching
 // `data/projects.md` fails (for example when opening via file://).
 window.PROJECTS_MD = `
+
 # Projects Portfolio
 
 ## Project: Ticket Booking Demonstrator 
@@ -44,4 +45,5 @@ window.PROJECTS_MD = `
 **Current State:** Prototype  
 **Next Step:** Finding partner consultancy with local government credentials  
 **Tags:** Travel, Local Travel, Buses, Spain, Galicia
+
 `;
