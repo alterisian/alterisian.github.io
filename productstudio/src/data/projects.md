@@ -10,15 +10,6 @@
 
 ---
 
-## Project: Porqui No - travel, and explore, whoever you are. 
-**Industries:** Travel, Destinations  
-**Current State:** Ideation  
-**Prototype:** [View Prototype](https://contextads.lovable.app)  
-**Next Step:**  
-**Tags:** Travel, Disabled Travel, Lovable  
-
----
-
 ## Project: Tuesday At 8 - Curated online matching, and in-person dating. 
 **Industries:** Dating, Relationships  
 **Current State:** User Research in NYC via survey creation  
