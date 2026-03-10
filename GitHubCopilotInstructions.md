@@ -11,6 +11,17 @@
 
 ---
 
+## File Placement Guidelines
+- Controllers: app/controllers/
+- API controllers: app/controllers/api/v1/
+- Models: app/models/
+- Service objects: app/services/
+- Query objects: app/queries/
+- Jobs: app/jobs/
+- Serializers: app/serializers/
+- Concerns: app/models/concerns and app/controllers/concerns
+- Factories: spec/factories/
+
 ## Code Conventions
 
 ### General
