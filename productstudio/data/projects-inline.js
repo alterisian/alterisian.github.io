@@ -5,6 +5,15 @@ window.PROJECTS_MD = `
 
 # Projects Portfolio
 
+## Project: Email Monitoring For Startup Founders.
+**Industries:** Productivity, Startups 
+**Technology:** Ruby On Rails, Fly, IMAP, Fastmail API 
+**Current State:** Prototype
+**Next Step:** Try simpler prototype than what Claude Code produced
+**Tags:** productivity, startups, ruby, imap, fastmail
+
+---
+
 ## Project: Ticket Booking Demonstrator 
 **Industries:** Train Travel, Festival Ticket Sales  
 **Technology:** Java / JMS  
