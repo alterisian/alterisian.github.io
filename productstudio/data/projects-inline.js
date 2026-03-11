@@ -86,7 +86,7 @@ window.PROJECTS_MD = `
 
 ## Project: Ferrol Bus Information 
 **Industries:** Local Transportation, Galicia  
-**Current State:** Prototype  
+**Current State:** Paused  
 **Next Step:** Finding partner consultancy with local government credentials  
 **Tags:** Travel, Local Travel, Buses, Spain, Galicia
 
