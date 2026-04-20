@@ -24,7 +24,7 @@ window.PROJECTS_MD = `
 ## Project: Porqui No - Mobility for everyone.
 **Industries:** Travel, Tourismn, Accessibilty 
 **Technology:** Lovable 
-**Current State:** Weekly
+**Current State:** Paused
 **Next Step:** Generate a pdf
 **Link:** https://porqueno.lovable.app/ 
 **Tags:**  Travel, Tourismn, Accessibilty, Lovable, PDF

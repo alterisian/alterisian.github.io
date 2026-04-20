@@ -1,0 +1,62 @@
+/* Lively, modern overrides for native_conversation page */
+:root{
+  --brand-strong: #0b556a;
+  --brand-accent: #f2774a;
+  --muted: #6b7280;
+  --card: #fbfdfe;
+  --radius: 12px;
+  --max-width: 980px;
+  --text: #071224;
+}
+
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+  color:var(--text);
+  background:linear-gradient(180deg,#ffffff 0%,#f7fbfc 100%);
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  line-height:1.6;
+}
+
+.wrap{max-width:var(--max-width);margin:0 auto;padding:28px 20px}
+.nc-header{border-bottom:1px solid rgba(9,30,44,0.04);background:transparent}
+.brand{font-weight:700;color:var(--brand-strong);text-decoration:none;font-size:1.05rem}
+.nc-nav a{color:var(--muted);text-decoration:none;margin-left:14px;font-weight:600}
+.nc-nav a:hover{color:var(--brand-strong)}
+
+.nc-main{padding:32px 0}
+.lead{color:var(--muted);max-width:70ch}
+
+/* Hero */
+.nc-hero{display:grid;grid-template-columns:1fr 320px;gap:22px;align-items:start;margin-bottom:20px}
+.nc-hero-inner{background:linear-gradient(180deg,rgba(11,85,106,0.03),transparent);padding:28px;border-radius:14px}
+.nc-hero-inner h1{margin:0 0 8px;font-size:2.1rem}
+.cta-row{display:flex;gap:10px;margin-top:12px}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:10px 14px;border-radius:9px;text-decoration:none;font-weight:700;transition:all .12s ease}
+.btn.primary{background:linear-gradient(180deg,var(--brand-strong),#074950);color:#fff;box-shadow:0 12px 28px rgba(11,85,106,0.08)}
+.btn.whatsapp{background:#25D366;color:white}
+.btn.ghost{background:transparent;border:1px solid rgba(11,85,106,0.12);color:var(--brand-strong)}
+
+.nc-hero-card{background:var(--card);padding:18px;border-radius:12px;box-shadow:0 12px 36px rgba(9,30,44,0.04)}
+.avatar{width:64px;height:64px;border-radius:12px;background:linear-gradient(135deg,var(--brand-accent),var(--brand-strong));display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:18px;margin-bottom:10px}
+.quick-features{list-style:none;padding:0;margin:8px 0 0}
+.quick-features li{padding:6px 0;border-bottom:1px dashed rgba(9,30,44,0.03)}
+
+.nc-card{background:var(--card);border-radius:12px;padding:18px;box-shadow:0 8px 24px rgba(9,30,44,0.03);margin-bottom:16px}
+.nc-list{list-style:none;padding-left:0;margin:0}
+.nc-list .rec-item{padding:10px;border-bottom:1px dashed rgba(9,30,44,0.04)}
+.muted{color:var(--muted)}
+.small{font-size:.95rem;color:var(--muted);margin-top:6px}
+
+.form-actions{display:flex;gap:8px;margin-top:12px}
+.nc-form label{display:block;margin-top:8px}
+.nc-form input, .nc-form select{width:100%;padding:10px;margin-top:6px;border-radius:8px;border:1px solid #e6edf2}
+
+.site-footer{border-top:1px solid #eef2f7;padding:18px 0;color:var(--muted);font-size:.95rem;text-align:center}
+
+@media (max-width:900px){
+  .nc-hero{grid-template-columns:1fr}
+  .nc-hero-card{order:2}
+}
