@@ -20,6 +20,16 @@ window.PROJECTS_MD = `
 
 # Projects Portfolio
 
+
+## Project: Porqui No - Mobility for everyone.
+**Industries:** Travel, Tourismn, Accessibilty 
+**Technology:** Lovable 
+**Current State:** Weekly
+**Next Step:** Generate a pdf
+**Link:** https://porqueno.lovable.app/ 
+**Tags:**  Travel, Tourismn, Accessibilty, Lovable, PDF
+
+
 ## Project: Boquercomm - Spanish events live translator
 **Industries:** Events, Translation
 **Technology:** Ruby 

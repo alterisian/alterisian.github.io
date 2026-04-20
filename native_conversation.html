@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Native English Conversation — Conversación en Inglés Nativo</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="native_conversation.css">
+</head>
+<body>
+  <header class="nc-header">
+    <div class="wrap">
+      <a class="brand" href="/">Native English Conversation</a>
+      <nav class="nc-nav" aria-label="language">
+        <a href="#en">EN</a>
+        <a href="#es">ES</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap nc-main">
+    <!-- English -->
+    <section id="en" class="nc-section" lang="en">
+      <h1>Native English Conversation</h1>
+      <p class="lead">Hi all — I am available from 15 euros an hour for English conversation.</p>
+
+      <div class="nc-card">
+        <h3>Pricing</h3>
+        <ul>
+          <li>20 euros for 1 session.</li>
+          <li>4 weekly sessions for 15 euros each (paid in advance).</li>
+        </ul>
+        <p class="muted">(Same time and place each week. Maximum 1 allowed cancellation.)</p>
+      </div>
+
+      <div class="nc-card">
+        <h3>About Ian</h3>
+        <p>I am a native English speaker. Born in Torquay, Devon, and lived in Manchester for 20 years. I have also lived in Berlin and Málaga. I understand how hard it can be to learn another language. I encourage people to try and to allow mistakes — that’s how we get better. 🙂</p>
+        <p>Message me direct to book your first session.</p>
+  <!-- WhatsApp link: international format without leading + -->
+  <p><a class="btn primary" href="https://wa.me/447427242195" target="_blank" rel="noopener noreferrer">Message on WhatsApp</a></p>
+      </div>
+
+      <div class="nc-card">
+        <h3>Recommended native speakers</h3>
+        <p class="muted">Space to list other native speakers (contact details or short bio).</p>
+        <ul id="list-native" class="nc-list"></ul>
+      </div>
+
+      <div class="nc-card">
+        <h3>Professional teachers</h3>
+        <p class="muted">Space to list professional teachers (qualifications, rates, contact).</p>
+        <ul id="list-teachers" class="nc-list"></ul>
+      </div>
+    </section>
+
+    <!-- Español -->
+    <section id="es" class="nc-section" lang="es">
+      <h1>Conversación en Inglés Nativo</h1>
+      <p class="lead">Hola a todos — estoy disponible desde 15 euros la hora para conversación en inglés.</p>
+
+      <div class="nc-card">
+        <h3>Precios</h3>
+        <ul>
+          <li>20 euros por 1 sesión.</li>
+          <li>4 sesiones semanales por 15 euros cada una (pagadas por adelantado).</li>
+        </ul>
+        <p class="muted">(Mismo día y hora cada semana. Máximo 1 cancelación permitida.)</p>
+      </div>
+
+      <div class="nc-card">
+        <h3>Sobre Ian</h3>
+        <p>Soy hablante nativo de inglés. Nací en Torquay, Devon, viví en Manchester durante 20 años y también he vivido en Berlín y Málaga. Sé lo difícil que puede ser aprender otro idioma. Animo a la gente a intentarlo y a permitir los errores — así es como mejoramos. 🙂</p>
+        <p>Envíame un mensaje directo para reservar tu primera sesión.</p>
+  <!-- Enlace de WhatsApp: formato internacional sin + -->
+  <p><a class="btn primary" href="https://wa.me/447427242195" target="_blank" rel="noopener noreferrer">Enviar mensaje por WhatsApp</a></p>
+      </div>
+
+      <div class="nc-card">
+        <h3>Hablantes nativos recomendados</h3>
+        <p class="muted">Espacio para listar otros hablantes nativos (contacto o breve biografía).</p>
+        <ul id="list-native-es" class="nc-list"></ul>
+      </div>
+
+      <div class="nc-card">
+        <h3>Profesores profesionales</h3>
+        <p class="muted">Espacio para listar profesores profesionales (títulos, tarifas, contacto).</p>
+        <ul id="list-teachers-es" class="nc-list"></ul>
+      </div>
+    </section>
+
+    <!-- Recommendation form (local storage) -->
+    <section class="nc-card">
+      <h3>Add / Recommend a speaker or teacher (local only)</h3>
+      <form id="rec-form" class="nc-form">
+        <label>
+          Type
+          <select name="type" required>
+            <option value="native">Native speaker</option>
+            <option value="teacher">Professional teacher</option>
+          </select>
+        </label>
+        <label>
+          Name
+          <input name="name" placeholder="Full name" required />
+        </label>
+        <label>
+          Languages / Focus
+          <input name="langs" placeholder="e.g. English (native), Business English" />
+        </label>
+        <label>
+          Short bio / notes
+          <input name="bio" placeholder="Short description (location, rates, platform)" />
+        </label>
+        <label>
+          Contact (email, link or whatsapp)
+          <input name="contact" placeholder="email@example.com or https://wa.me/..." />
+        </label>
+        <div class="form-actions">
+          <button type="submit" class="btn primary">Add recommendation</button>
+          <button type="button" id="clear-btn" class="btn ghost">Clear local entries</button>
+        </div>
+        <p class="muted">This stores recommendations in your browser only. To publish here for everyone, send the info and it will be added to the page.</p>
+      </form>
+    </section>
+  </main>
+
+  <footer class="site-footer wrap">
+    <small>© Native English Conversation • Contact: Ian Moss </small>
+  </footer>
+
+  <script>
+    // reuse the simple localStorage renderer already used on the site
+    const STORAGE_KEY = 'nc_recommendations_v1';
+    function loadRecs(){ try { return JSON.parse(localStorage.getItem(STORAGE_KEY)||'[]'); }catch(e){return[]} }
+    function saveRecs(list){ localStorage.setItem(STORAGE_KEY, JSON.stringify(list)); }
+    function escapeHtml(s){ return String(s||'').replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[m]); }
+
+    function render(){
+      const list = loadRecs();
+      const native = document.getElementById('list-native');
+      const teachers = document.getElementById('list-teachers');
+      const nativeEs = document.getElementById('list-native-es');
+      const teachersEs = document.getElementById('list-teachers-es');
+      [native, teachers, nativeEs, teachersEs].forEach(el=>el && (el.innerHTML=''));
+      list.forEach(item=>{
+        const li = document.createElement('li');
+        li.className='rec-item';
+        li.innerHTML = '<strong>'+escapeHtml(item.name)+'</strong>'
+          + (item.langs? ' — <span class="muted small">'+escapeHtml(item.langs)+'</span>':'')
+          + (item.bio? '<div class="small">'+escapeHtml(item.bio)+'</div>':'')
+          + (item.contact? '<div class="small"><a href="'+(item.contact.startsWith('http')?item.contact:'mailto:'+item.contact)+'" target="_blank" rel="noopener">'+escapeHtml(item.contact)+'</a></div>':'');
+        if(item.type==='native'){ native && native.appendChild(li.cloneNode(true)); nativeEs && nativeEs.appendChild(li); }
+        else { teachers && teachers.appendChild(li.cloneNode(true)); teachersEs && teachersEs.appendChild(li); }
+      });
+      if(native && !native.children.length) native.innerHTML='<li class="muted small">No recommendations yet</li>';
+      if(teachers && !teachers.children.length) teachers.innerHTML='<li class="muted small">No recommendations yet</li>';
+      if(nativeEs && !nativeEs.children.length) nativeEs.innerHTML='<li class="muted small">Aún no hay recomendaciones</li>';
+      if(teachersEs && !teachersEs.children.length) teachersEs.innerHTML='<li class="muted small">Aún no hay recomendaciones</li>';
+    }
+
+    document.getElementById('rec-form').addEventListener('submit', e=>{
+      e.preventDefault();
+      const fd = new FormData(e.target);
+      const item = { type:fd.get('type'), name:fd.get('name'), langs:fd.get('langs'), bio:fd.get('bio'), contact:fd.get('contact') };
+      const list = loadRecs(); list.unshift(item); saveRecs(list); render(); e.target.reset();
+    });
+    document.getElementById('clear-btn').addEventListener('click', ()=>{
+      if(!confirm('Clear local recommendations?')) return;
+      localStorage.removeItem(STORAGE_KEY); render();
+    });
+
+    render();
+  </script>
+</body>
+</html>

@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stripe + Lovable Integration Guide</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .step-content { display: none; }
+        .step-content.active { display: block; }
+        .checkbox-item { transition: all 0.2s ease; }
+        .checkbox-item:hover { background-color: #f9fafb; }
+    </style>
+</head>
+<body class="bg-slate-50 min-h-screen font-sans text-slate-900">
+
+    <div class="max-w-2xl mx-auto py-12 px-6">
+        <header class="mb-10">
+            <h1 class="text-3xl font-bold text-slate-800">Stripe Subscriptions</h1>
+            <p class="text-slate-500">Lovable App Integration Workflow (2026)</p>
+            <div class="w-full bg-slate-200 h-2 mt-6 rounded-full overflow-hidden">
+                <div id="progress-bar" class="bg-indigo-600 h-full transition-all duration-500" style="width: 25%"></div>
+            </div>
+        </header>
+
+        <section id="step-1" class="step-content active bg-white p-8 rounded-xl shadow-sm border border-slate-200">
+            <h2 class="text-xl font-bold mb-4 flex items-center">
+                <span class="bg-indigo-100 text-indigo-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm">1</span>
+                Stripe API Security
+            </h2>
+            <p class="text-slate-600 mb-6 text-sm">Establish a restricted, secure connection between Stripe and Lovable.</p>
+            
+            <div class="space-y-4 mb-8">
+                <label class="checkbox-item flex items-start p-3 border rounded-lg cursor-pointer">
+                    <input type="checkbox" class="mt-1 mr-3 h-5 w-5 rounded border-gray-300 text-indigo-600">
+                    <div>
+                        <span class="block font-medium">Toggle Test Mode</span>
+                        <span class="text-xs text-slate-500">Ensure the "Test Mode" switch in the Stripe Dashboard is ON.</span>
+                    </div>
+                </label>
+                <label class="checkbox-item flex items-start p-3 border rounded-lg cursor-pointer">
+                    <input type="checkbox" class="mt-1 mr-3 h-5 w-5 rounded border-gray-300 text-indigo-600">
+                    <div>
+                        <span class="block font-medium">Create Restricted Key</span>
+                        <span class="text-xs text-slate-500">Developers > API Keys > Create restricted key.</span>
+                    </div>
+                </label>
+                <label class="checkbox-item flex items-start p-3 border rounded-lg cursor-pointer">
+                    <input type="checkbox" class="mt-1 mr-3 h-5 w-5 rounded border-gray-300 text-indigo-600">
+                    <div>
+                        <span class="block font-medium">Set Write Permissions</span>
+                        <span class="text-xs text-slate-500">Core: Customers/Products; Billing: Portal/Prices/Subs; Checkout: Sessions.</span>
+                    </div>
+                </label>
+            </div>
+            <button onclick="nextStep(2)" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 rounded-lg transition shadow-md">Next Section</button>
+        </section>
+
+        <section id="step-2" class="step-content bg-white p-8 rounded-xl shadow-sm border border-slate-200">
+            <h2 class="text-xl font-bold mb-4 flex items-center">
+                <span class="bg-indigo-100 text-indigo-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm">2</span>
+                Lovable Configuration
+            </h2>
+            <p class="text-slate-600 mb-6 text-sm">Define your business logic inside the Lovable chat interface.</p>
+            
+            <div class="space-y-4 mb-8">
+                <label class="checkbox-item flex items-start p-3 border rounded-lg cursor-pointer">
+                    <input type="checkbox" class="mt-1 mr-3 h-5 w-5 rounded border-gray-300 text-indigo-600">
+                    <div>
+                        <span class="block font-medium">Define Product & Price</span>
+                        <span class="text-xs text-slate-500">Tell Lovable your interval (e.g., "Monthly for €3").</span>
+                    </div>
+                </label>
+                <label class="checkbox-item flex items-start p-3 border rounded-lg cursor-pointer">
+                    <input type="checkbox" class="mt-1 mr-3 h-5 w-5 rounded border-gray-300 text-indigo-600">
+                    <div>
+                        <span class="block font-medium">Select Gated Features</span>
+                        <span class="text-xs text-slate-500">List pages that require premium access.</span>
+                    </div>
+                </label>
+                <label class="checkbox-item flex items-start p-3 border rounded-lg cursor-pointer">
+                    <input type="checkbox" class="mt-1 mr-3 h-5 w-5 rounded border-gray-300 text-indigo-600">
+                    <div>
+                        <span class="block font-medium">Paste Restricted Key</span>
+                        <span class="text-xs text-slate-500">Provide the rk_test key when prompted by the chat.</span>
+                    </div>
+                </label>
+            </div>
+            <div class="flex gap-4">
+                <button onclick="nextStep(1)" class="w-1/3 border border-slate-300 py-3 rounded-lg text-slate-600">Back</button>
+                <button onclick="nextStep(3)" class="w-2/3 bg-indigo-600 text-white font-bold py-3 rounded-lg shadow-md">Next Section</button>
+            </div>
+        </section>
+
+        <section id="step-3" class="step-content bg-white p-8 rounded-xl shadow-sm border border-slate-200">
+            <h2 class="text-xl font-bold mb-4 flex items-center">
+                <span class="bg-indigo-100 text-indigo-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm">3</span>
+                Webhook Setup
+            </h2>
+            <p class="text-slate-600 mb-6 text-sm">Enable real-time communication between Stripe and your backend.</p>
+            
+            <div class="space-y-4 mb-8">
+                <label class="checkbox-item flex items-start p-3 border rounded-lg cursor-pointer">
+                    <input type="checkbox" class="mt-1 mr-3 h-5 w-5 rounded border-gray-300 text-indigo-600">
+                    <div>
+                        <span class="block font-medium">Add Endpoint URL</span>
+                        <span class="text-xs text-slate-500">Use the Supabase URL provided by Lovable.</span>
+                    </div>
+                </label>
+                <label class="checkbox-item flex items-start p-3 border rounded-lg cursor-pointer">
+                    <input type="checkbox" class="mt-1 mr-3 h-5 w-5 rounded border-gray-300 text-indigo-600">
+                    <div>
+                        <span class="block font-medium">Select 5 Events</span>
+                        <span class="text-xs text-slate-500">Checkout completed, Sub created/updated/deleted, Invoice failed.</span>
+                    </div>
+                </label>
+                <label class="checkbox-item flex items-start p-3 border rounded-lg cursor-pointer">
+                    <input type="checkbox" class="mt-1 mr-3 h-5 w-5 rounded border-gray-300 text-indigo-600">
+                    <div>
+                        <span class="block font-medium">Copy Signing Secret</span>
+                        <span class="text-xs text-slate-500">Paste the whsec_ value back into the Lovable chat.</span>
+                    </div>
+                </label>
+            </div>
+            <div class="flex gap-4">
+                <button onclick="nextStep(2)" class="w-1/3 border border-slate-300 py-3 rounded-lg text-slate-600">Back</button>
+                <button onclick="nextStep(4)" class="w-2/3 bg-indigo-600 text-white font-bold py-3 rounded-lg shadow-md">Next Section</button>
+            </div>
+        </section>
+
+        <section id="step-4" class="step-content bg-white p-8 rounded-xl shadow-sm border border-slate-200">
+            <h2 class="text-xl font-bold mb-4 flex items-center">
+                <span class="bg-indigo-100 text-indigo-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm">4</span>
+                Verification
+            </h2>
+            <p class="text-slate-600 mb-6 text-sm">Final end-to-end testing of your subscription flow.</p>
+            
+            <div class="space-y-4 mb-8">
+                <label class="checkbox-item flex items-start p-3 border rounded-lg cursor-pointer">
+                    <input type="checkbox" class="mt-1 mr-3 h-5 w-5 rounded border-gray-300 text-indigo-600">
+                    <div>
+                        <span class="block font-medium">Test Card Transaction</span>
+                        <span class="text-xs text-slate-500">Use 4242... sequence to simulate a successful payment.</span>
+                    </div>
+                </label>
+                <label class="checkbox-item flex items-start p-3 border rounded-lg cursor-pointer">
+                    <input type="checkbox" class="mt-1 mr-3 h-5 w-5 rounded border-gray-300 text-indigo-600">
+                    <div>
+                        <span class="block font-medium">Confirm Premium State</span>
+                        <span class="text-xs text-slate-500">Check if your DB flags the user as premium after payment.</span>
+                    </div>
+                </label>
+                <label class="checkbox-item flex items-start p-3 border rounded-lg cursor-pointer">
+                    <input type="checkbox" class="mt-1 mr-3 h-5 w-5 rounded border-gray-300 text-indigo-600">
+                    <div>
+                        <span class="block font-medium">Access Gated Content</span>
+                        <span class="text-xs text-slate-500">Ensure the premium pages are now unlocked for your user.</span>
+                    </div>
+                </label>
+            </div>
+            <button onclick="nextStep(1)" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-lg transition shadow-md">Reset Tutorial</button>
+        </section>
+    </div>
+
+    <script>
+        function nextStep(stepNumber) {
+            // Hide all steps
+            document.querySelectorAll('.step-content').forEach(step => {
+                step.classList.remove('active');
+            });
+
+            // Show current step
+            document.getElementById('step-' + stepNumber).classList.add('active');
+
+            // Update Progress Bar
+            const progress = (stepNumber / 4) * 100;
+            document.getElementById('progress-bar').style.width = progress + '%';
+            
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
