@@ -1,0 +1,1084 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>C-2 · Málaga–Álora</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,500;0,700;1,300&family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #080a10;
+      --surface: #0f1219;
+      --border: #1e2535;
+      --amber: #e8a030;
+      --amber-dim: #7a5218;
+      --amber-glow: rgba(232, 160, 48, 0.12);
+      --green: #3ecf74;
+      --green-dim: rgba(62, 207, 116, 0.08);
+      --text: #ddd8cc;
+      --text-dim: #6a6860;
+      --text-mid: #9c9890;
+      --red: #e84848;
+    }
+
+    html, body {
+      height: 100%;
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'IBM Plex Mono', monospace;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+      background-size: 200px 200px;
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.6;
+    }
+
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0,0,0,0.06) 3px, rgba(0,0,0,0.06) 4px);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .wrapper {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 2rem 1.25rem 4rem;
+    }
+
+    /* Header */
+    header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 2.5rem;
+    }
+
+    .line-badge {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 3.8rem;
+      font-weight: 700;
+      line-height: 1;
+      color: var(--amber);
+      text-shadow: 0 0 40px rgba(232, 160, 48, 0.5);
+      letter-spacing: -1px;
+    }
+
+    .header-right {
+      text-align: right;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 0.45rem;
+    }
+
+    .lang-toggle {
+      display: flex;
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+
+    .lang-btn {
+      background: none;
+      border: none;
+      color: var(--text-dim);
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.62rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      padding: 0.28rem 0.5rem;
+      cursor: pointer;
+      transition: all 0.15s;
+      line-height: 1;
+    }
+
+    .lang-btn:first-child { border-right: 1px solid var(--border); }
+    .lang-btn.active { background: var(--amber-glow); color: var(--amber); }
+
+    .line-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.05rem;
+      font-style: italic;
+      font-weight: 300;
+      color: var(--text-mid);
+      line-height: 1.3;
+      max-width: 200px;
+      text-align: right;
+    }
+
+    #clock {
+      font-size: 0.8rem;
+      font-weight: 400;
+      color: var(--amber);
+      letter-spacing: 0.06em;
+    }
+
+    /* Status */
+    .status-bar {
+      font-size: 0.72rem;
+      font-weight: 300;
+      color: var(--text-dim);
+      letter-spacing: 0.04em;
+      margin-bottom: 2rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .status-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--text-dim);
+      flex-shrink: 0;
+    }
+    .status-dot.ok   { background: var(--green); box-shadow: 0 0 6px var(--green); }
+    .status-dot.warn { background: var(--amber); box-shadow: 0 0 6px var(--amber); animation: pulse 1.4s ease-in-out infinite; }
+    .status-dot.err  { background: var(--red); }
+
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+    /* Direction tabs */
+    .dir-tabs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      overflow: hidden;
+      margin-bottom: 2rem;
+    }
+
+    .dir-tab {
+      background: none;
+      border: none;
+      color: var(--text-dim);
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.68rem;
+      font-weight: 400;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0.7rem 0.5rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+    }
+
+    .dir-tab:first-child { border-right: 1px solid var(--border); }
+    .dir-tab.active { background: var(--amber-glow); color: var(--amber); }
+
+    /* Nearest card */
+    .nearest-card {
+      border: 1px solid var(--amber-dim);
+      border-radius: 6px;
+      background: var(--amber-glow);
+      padding: 1.2rem 1.4rem;
+      margin-bottom: 1.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .nearest-card.clickable { cursor: pointer; }
+    .nearest-card.clickable:hover { border-color: var(--amber); background: rgba(232, 160, 48, 0.18); }
+
+    .nearest-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--amber), transparent);
+      opacity: 0.7;
+    }
+
+    .nearest-label {
+      font-size: 0.62rem;
+      font-weight: 400;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: #a07028;
+      margin-bottom: 0.4rem;
+    }
+
+    .nearest-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.9rem;
+      font-weight: 600;
+      color: var(--amber);
+      line-height: 1.1;
+      margin-bottom: 0.35rem;
+    }
+
+    .nearest-meta {
+      font-size: 0.7rem;
+      font-weight: 300;
+      color: var(--text-mid);
+      letter-spacing: 0.04em;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      flex-wrap: wrap;
+    }
+
+    .approx-badge {
+      font-size: 0.57rem;
+      letter-spacing: 0.1em;
+      color: #8a6020;
+      background: rgba(122,82,24,0.2);
+      padding: 0.12rem 0.4rem;
+      border-radius: 2px;
+    }
+
+    /* Train cards */
+    .section-label {
+      font-size: 0.62rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      margin-bottom: 0.85rem;
+    }
+
+    .train-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      margin-bottom: 2rem;
+    }
+
+    .train-card {
+      border: 1px solid var(--border);
+      border-radius: 5px;
+      background: var(--surface);
+      padding: 1rem 1.25rem;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: center;
+      gap: 1rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .train-card.next-up {
+      border-color: var(--green);
+      background: var(--green-dim);
+    }
+
+    .train-card.next-up::before {
+      content: attr(data-label);
+      position: absolute;
+      top: 0.35rem; right: 0.75rem;
+      font-size: 0.52rem;
+      letter-spacing: 0.18em;
+      color: var(--green);
+      opacity: 0.8;
+    }
+
+    .train-time {
+      font-size: 2.2rem;
+      font-weight: 300;
+      color: var(--text);
+      letter-spacing: -1px;
+      line-height: 1;
+    }
+
+    .train-card.next-up .train-time { color: var(--green); }
+
+    .train-meta {
+      font-size: 0.65rem;
+      font-weight: 300;
+      color: var(--text-dim);
+      margin-top: 0.25rem;
+    }
+
+    .train-countdown { text-align: right; }
+
+    .countdown-value {
+      font-size: 1.5rem;
+      font-weight: 400;
+      color: var(--text-dim);
+      line-height: 1;
+    }
+
+    .train-card.next-up .countdown-value {
+      color: var(--green);
+      text-shadow: 0 0 12px rgba(62, 207, 116, 0.4);
+    }
+
+    .countdown-unit {
+      font-size: 0.58rem;
+      font-weight: 300;
+      color: var(--text-dim);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    /* Stop list */
+    .stops-section { padding: 0 0.25rem 0.5rem; }
+
+    .stops-list {
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+
+    .stops-list::before {
+      content: '';
+      position: absolute;
+      left: 11px; top: 8px; bottom: 8px;
+      width: 1px;
+      background: linear-gradient(to bottom, transparent, var(--border) 10%, var(--border) 90%, transparent);
+    }
+
+    .stop-row {
+      display: grid;
+      grid-template-columns: 24px 1fr auto;
+      align-items: center;
+      gap: 0.9rem;
+      padding: 0.5rem 0;
+    }
+
+    .stop-dot {
+      width: 9px; height: 9px;
+      border-radius: 50%;
+      border: 1.5px solid var(--border);
+      background: var(--bg);
+      z-index: 1;
+      margin-left: 7px;
+      flex-shrink: 0;
+    }
+
+    .stop-row.active .stop-dot {
+      border-color: var(--amber);
+      background: var(--amber);
+      box-shadow: 0 0 10px rgba(232, 160, 48, 0.7);
+      width: 11px; height: 11px;
+      margin-left: 6px;
+    }
+
+    .stop-name { font-size: 0.8rem; font-weight: 300; color: var(--text-mid); }
+    .stop-row.active .stop-name { color: var(--amber); font-weight: 400; }
+    .stop-row.passed .stop-name,
+    .stop-row.passed .stop-time { opacity: 0.3; }
+    .stop-time { font-size: 0.75rem; font-weight: 400; color: var(--text-dim); text-align: right; }
+    .stop-row.active .stop-time { color: var(--amber); }
+
+    /* No trains */
+    .no-trains {
+      font-size: 0.8rem;
+      font-weight: 300;
+      color: var(--text-dim);
+      text-align: center;
+      padding: 2rem;
+      border: 1px dashed var(--border);
+      border-radius: 5px;
+      line-height: 1.7;
+    }
+
+    /* Loading */
+    .loading {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 60vh;
+      gap: 1rem;
+    }
+
+    .loading-text {
+      font-size: 0.75rem;
+      font-weight: 300;
+      letter-spacing: 0.1em;
+      color: var(--text-dim);
+      animation: pulse 1.4s ease-in-out infinite;
+    }
+
+    .loading-rail {
+      width: 120px; height: 2px;
+      background: var(--border);
+      position: relative;
+      overflow: hidden;
+      border-radius: 2px;
+    }
+
+    .loading-train {
+      position: absolute;
+      left: -30%; width: 30%; height: 100%;
+      background: linear-gradient(90deg, transparent, var(--amber));
+      animation: train-move 1.6s ease-in-out infinite;
+    }
+
+    @keyframes train-move { 0%{left:-30%} 100%{left:100%} }
+
+    /* Footer */
+    footer {
+      margin-top: 3rem;
+      font-size: 0.62rem;
+      color: var(--text-dim);
+      letter-spacing: 0.06em;
+      line-height: 2;
+      border-top: 1px solid var(--border);
+      padding-top: 1rem;
+    }
+
+    footer a { color: var(--amber-dim); text-decoration: none; }
+
+    @media (max-width: 420px) {
+      .line-badge { font-size: 2.8rem; }
+      .train-time { font-size: 1.8rem; }
+    }
+
+    /* Location permission prompt */
+    .loc-prompt {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 60vh;
+      gap: 1.5rem;
+      text-align: center;
+      padding: 1rem;
+    }
+
+    .loc-icon {
+      font-size: 2.2rem;
+      line-height: 1;
+      opacity: 0.8;
+    }
+
+    .loc-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.6rem;
+      font-weight: 500;
+      color: var(--amber);
+      line-height: 1.2;
+    }
+
+    .loc-body {
+      font-size: 0.78rem;
+      font-weight: 300;
+      color: var(--text-mid);
+      letter-spacing: 0.03em;
+      line-height: 1.7;
+      max-width: 320px;
+    }
+
+    .loc-btn-primary {
+      background: var(--amber-glow);
+      border: 1px solid var(--amber-dim);
+      border-radius: 5px;
+      color: var(--amber);
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      padding: 0.85rem 2rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      width: 100%;
+      max-width: 320px;
+    }
+
+    .loc-btn-primary:hover {
+      background: rgba(232, 160, 48, 0.22);
+      border-color: var(--amber);
+    }
+
+    .loc-btn-secondary {
+      background: none;
+      border: none;
+      color: var(--text-dim);
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.68rem;
+      font-weight: 300;
+      letter-spacing: 0.06em;
+      cursor: pointer;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      padding: 0.25rem 0;
+      transition: color 0.15s;
+    }
+
+    .loc-btn-secondary:hover { color: var(--text-mid); }
+  </style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="app">
+    <div class="loading">
+      <div class="loading-rail"><div class="loading-train"></div></div>
+      <div class="loading-text">LOCALIZANDO…</div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ─── TRANSLATIONS ─────────────────────────────────────────────────────────────
+
+const T = {
+  es: {
+    subtitle:    'Málaga Centro–Alameda · Álora',
+    nearest:     '▲ Estación más cercana',
+    approx:      'TIEMPOS APROX.',
+    away:        'de distancia',
+    nextTrains:  'Próximos trenes',
+    toAlora:     'Hacia Álora',
+    toMalaga:    'Hacia Málaga',
+    nextLabel:   'PRÓXIMO',
+    daily:       'Diario',
+    monFri:      'Lunes–Viernes',
+    weekend:     'Sáb · Dom · Festivos',
+    towards:     'hacia',
+    noTrains:    'No hay más trenes hoy en esta dirección.<br>Consulta el horario del día siguiente.',
+    loading:     'LOCALIZANDO ESTACIÓN MÁS CERCANA…',
+    gpsOk:       (acc, name) => `GPS ±${acc} m · ${name}`,
+    noGps:       'Sin GPS · mostrando Málaga Centro',
+    days:        ['DOM','LUN','MAR','MIÉ','JUE','VIE','SÁB'],
+    validFrom:   'Vigente desde',
+    dataSource:  'Datos',
+    updateNote:  'Actualizado cada minuto · L-V = Lunes–Viernes · SDF = Sáb·Dom·Festivos',
+    approxNote:  'Victoria Kent y Los Prados: tiempos interpolados (no publicados en el horario oficial)',
+    min:         'min',
+    locTitle:    'Compartir ubicación',
+    locBody:     'Podemos detectar automáticamente la estación más cercana a ti.',
+    locAllow:    'Permitir ubicación',
+    locSkip:     'Elegir estación manualmente',
+    locWaiting:  'ESPERANDO PERMISO…',
+  },
+  en: {
+    subtitle:    'Málaga City Centre · Álora',
+    nearest:     '▲ Nearest station',
+    approx:      'APPROX. TIMES',
+    away:        'away',
+    nextTrains:  'Next trains',
+    toAlora:     'To Álora',
+    toMalaga:    'To Málaga',
+    nextLabel:   'NEXT',
+    daily:       'Daily',
+    monFri:      'Mon–Fri',
+    weekend:     'Sat · Sun · Holidays',
+    towards:     'to',
+    noTrains:    'No more trains today in this direction.<br>Check tomorrow\'s timetable.',
+    loading:     'LOCATING NEAREST STATION…',
+    gpsOk:       (acc, name) => `GPS ±${acc} m · ${name}`,
+    noGps:       'No GPS · showing Málaga Centro',
+    days:        ['SUN','MON','TUE','WED','THU','FRI','SAT'],
+    validFrom:   'Valid from',
+    dataSource:  'Data',
+    updateNote:  'Updated every minute · Mon–Fri / Sat–Sun–Holidays schedules applied',
+    approxNote:  'Victoria Kent & Los Prados: interpolated times (not in the official timetable)',
+    min:         'min',
+    locTitle:    'Share location',
+    locBody:     'We can automatically detect the station nearest to you.',
+    locAllow:    'Allow location',
+    locSkip:     'Choose station manually',
+    locWaiting:  'WAITING FOR PERMISSION…',
+  },
+};
+
+// ─── STATION DATA ─────────────────────────────────────────────────────────────
+// Coordinates copied verbatim from the CTMAM site's irMapaxy() JS calls.
+// No rounding — full precision as published.
+
+const STATIONS = [
+  {
+    id: 'malaga',
+    es: 'Málaga Centro Alameda',   en: 'Málaga City Centre',
+    sEs: 'Málaga Centro',          sEn: 'Málaga Centro',
+    lat:  36.71595277777778,       lng: -4.4265388888888895,
+  },
+  {
+    id: 'zambrano',
+    es: 'Estación María Zambrano', en: 'María Zambrano Station',
+    sEs: 'María Zambrano',         sEn: 'María Zambrano',
+    lat:  36.71119166666667,       lng: -4.431397222222222,
+  },
+  {
+    id: 'vkent',
+    es: 'Victoria Kent',           en: 'Victoria Kent',
+    sEs: 'Victoria Kent',          sEn: 'Victoria Kent',
+    lat:  36.70129444444445,       lng: -4.454408333333333,
+    approx: true,
+  },
+  {
+    id: 'losprados',
+    es: 'Los Prados',              en: 'Los Prados',
+    sEs: 'Los Prados',             sEn: 'Los Prados',
+    lat:  36.69832222222222,       lng: -4.477966666666667,
+    approx: true,
+  },
+  {
+    id: 'campanillas',
+    es: 'Campanillas',             en: 'Campanillas',
+    sEs: 'Campanillas',            sEn: 'Campanillas',
+    lat:  36.704280555555556,      lng: -4.545077777777777,
+  },
+  {
+    id: 'cartama',
+    es: 'Cártama Estación',        en: 'Cártama Station',
+    sEs: 'Cártama',                sEn: 'Cártama',
+    lat:  36.733897222222225,      lng: -4.608313888888889,
+  },
+  {
+    id: 'aljaima',
+    es: 'Aljaima',                 en: 'Aljaima',
+    sEs: 'Aljaima',                sEn: 'Aljaima',
+    lat:  36.73285,                lng: -4.6643388888888895,
+  },
+  {
+    id: 'pizarra',
+    es: 'Estación de Pizarra',     en: 'Pizarra Station',
+    sEs: 'Pizarra',                sEn: 'Pizarra',
+    lat:  36.76571944444444,       lng: -4.711247222222222,
+  },
+  {
+    id: 'alora',
+    es: 'Estación FF.CC. Álora',   en: 'Álora Railway Station',
+    sEs: 'Álora',                  sEn: 'Álora',
+    lat:  36.81941944444445,       lng: -4.6998750000000005,
+  },
+];
+
+// ─── TIMETABLES ───────────────────────────────────────────────────────────────
+// IDA  = outbound Málaga → Álora
+//   cols 0–8: station times (index matches STATIONS array)
+//   col  9:   service frequency code
+//   Victoria Kent (col 2) ≈ Zambrano + 4 min  [interpolated]
+//   Los Prados    (col 3) ≈ Zambrano + 9 min  [interpolated]
+
+const IDA = [
+  ['05:44','05:47','05:51','05:56','05:59','06:05','06:10','06:16','06:22','LV'],
+  ['07:00','07:03','07:07','07:12','07:21','07:27','07:32','07:38','07:44','LV'],
+  ['08:00','08:03','08:07','08:12','08:15','08:24','08:29','08:35','08:41','SDF'],
+  ['08:00','08:03','08:07','08:12','08:15','08:21','08:26','08:32','08:38','LV'],
+  ['09:40','09:43','09:47','09:52','09:55','10:02','10:07','10:13','10:19','DIARI'],
+  ['11:40','11:43','11:47','11:52','11:55','12:01','12:06','12:12','12:18','DIARI'],
+  ['12:40','12:43','12:47','12:52','12:55','13:01','13:06','13:13','13:19','LV'],
+  ['13:40','13:43','13:47','13:52','13:55','14:01','14:06','14:13','14:19','DIARI'],
+  ['14:40','14:43','14:47','14:52','14:55','15:01','15:06','15:13','15:22','LV'],
+  ['15:40','15:43','15:47','15:52','15:55','16:01','16:06','16:13','16:19','DIARI'],
+  ['17:40','17:43','17:47','17:52','17:55','18:01','18:06','18:12','18:18','DIARI'],
+  ['18:39','18:42','18:46','18:51','18:54','19:00','19:05','19:12','19:18','LV'],
+  ['19:40','19:43','19:47','19:52','19:55','20:01','20:06','20:12','20:19','DIARI'],
+  ['20:40','20:43','20:47','20:52','20:55','21:01','21:06','21:13','21:19','LV'],
+  ['21:40','21:43','21:47','21:52','21:55','22:01','22:06','22:13','22:20','SDF'],
+  ['21:40','21:43','21:47','21:52','21:55','22:01','22:06','22:13','22:19','LV'],
+];
+
+// VUELTA = inbound Álora → Málaga
+//   cols 0–8: station times, where col index = (8 - stationIdx)
+//   col  9:   service frequency code
+//   Los Prados    (col 5) ≈ Campanillas + 5 min  [interpolated]
+//   Victoria Kent (col 6) ≈ Campanillas + 9 min  [interpolated]
+
+const VUELTA = [
+  ['06:37','06:43','06:49','06:54','07:00','07:05','07:09','07:13','07:15','LV'],
+  ['07:55','08:01','08:07','08:12','08:18','08:23','08:27','08:31','08:35','LV'],
+  ['08:53','08:59','09:05','09:10','09:16','09:21','09:25','09:29','09:33','DIARI'],
+  ['10:55','11:01','11:09','11:14','11:20','11:25','11:29','11:33','11:35','DIARI'],
+  ['12:55','13:01','13:07','13:12','13:18','13:23','13:27','13:31','13:35','DIARI'],
+  ['13:48','13:54','14:00','14:05','14:11','14:16','14:20','14:25','14:28','LV'],
+  ['14:55','15:01','15:07','15:12','15:18','15:23','15:27','15:31','15:35','DIARI'],
+  ['15:50','15:56','16:02','16:07','16:13','16:18','16:22','16:26','16:30','LV'],
+  ['16:55','17:01','17:07','17:12','17:19','17:24','17:28','17:32','17:35','DIARI'],
+  ['18:51','18:57','19:03','19:08','19:15','19:20','19:24','19:28','19:31','DIARI'],
+  ['19:52','19:58','20:03','20:08','20:13','20:18','20:22','20:27','20:32','LV'],
+  ['20:56','21:02','21:08','21:13','21:19','21:24','21:28','21:32','21:36','DIARI'],
+  ['21:55','22:01','22:07','22:12','22:18','22:23','22:27','22:31','22:35','LV'],
+  ['22:45','22:51','22:57','23:04','23:10','23:15','23:19','23:23','23:25','SDF'],
+  ['22:45','22:51','22:57','23:02','23:08','23:13','23:17','23:21','23:25','LV'],
+];
+
+// ─── STATE ────────────────────────────────────────────────────────────────────
+
+const browserLang = (navigator.language || 'es').toLowerCase().startsWith('es') ? 'es' : 'en';
+
+let state = {
+  nearestIdx: null,
+  direction:  'IDA',
+  lang:       browserLang,
+  statusText: '',
+  statusType: 'warn',
+  distance:   null,
+  gpsCoords:  null,
+};
+
+// ─── HELPERS ──────────────────────────────────────────────────────────────────
+
+const tx = () => T[state.lang];
+
+function sName(s) { return state.lang === 'es' ? s.sEs : s.sEn; }
+
+function haversine(lat1, lng1, lat2, lng2) {
+  const R = 6371000, r = d => d * Math.PI / 180;
+  const dLat = r(lat2 - lat1), dLng = r(lng2 - lng1);
+  const a = Math.sin(dLat/2)**2 + Math.cos(r(lat1)) * Math.cos(r(lat2)) * Math.sin(dLng/2)**2;
+  return 2 * R * Math.asin(Math.sqrt(a));
+}
+
+function formatDist(m) {
+  return m < 1000 ? `${Math.round(m)} m` : `${(m / 1000).toFixed(1)} km`;
+}
+
+function toMins(t) {
+  const [h, m] = t.split(':').map(Number);
+  return h * 60 + m;
+}
+
+function nowMins() {
+  const n = new Date();
+  return n.getHours() * 60 + n.getMinutes();
+}
+
+function dayType() {
+  const d = new Date().getDay();
+  return (d === 0 || d === 6) ? 'SDF' : 'LV';
+}
+
+function freqOk(freq) {
+  const dt = dayType();
+  return freq === 'DIARI' || (freq === 'LV' && dt === 'LV') || (freq === 'SDF' && dt === 'SDF');
+}
+
+function freqLabel(freq) {
+  const t = tx();
+  if (freq === 'DIARI') return t.daily;
+  if (freq === 'LV')    return t.monFri;
+  if (freq === 'SDF')   return t.weekend;
+  return freq;
+}
+
+function findNearest(lat, lng) {
+  let minD = Infinity, minI = 0;
+  STATIONS.forEach((s, i) => {
+    const d = haversine(lat, lng, s.lat, s.lng);
+    if (d < minD) { minD = d; minI = i; }
+  });
+  return { idx: minI, dist: minD };
+}
+
+function getNextTrains(stIdx, dir, count = 2) {
+  const now   = nowMins();
+  const table = dir === 'IDA' ? IDA : VUELTA;
+  const col   = dir === 'IDA' ? stIdx : (8 - stIdx);
+  const hits  = [];
+
+  for (const row of table) {
+    const freq = row[9], timeStr = row[col];
+    if (!freqOk(freq) || !timeStr || timeStr === '---') continue;
+    const mins = toMins(timeStr);
+    if (mins >= now) hits.push({ time: timeStr, mins, freq, row });
+  }
+
+  hits.sort((a, b) => a.mins - b.mins);
+  const seen = new Set(), out = [];
+  for (const h of hits) {
+    if (!seen.has(h.time)) { seen.add(h.time); out.push(h); }
+    if (out.length >= count) break;
+  }
+  return out;
+}
+
+function fullRoute(row, dir) {
+  const stops = STATIONS.map((s, i) => ({
+    station: s,
+    stationIdx: i,
+    time: row[dir === 'IDA' ? i : (8 - i)] || '---',
+  }));
+  return dir === 'VUELTA' ? stops.reverse() : stops;
+}
+
+// ─── RENDER ───────────────────────────────────────────────────────────────────
+
+function render() {
+  const app = document.getElementById('app');
+  const t   = tx();
+
+  if (state.nearestIdx === null) {
+    showPicker(); return;
+  }
+
+  const station = STATIONS[state.nearestIdx];
+  const trains  = getNextTrains(state.nearestIdx, state.direction);
+  const now     = nowMins();
+
+  // Train cards
+  let trainsHtml = trains.length === 0
+    ? `<div class="no-trains">${t.noTrains}</div>`
+    : trains.map((item, idx) => {
+        const minsLeft = item.mins - now;
+        const isNext   = idx === 0;
+        const dest     = state.direction === 'IDA' ? 'Álora' : 'Málaga';
+        const route    = fullRoute(item.row, state.direction);
+
+        const stops = route.map((stop, si) => {
+          const isActive = stop.stationIdx === state.nearestIdx;
+          const sm       = stop.time === '---' ? -1 : toMins(stop.time);
+          const passed   = sm >= 0 && sm < now && !isActive;
+          return `
+            <div class="stop-row ${isActive ? 'active' : ''} ${passed ? 'passed' : ''}">
+              <div class="stop-dot"></div>
+              <div class="stop-name">${sName(stop.station)}</div>
+              <div class="stop-time">${stop.time}</div>
+            </div>`;
+        }).join('');
+
+        return `
+          <div class="train-card ${isNext ? 'next-up' : ''}" data-label="${t.nextLabel}">
+            <div>
+              <div class="train-time">${item.time}</div>
+              <div class="train-meta">${freqLabel(item.freq)} · ${t.towards} ${dest}</div>
+            </div>
+            <div class="train-countdown">
+              <div class="countdown-value">${minsLeft < 1 ? '<1' : minsLeft}′</div>
+              <div class="countdown-unit">${t.min}</div>
+            </div>
+          </div>
+          <div class="stops-section"><div class="stops-list">${stops}</div></div>`;
+      }).join('');
+
+  // Clock
+  const n   = new Date();
+  const pad = v => String(v).padStart(2, '0');
+  const clockStr = `${pad(n.getHours())}:${pad(n.getMinutes())}:${pad(n.getSeconds())}`;
+  const dayStr   = t.days[n.getDay()];
+
+  app.innerHTML = `
+    <header>
+      <div class="line-badge">C-2</div>
+      <div class="header-right">
+        <div class="lang-toggle">
+          <button class="lang-btn ${state.lang === 'es' ? 'active' : ''}" onclick="setLang('es')">ES</button>
+          <button class="lang-btn ${state.lang === 'en' ? 'active' : ''}" onclick="setLang('en')">EN</button>
+        </div>
+        <div class="line-name">${t.subtitle}</div>
+        <div id="clock">${dayStr} · ${clockStr}</div>
+      </div>
+    </header>
+
+    <div class="status-bar">
+      <div class="status-dot ${state.statusType}"></div>
+      <span>${state.statusText}</span>
+      ${state.gpsCoords ? `<span style="color:var(--text-dim);font-size:0.65rem;margin-left:auto;opacity:0.5">${state.gpsCoords.lat.toFixed(5)}, ${state.gpsCoords.lng.toFixed(5)}</span>` : ''}
+    </div>
+
+    <div class="dir-tabs">
+      <button class="dir-tab ${state.direction === 'IDA' ? 'active' : ''}" onclick="setDirection('IDA')">
+        → ${t.toAlora}
+      </button>
+      <button class="dir-tab ${state.direction === 'VUELTA' ? 'active' : ''}" onclick="setDirection('VUELTA')">
+        ← ${t.toMalaga}
+      </button>
+    </div>
+
+    <div class="nearest-card clickable" onclick="reopenPicker()">
+      <div class="nearest-label">${t.nearest}</div>
+      <div class="nearest-name">${sName(station)}</div>
+      <div class="nearest-meta">
+        ${state.distance !== null ? `<span>${formatDist(state.distance)} ${t.away}</span>` : ''}
+        <span class="approx-badge" style="cursor:pointer">${state.lang === 'es' ? 'toca para cambiar' : 'tap to change'}</span>
+        ${station.approx ? `<span class="approx-badge">${t.approx}</span>` : ''}
+      </div>
+    </div>
+
+    <div class="section-label">${t.nextTrains}</div>
+    <div class="train-list">${trainsHtml}</div>
+
+    <footer>
+      ${t.dataSource}: <a href="https://siu.ctmam.ctan.es/es/movil/horarios_lineas_tabla.php?linea=161" target="_blank">Consorcio de Transportes de Málaga</a>
+      &nbsp;·&nbsp; C-2 · ${t.validFrom} 24/08/2025<br>
+      <span style="opacity:0.5">${t.updateNote}<br>${t.approxNote}</span>
+    </footer>`;
+}
+
+// ─── ACTIONS ──────────────────────────────────────────────────────────────────
+
+function setDirection(dir) { state.direction = dir; render(); }
+
+function setLang(lang) {
+  state.lang = lang;
+  document.documentElement.lang = lang;
+  if (state.nearestIdx === null) {
+    // Re-render whichever non-main screen is currently showing
+    const app = document.getElementById('app');
+    if (app.querySelector('.loc-prompt')) { showLocationPrompt(); return; }
+    showPicker();
+    return;
+  }
+  render();
+}
+
+function reopenPicker() { state.nearestIdx = null; showPicker(); }
+
+window.setDirection      = setDirection;
+window.setLang           = setLang;
+window.reopenPicker      = reopenPicker;
+window.pickStation       = pickStation;
+window.requestLocation   = requestLocation;
+window.showPicker        = showPicker;
+
+// ─── GEOLOCATION ──────────────────────────────────────────────────────────────
+
+function geoSuccess(pos) {
+  const { latitude: lat, longitude: lng, accuracy } = pos.coords;
+  const { idx, dist } = findNearest(lat, lng);
+  state.nearestIdx = idx;
+  state.distance   = dist;
+  state.gpsCoords  = { lat, lng };
+  state.statusType = 'ok';
+  state.statusText = tx().gpsOk(Math.round(accuracy), sName(STATIONS[idx]));
+  render();
+}
+
+function geoError() {
+  state.nearestIdx = null;
+  showPicker();
+}
+
+function requestLocation() {
+  // Show a waiting state while the browser's native permission dialog is open
+  const app = document.getElementById('app');
+  const t   = tx();
+  app.innerHTML = `
+    <div class="loading">
+      <div class="loading-rail"><div class="loading-train"></div></div>
+      <div class="loading-text">${t.locWaiting}</div>
+    </div>`;
+
+  navigator.geolocation.getCurrentPosition(
+    geoSuccess,
+    geoError,
+    { enableHighAccuracy: true, timeout: 15000, maximumAge: 60000 },
+  );
+}
+
+function showLocationPrompt() {
+  const app = document.getElementById('app');
+  const t   = tx();
+  app.innerHTML = `
+    <header>
+      <div class="line-badge">C-2</div>
+      <div class="header-right">
+        <div class="lang-toggle">
+          <button class="lang-btn ${state.lang === 'es' ? 'active' : ''}" onclick="setLang('es')">ES</button>
+          <button class="lang-btn ${state.lang === 'en' ? 'active' : ''}" onclick="setLang('en')">EN</button>
+        </div>
+        <div class="line-name">${t.subtitle}</div>
+      </div>
+    </header>
+    <div class="loc-prompt">
+      <div class="loc-icon">📍</div>
+      <div class="loc-title">${t.locTitle}</div>
+      <div class="loc-body">${t.locBody}</div>
+      <button class="loc-btn-primary" onclick="requestLocation()">${t.locAllow}</button>
+      <button class="loc-btn-secondary" onclick="showPicker()">${t.locSkip}</button>
+    </div>`;
+}
+
+function showPicker() {
+  const app = document.getElementById('app');
+  const t   = tx();
+  const label = state.lang === 'es'
+    ? '¿Dónde estás? Elige tu estación:'
+    : 'Where are you? Choose your station:';
+  app.innerHTML = `
+    <header>
+      <div class="line-badge">C-2</div>
+      <div class="header-right">
+        <div class="lang-toggle">
+          <button class="lang-btn ${state.lang === 'es' ? 'active' : ''}" onclick="setLang('es')">ES</button>
+          <button class="lang-btn ${state.lang === 'en' ? 'active' : ''}" onclick="setLang('en')">EN</button>
+        </div>
+        <div class="line-name">${t.subtitle}</div>
+      </div>
+    </header>
+    <div class="section-label" style="margin-bottom:1.2rem">${label}</div>
+    <div style="display:flex;flex-direction:column;gap:0.5rem">
+      ${STATIONS.map((s, i) => `
+        <button onclick="pickStation(${i})" style="
+          background:var(--surface);border:1px solid var(--border);border-radius:5px;
+          color:var(--text);font-family:'IBM Plex Mono',monospace;font-size:0.85rem;
+          font-weight:300;padding:0.85rem 1.1rem;text-align:left;cursor:pointer;
+          letter-spacing:0.02em;transition:all 0.15s;
+        " onmouseover="this.style.borderColor='var(--amber-dim)';this.style.color='var(--amber)'"
+           onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text)'">
+          ${sName(s)}${s.approx ? ' <span style="font-size:0.6rem;opacity:0.5">~</span>' : ''}
+        </button>`).join('')}
+    </div>`;
+}
+
+function pickStation(idx) {
+  state.nearestIdx = idx;
+  state.distance   = null;
+  state.statusType = 'warn';
+  state.statusText = state.lang === 'es' ? 'Estación seleccionada manualmente' : 'Station selected manually';
+  render();
+}
+
+function init() {
+  if (!navigator.geolocation) {
+    // No geolocation support at all — go straight to picker
+    showPicker();
+    return;
+  }
+
+  if (navigator.permissions) {
+    // Check existing permission state without triggering a prompt
+    navigator.permissions.query({ name: 'geolocation' }).then(result => {
+      if (result.state === 'granted') {
+        // Already allowed — auto-detect immediately, show loading spinner
+        render();
+        navigator.geolocation.getCurrentPosition(geoSuccess, geoError,
+          { enableHighAccuracy: true, timeout: 15000, maximumAge: 60000 });
+      } else if (result.state === 'denied') {
+        // Already blocked — skip straight to manual picker
+        showPicker();
+      } else {
+        // 'prompt' — show our permission request screen first
+        showLocationPrompt();
+      }
+    }).catch(() => {
+      // Permissions API threw (unlikely but possible) — show prompt screen
+      showLocationPrompt();
+    });
+  } else {
+    // No Permissions API (older browsers) — show prompt screen so user
+    // can opt in rather than being silently blocked
+    showLocationPrompt();
+  }
+}
+
+// ─── CLOCK TICK ───────────────────────────────────────────────────────────────
+
+let lastMinute = -1;
+
+setInterval(() => {
+  if (state.nearestIdx === null) return;
+  const n   = new Date();
+  const pad = v => String(v).padStart(2, '0');
+  const el  = document.getElementById('clock');
+  if (el) el.textContent = `${tx().days[n.getDay()]} · ${pad(n.getHours())}:${pad(n.getMinutes())}:${pad(n.getSeconds())}`;
+  const m = n.getMinutes();
+  if (m !== lastMinute) { lastMinute = m; render(); }
+}, 1000);
+
+init();
+</script>
+</body>
+</html>
