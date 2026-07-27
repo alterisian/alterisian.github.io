@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Cue — Meetings that keep working after you leave</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#F5F7FA;
+    --surface:#FFFFFF;
+    --ink:#14171F;
+    --ink-soft:#5B6472;
+    --ink-faint:#8A93A3;
+    --border:#DCE1E8;
+    --accent:#3454D1;
+    --accent-soft:#EEF1FC;
+    --accent-ink:#22399B;
+    --success:#1F9E7C;
+    --success-soft:#E7F6F1;
+    --research:#7B4FE0;
+    --research-soft:#F1ECFC;
+    --radius:16px;
+    --shadow:0 1px 2px rgba(20,23,31,0.04), 0 10px 28px rgba(20,23,31,0.07);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;height:100%;}
+  body{
+    background:var(--bg);color:var(--ink);
+    font-family:'Inter',system-ui,sans-serif;-webkit-font-smoothing:antialiased;
+    height:100%;overflow:hidden;
+  }
+  .page{
+    min-height:100dvh;display:flex;flex-direction:column;
+    justify-content:space-between;padding:clamp(16px,3vw,28px) clamp(18px,5vw,48px);
+  }
+
+  .brand{display:flex;align-items:center;gap:9px;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:17px;}
+  .brand-dot{width:9px;height:9px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 4px var(--accent-soft);}
+
+  .hero{
+    flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    text-align:center;gap:clamp(10px,2vh,16px);max-width:680px;margin:0 auto;padding:0 8px;
+  }
+  .hero h1{
+    font-family:'Space Grotesk',sans-serif;font-weight:700;
+    font-size:clamp(24px,4.6vw,42px);line-height:1.1;margin:0;letter-spacing:-0.01em;
+  }
+  .hero h1 span{color:var(--accent);}
+  .hero p{
+    font-size:clamp(13.5px,1.7vw,16.5px);color:var(--ink-soft);line-height:1.5;margin:0;
+    max-width:520px;
+  }
+  .integrations{
+    font-size:clamp(13.5px,1.7vw,16.5px);font-weight:600;color:var(--ink-faint);
+    display:flex;align-items:center;gap:6px;flex-wrap:wrap;justify-content:center;
+  }
+  .integrations b{color:var(--ink-soft);font-weight:600;}
+
+  .plans{
+    display:flex;gap:clamp(10px,1.6vw,16px);width:100%;max-width:900px;margin:0 auto;
+  }
+  .plan{
+    flex:1;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
+    box-shadow:var(--shadow);padding:clamp(14px,2vh,20px) clamp(12px,1.6vw,18px);
+    display:flex;flex-direction:column;align-items:center;text-align:center;gap:8px;
+    transition:transform .18s ease, border-color .18s ease;
+  }
+  .plan:hover{transform:translateY(-3px);border-color:var(--accent);}
+  .plan.free{flex:0.65;padding:clamp(10px,1.5vh,14px) clamp(10px,1.2vw,14px);}
+  .plan.mid, .plan.pro{flex:1.2;}
+  .plan.free .plan-icon{width:28px;height:28px;}
+  .plan.free .plan-icon svg{width:14px;height:14px;}
+  .plan.free .plan-name{font-size:13px;}
+  .plan.free .plan-price{font-size:clamp(17px,2.2vw,20px);}
+  .plan.free .plan-desc{font-size:11.5px;min-height:auto;}
+  .plan.free .plan-btn{padding:8px 12px;font-size:12.5px;}
+  .plan-icon{
+    width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+    background:var(--accent-soft);color:var(--accent);
+  }
+  .plan-icon svg{width:18px;height:18px;}
+  .plan.mid .plan-icon{background:var(--success-soft);color:var(--success);}
+  .plan.pro .plan-icon{background:var(--research-soft);color:var(--research);}
+  .plan-name{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:14.5px;}
+  .plan-price{
+    font-family:'Space Grotesk',sans-serif;
+    font-size:clamp(24px,3.2vw,30px);font-weight:700;color:var(--ink-faint);
+    transition:color .2s ease;line-height:1;
+  }
+  .plan:hover .plan-price{color:var(--ink);}
+  .plan.mid:hover .plan-price{color:var(--success);}
+  .plan.pro:hover .plan-price{color:var(--research);}
+  .plan-cadence{font-size:11px;font-weight:600;color:var(--ink-faint);margin-top:2px;}
+  .plan-price .unit{font-size:0.45em;font-weight:600;color:var(--ink-faint);margin-left:2px;}
+  .plan-desc{font-size:12.5px;color:var(--ink-soft);line-height:1.4;min-height:50px;}
+  .plan-btn{
+    width:100%;margin-top:4px;font-family:inherit;font-size:13.5px;font-weight:600;
+    padding:11px 14px;border-radius:10px;border:1px solid var(--border);
+    background:var(--bg);color:var(--ink);cursor:pointer;transition:all .15s ease;
+  }
+  .plan.free .plan-btn{background:var(--ink);color:#fff;border-color:var(--ink);}
+  .plan.mid .plan-btn{background:var(--success);color:#fff;border-color:var(--success);}
+  .plan.pro .plan-btn{background:#D2412D;color:#fff;border-color:#D2412D;}
+  .plan-btn:hover{opacity:.88;}
+
+  .foot{text-align:center;font-size:11.5px;color:var(--ink-faint);}
+
+  @media (max-width:640px){
+    .plans{flex-direction:column;}
+    .page{overflow-y:auto;}
+    body{overflow-y:auto;}
+    .hero{padding-top:6px;}
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="brand"><span class="brand-dot"></span>Happy Cue</div>
+
+  <div class="hero">
+    <h1>Your meeting ends.<br><span>The work already started.</span></h1>
+    <p>Happy Cue turns notes into action items, researches the open questions, and finishes what it safely can — before you've even left the call.</p>
+    <div class="integrations">Integrates with <b>HappyScribe</b>, <b>Otter.ai</b> &amp; <b>Fireflies.ai</b></div>
+  </div>
+
+  <div class="plans">
+    <div class="plan mid">
+      <div class="plan-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2C8 6 6 10 6 14a6 6 0 0 0 12 0c0-4-2-8-6-12z"/></svg></div>
+      <div class="plan-name">Personal</div>
+      <div class="plan-price">€24<span class="unit">/yr</span></div>
+      <div class="plan-cadence">(€2/mo)</div>
+      <div class="plan-desc">+ AI research on your open to-dos</div>
+      <div class="plan-desc">+ 10 meetings a month</div>
+      <button class="plan-btn">Sign up — €2/mo</button>
+    </div>
+
+    <div class="plan free">
+      <div class="plan-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"/><path d="M12 8v4l3 3"/></svg></div>
+      <div class="plan-name">Free</div>
+      <div class="plan-price">€0</div>
+      <div class="plan-cadence">always free</div>
+      <div class="plan-desc">+ 1 meeting a month</div>
+      <div class="plan-desc">+ 1 action item a month</div>
+      <button class="plan-btn">Sign up free</button>
+    </div>
+
+    <div class="plan pro">
+      <div class="plan-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L4 14h6l-1 8 10-13h-6l1-7z"/></svg></div>
+      <div class="plan-name">Pro</div>
+      <div class="plan-price">€60<span class="unit">/yr</span></div>
+      <div class="plan-cadence">(€5/mo)</div>
+      <div class="plan-desc">+ AI completes what it safely can</div>
+      <div class="plan-desc">+ 60 meetings a month</div>
+      <button class="plan-btn">Sign up — €5/mo</button>
+    </div>
+  </div>
+
+  <div class="foot">Cancel anytime · No credit card for Free</div>
+
+</div>
+</body>
+</html>

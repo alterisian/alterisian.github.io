@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Cue — Meetings &amp; To-Dos</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#F5F7FA;
+    --surface:#FFFFFF;
+    --ink:#14171F;
+    --ink-soft:#5B6472;
+    --ink-faint:#8A93A3;
+    --border:#DCE1E8;
+    --accent:#3454D1;
+    --accent-soft:#EEF1FC;
+    --accent-ink:#22399B;
+    --success:#1F9E7C;
+    --success-soft:#E7F6F1;
+    --warning:#B4711F;
+    --warning-soft:#FBF0E1;
+    --research:#7B4FE0;
+    --research-soft:#F1ECFC;
+    --neutral:#6B7280;
+    --neutral-soft:#F1F2F4;
+    --radius:14px;
+    --shadow:0 1px 2px rgba(20,23,31,0.04), 0 8px 24px rgba(20,23,31,0.06);
+  }
+
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Inter',system-ui,sans-serif;
+    -webkit-font-smoothing:antialiased;
+    min-height:100vh;
+  }
+  h1,h2,h3,.display{font-family:'Space Grotesk',sans-serif;}
+
+  .app{max-width:920px;margin:0 auto;padding:28px 20px 60px;}
+
+  /* Topbar */
+  .topbar{
+    display:flex;align-items:center;justify-content:space-between;
+    margin-bottom:18px;flex-wrap:wrap;gap:10px;
+  }
+  .brand{
+    display:flex;align-items:center;gap:9px;
+    font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:19px;
+    color:var(--ink);
+  }
+  .brand-dot{
+    width:10px;height:10px;border-radius:50%;
+    background:var(--accent);
+    box-shadow:0 0 0 4px var(--accent-soft);
+  }
+  .user-chip{
+    display:flex;align-items:center;gap:8px;
+    font-size:13px;font-weight:600;color:var(--ink);
+    background:var(--surface);border:1px solid var(--border);
+    padding:6px 12px 6px 6px;border-radius:100px;
+  }
+  .user-avatar{
+    width:22px;height:22px;border-radius:50%;
+    background:var(--accent);color:#fff;font-size:11px;font-weight:700;
+    display:flex;align-items:center;justify-content:center;
+  }
+
+  /* Main nav (segmented control) */
+  .main-nav{
+    display:inline-flex;gap:4px;background:var(--surface);
+    border:1px solid var(--border);border-radius:100px;padding:4px;
+    margin-bottom:26px;
+  }
+  .nav-tab{
+    font-family:inherit;font-size:13.5px;font-weight:600;color:var(--ink-soft);
+    background:none;border:none;padding:8px 16px;border-radius:100px;
+    cursor:pointer;display:flex;align-items:center;gap:7px;transition:all .15s ease;
+  }
+  .nav-tab.is-active{background:var(--accent);color:#fff;}
+  .nav-badge{
+    font-size:11px;font-weight:700;background:rgba(255,255,255,0.25);
+    color:#fff;padding:1px 7px;border-radius:100px;
+  }
+  .nav-tab:not(.is-active) .nav-badge{background:var(--accent-soft);color:var(--accent-ink);}
+
+  .section-eyebrow{
+    font-size:11.5px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;
+    color:var(--ink-faint);margin:0 0 12px;
+  }
+
+  .view[hidden]{display:none;}
+
+  /* Meeting list card */
+  .meeting-list-card{
+    display:flex;align-items:center;justify-content:space-between;gap:14px;
+    background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
+    padding:18px 20px;cursor:pointer;box-shadow:var(--shadow);transition:border-color .15s ease;
+    margin-bottom:30px;
+  }
+  .meeting-list-card:hover{border-color:var(--accent);}
+  .meeting-list-card .mtitle{font-weight:700;font-size:15px;margin-bottom:5px;}
+  .meeting-list-card .meeting-meta{font-size:13px;color:var(--ink-soft);display:flex;gap:14px;flex-wrap:wrap;}
+  .meeting-list-card .chevron{color:var(--ink-faint);flex-shrink:0;}
+  .attendees-inline{display:flex;gap:5px;margin-top:8px;flex-wrap:wrap;}
+  .badge{
+    font-size:11.5px;font-weight:600;padding:3px 9px;border-radius:100px;
+    border:1px solid var(--border);background:var(--bg);color:var(--ink-soft);
+  }
+  .badge.ai{background:var(--research-soft);color:var(--research);border-color:transparent;}
+
+  .back-link{
+    font-family:inherit;font-size:13px;font-weight:600;color:var(--accent);
+    background:none;border:none;cursor:pointer;padding:0;margin-bottom:18px;
+    display:flex;align-items:center;gap:5px;
+  }
+
+  /* Stepper */
+  .stepper{
+    display:flex;align-items:flex-start;justify-content:space-between;
+    position:relative;margin-bottom:30px;
+  }
+  .stepper::before{
+    content:"";position:absolute;top:19px;left:38px;right:38px;height:2px;
+    background:var(--border);z-index:0;
+  }
+  .stepper .track-fill{
+    position:absolute;top:19px;left:38px;height:2px;
+    background:var(--accent);z-index:1;
+    width:0%;transition:width .45s ease;
+  }
+  .step{
+    position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;
+    gap:8px;cursor:pointer;background:none;border:none;font-family:inherit;
+    flex:1;padding:0;
+  }
+  .step-bubble{
+    width:40px;height:40px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    background:var(--surface);border:2px solid var(--border);
+    color:var(--ink-faint);transition:all .2s ease;
+  }
+  .step-bubble svg{width:18px;height:18px;}
+  .step-label{
+    font-size:12.5px;font-weight:600;color:var(--ink-faint);
+    text-align:center;max-width:100px;transition:color .2s ease;
+  }
+  .step.is-active .step-bubble{
+    border-color:var(--accent);color:var(--accent);
+    box-shadow:0 0 0 5px var(--accent-soft);
+    background:var(--surface);
+  }
+  .step.is-active .step-label{color:var(--accent-ink);}
+  .step.is-done .step-bubble{
+    border-color:var(--accent);background:var(--accent);color:#fff;
+  }
+  .step.is-done .step-label{color:var(--ink-soft);}
+
+  /* Panels */
+  .panel-wrap{position:relative;}
+  .panel{
+    background:var(--surface);border:1px solid var(--border);
+    border-radius:var(--radius);padding:28px;box-shadow:var(--shadow);
+    animation:fadeIn .3s ease;
+  }
+  @keyframes fadeIn{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:translateY(0);}}
+
+  .panel h2{margin:0 0 4px;font-size:21px;}
+  .panel .subhead{color:var(--ink-soft);font-size:14px;margin:0 0 22px;}
+
+  .meeting-card{
+    display:flex;justify-content:space-between;flex-wrap:wrap;gap:16px;
+    background:var(--accent-soft);border-radius:10px;padding:16px 18px;margin-bottom:22px;
+  }
+  .meeting-card .mtitle{font-weight:700;font-size:15px;color:var(--accent-ink);margin-bottom:4px;}
+  .meeting-meta{font-size:13px;color:var(--ink-soft);display:flex;gap:14px;flex-wrap:wrap;}
+  .attendees{display:flex;gap:6px;flex-wrap:wrap;align-items:center;}
+  .badge.human{background:#fff;color:var(--ink);}
+
+  /* Action item rows */
+  .item-row{
+    display:flex;align-items:flex-start;gap:12px;
+    padding:13px 4px;border-bottom:1px solid var(--border);
+  }
+  .item-row:last-child{border-bottom:none;}
+  .item-id{
+    font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:12px;
+    color:var(--ink-faint);width:22px;padding-top:2px;flex-shrink:0;
+  }
+  .item-text{flex:1;font-size:14.5px;line-height:1.45;}
+  .item-owner{
+    font-size:12px;font-weight:600;color:var(--ink-soft);
+    background:var(--neutral-soft);padding:4px 10px;border-radius:100px;flex-shrink:0;
+    white-space:nowrap;
+  }
+
+  /* Assess table */
+  .assess-table{width:100%;border-collapse:collapse;font-size:13.5px;}
+  .assess-table th{
+    text-align:left;font-size:11.5px;text-transform:uppercase;letter-spacing:.04em;
+    color:var(--ink-faint);font-weight:600;padding:0 10px 10px;border-bottom:1px solid var(--border);
+  }
+  .assess-table td{padding:12px 10px;border-bottom:1px solid var(--border);vertical-align:top;}
+  .assess-table tr:last-child td{border-bottom:none;}
+  .pill{
+    display:inline-block;font-size:12px;font-weight:600;padding:4px 10px;border-radius:100px;
+    white-space:nowrap;
+  }
+  .pill.full_execution{background:var(--success-soft);color:var(--success);}
+  .pill.partial{background:var(--warning-soft);color:var(--warning);}
+  .pill.research_only{background:var(--research-soft);color:var(--research);}
+  .pill.decision_support_only{background:var(--neutral-soft);color:var(--neutral);}
+  .tag-row{display:flex;gap:5px;flex-wrap:wrap;}
+  .tag{font-size:11.5px;background:var(--neutral-soft);color:var(--ink-soft);padding:3px 8px;border-radius:6px;}
+  .notes-cell{color:var(--ink-soft);max-width:220px;}
+
+  @media (max-width:640px){
+    .assess-table thead{display:none;}
+    .assess-table, .assess-table tbody, .assess-table tr, .assess-table td{display:block;width:100%;}
+    .assess-table tr{border-bottom:1px solid var(--border);padding:10px 0;}
+    .assess-table td{border-bottom:none;padding:4px 0;}
+    .assess-table td::before{content:attr(data-label);display:block;font-size:11px;font-weight:600;color:var(--ink-faint);margin-bottom:3px;}
+  }
+
+  /* Research */
+  .research-target{
+    background:var(--research-soft);border-radius:10px;padding:14px 16px;margin-bottom:20px;
+    font-size:14px;color:var(--ink);
+  }
+  .research-target b{color:var(--research);}
+  .finding-card{
+    border:1px solid var(--border);border-radius:10px;padding:15px 16px;margin-bottom:12px;
+  }
+  .finding-head{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap;}
+  .finding-name{font-weight:700;font-size:14.5px;}
+  .finding-link{font-size:12px;color:var(--accent);text-decoration:none;}
+  .finding-summary{font-size:13.5px;color:var(--ink-soft);margin:8px 0 6px;line-height:1.5;}
+  .finding-relevance{font-size:13px;color:var(--ink);background:var(--bg);border-radius:7px;padding:8px 10px;}
+  .finding-relevance b{color:var(--research);}
+  .feasibility-box{
+    margin-top:18px;border:1px dashed var(--border);border-radius:10px;padding:16px 18px;
+    background:var(--bg);
+  }
+  .feasibility-box h3{margin:0 0 10px;font-size:14.5px;}
+  .feasibility-box p{margin:0 0 8px;font-size:13.5px;color:var(--ink-soft);line-height:1.55;}
+  .feasibility-box p:last-child{margin-bottom:0;}
+  .feasibility-box b{color:var(--ink);}
+
+  /* Export */
+  .export-actions{display:flex;gap:10px;margin-bottom:18px;flex-wrap:wrap;}
+  .btn{
+    font-family:inherit;font-size:13.5px;font-weight:600;padding:10px 16px;border-radius:9px;
+    border:1px solid var(--border);background:var(--surface);color:var(--ink);cursor:pointer;
+    transition:all .15s ease;
+  }
+  .btn.primary{background:var(--accent);color:#fff;border-color:var(--accent);}
+  .btn.primary:hover{background:var(--accent-ink);}
+  .btn:hover{border-color:var(--ink-faint);}
+  .json-preview{
+    background:#14171F;color:#D7E0F5;border-radius:10px;padding:16px 18px;
+    font-family:'SF Mono',Consolas,monospace;font-size:12px;line-height:1.6;
+    overflow-x:auto;max-height:340px;overflow-y:auto;
+  }
+  .toast{
+    position:fixed;bottom:26px;left:50%;transform:translateX(-50%) translateY(20px);
+    background:var(--ink);color:#fff;padding:10px 18px;border-radius:100px;font-size:13px;
+    font-weight:600;opacity:0;pointer-events:none;transition:all .25s ease;z-index:50;
+  }
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+  /* Nav controls */
+  .nav-controls{display:flex;justify-content:space-between;margin-top:20px;}
+  .nav-controls .btn{min-width:90px;}
+  .nav-controls .btn:disabled{opacity:.35;cursor:not-allowed;}
+
+  /* AI input bar (mockup) */
+  .ai-input-bar{
+    display:flex;align-items:center;gap:8px;background:var(--surface);
+    border:1px solid var(--border);border-radius:100px;padding:8px 8px 8px 18px;
+    box-shadow:var(--shadow);margin-bottom:26px;
+  }
+  .ai-input-bar input{
+    flex:1;border:none;outline:none;font-family:inherit;font-size:14px;
+    background:none;color:var(--ink);
+  }
+  .ai-input-bar input::placeholder{color:var(--ink-faint);}
+  .icon-btn{
+    width:36px;height:36px;border-radius:50%;border:none;cursor:pointer;
+    display:flex;align-items:center;justify-content:center;flex-shrink:0;
+    background:var(--neutral-soft);color:var(--ink-soft);transition:all .15s ease;
+  }
+  .icon-btn svg{width:16px;height:16px;}
+  .icon-btn.send{background:var(--accent);color:#fff;}
+  .icon-btn.mic.is-listening{
+    background:var(--research);color:#fff;
+    animation:pulse 1s ease-in-out infinite;
+  }
+  @keyframes pulse{
+    0%,100%{box-shadow:0 0 0 0 rgba(123,79,224,.4);}
+    50%{box-shadow:0 0 0 8px rgba(123,79,224,0);}
+  }
+
+  /* To-do list */
+  .todo-list{margin-bottom:26px;}
+  .todo-row{
+    display:flex;align-items:flex-start;gap:12px;background:var(--surface);
+    border:1px solid var(--border);border-radius:10px;padding:13px 16px;margin-bottom:8px;
+    cursor:pointer;transition:border-color .15s ease;
+  }
+  .todo-row:hover{border-color:var(--ink-faint);}
+  .todo-check{
+    width:20px;height:20px;border-radius:6px;border:2px solid var(--border);
+    flex-shrink:0;margin-top:1px;display:flex;align-items:center;justify-content:center;
+    transition:all .15s ease;
+  }
+  .todo-check svg{width:12px;height:12px;color:#fff;opacity:0;transition:opacity .1s ease;}
+  .todo-row.is-done .todo-check{background:var(--success);border-color:var(--success);}
+  .todo-row.is-done .todo-check svg{opacity:1;}
+  .todo-body{flex:1;}
+  .todo-text{font-size:14.5px;line-height:1.4;}
+  .todo-row.is-done .todo-text{color:var(--ink-faint);text-decoration:line-through;}
+  .todo-tags{display:flex;gap:6px;margin-top:6px;flex-wrap:wrap;}
+</style>
+</head>
+<body>
+<div class="app">
+
+  <div class="topbar">
+    <div class="brand"><span class="brand-dot"></span>Happy Cue</div>
+    <div class="user-chip"><span class="user-avatar">IM</span>Ian Moss</div>
+  </div>
+
+  <div class="main-nav">
+    <button class="nav-tab is-active" data-view="meetings" onclick="switchView('meetings')">Meetings</button>
+    <button class="nav-tab" data-view="todos" onclick="switchView('todos')">My To-Dos <span class="nav-badge" id="todoBadge">7</span></button>
+  </div>
+
+  <!-- ================= MEETINGS VIEW ================= -->
+  <div class="view" id="view-meetings">
+
+    <div id="meetings-list">
+      <div class="section-eyebrow">Meetings</div>
+      <div class="meeting-list-card" onclick="openWorkflow()">
+        <div>
+          <div class="mtitle">Jatinder Syall and Ian Moss</div>
+          <div class="meeting-meta"><span>Jul 13, 2026 · 13:30</span><span>29 min</span></div>
+          <div class="attendees-inline">
+            <span class="badge">Ian Moss</span>
+            <span class="badge">Jatinder Syall</span>
+            <span class="badge ai">HappyScribe · AI notetaker</span>
+          </div>
+        </div>
+        <div class="chevron">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
+        </div>
+      </div>
+    </div>
+
+    <div id="meetings-workflow" hidden>
+      <button class="back-link" onclick="closeWorkflow()">
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg>
+        Meetings
+      </button>
+
+      <div class="stepper" id="stepper">
+        <div class="track-fill" id="trackFill"></div>
+        <button class="step" data-step="1">
+          <div class="step-bubble"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3h7l5 5v13H7z"/><path d="M14 3v5h5"/><path d="M9 13h6M9 17h6M9 9h2"/></svg></div>
+          <div class="step-label">Extract</div>
+        </button>
+        <button class="step" data-step="2">
+          <div class="step-bubble"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="6" width="12" height="12" rx="2"/><path d="M9 2v3M15 2v3M9 19v3M15 19v3M2 9h3M2 15h3M19 9h3M19 15h3"/></svg></div>
+          <div class="step-label">Assess AI</div>
+        </button>
+        <button class="step" data-step="3">
+          <div class="step-bubble"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M20 20l-4.5-4.5"/></svg></div>
+          <div class="step-label">Research</div>
+        </button>
+        <button class="step" data-step="4">
+          <div class="step-bubble"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15V3"/><path d="M7 8l5-5 5 5"/><path d="M4 15v4a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-4"/></svg></div>
+          <div class="step-label">Export</div>
+        </button>
+      </div>
+
+      <div class="panel-wrap">
+        <section class="panel" data-panel="1">
+          <h2>Extract summary &amp; actions</h2>
+          <p class="subhead">Pulled straight from the HappyScribe transcription.</p>
+          <div class="meeting-card">
+            <div>
+              <div class="mtitle">Jatinder Syall and Ian Moss</div>
+              <div class="meeting-meta"><span>Jul 13, 2026 · 13:30</span><span>29 min</span></div>
+            </div>
+            <div class="attendees">
+              <span class="badge human">Ian Moss</span>
+              <span class="badge human">Jatinder Syall</span>
+              <span class="badge ai">HappyScribe · AI notetaker</span>
+            </div>
+          </div>
+          <div class="item-list">
+            <div class="item-row"><div class="item-id">1</div><div class="item-text">Recruit additional contributors and invite them to the mob-programming session</div><div class="item-owner">Ian Moss</div></div>
+            <div class="item-row"><div class="item-id">2</div><div class="item-text">Share meeting notes and links to PostHog and relevant slides</div><div class="item-owner">Ian Moss</div></div>
+            <div class="item-row"><div class="item-id">3</div><div class="item-text">Send WhatsApp contact via LinkedIn</div><div class="item-owner">Ian Moss</div></div>
+            <div class="item-row"><div class="item-id">4</div><div class="item-text">Continue Android-native research</div><div class="item-owner">Jatinder Syall</div></div>
+            <div class="item-row"><div class="item-id">5</div><div class="item-text">Share findings on iDictate and ChatGPT Android repos, and feasibility for the click-to-solution flow (flow-diagram demo)</div><div class="item-owner">Jatinder Syall</div></div>
+            <div class="item-row"><div class="item-id">6</div><div class="item-text">Schedule a short mob-programming session (~30-60 mins)</div><div class="item-owner">Both</div></div>
+            <div class="item-row"><div class="item-id">7</div><div class="item-text">Decide the starter task</div><div class="item-owner">Both</div></div>
+          </div>
+        </section>
+
+        <section class="panel" data-panel="2" hidden>
+          <h2>Assess AI delegation</h2>
+          <p class="subhead">How much of each task Happy Cue could take on, and what access it'd need.</p>
+          <table class="assess-table">
+            <thead><tr><th>Task</th><th>Capability</th><th>Access needed</th><th>Notes</th></tr></thead>
+            <tbody>
+              <tr><td data-label="Task">1 · Recruit contributors</td><td data-label="Capability"><span class="pill partial">Partial</span></td><td data-label="Access"><div class="tag-row"><span class="tag">linkedin</span><span class="tag">calendar</span></div></td><td data-label="Notes" class="notes-cell">AI can source candidates &amp; draft outreach; recruiting itself is a judgment call.</td></tr>
+              <tr><td data-label="Task">2 · Share notes &amp; links</td><td data-label="Capability"><span class="pill full_execution">Full execution</span></td><td data-label="Access"><div class="tag-row"><span class="tag">drive</span><span class="tag">email/whatsapp</span></div></td><td data-label="Notes" class="notes-cell">Pure distribution, no judgment required.</td></tr>
+              <tr><td data-label="Task">3 · Send WhatsApp contact</td><td data-label="Capability"><span class="pill full_execution">Full execution</span></td><td data-label="Access"><div class="tag-row"><span class="tag">linkedin</span></div></td><td data-label="Notes" class="notes-cell">Single mechanical send.</td></tr>
+              <tr><td data-label="Task">4 · Android research</td><td data-label="Capability"><span class="pill research_only">Research only</span></td><td data-label="Access"><div class="tag-row"><span class="tag">web search</span><span class="tag">github</span></div></td><td data-label="Notes" class="notes-cell">Exploratory work, not a completable to-do.</td></tr>
+              <tr><td data-label="Task">5 · Share repo findings</td><td data-label="Capability"><span class="pill partial">Partial</span></td><td data-label="Access"><div class="tag-row"><span class="tag">github</span><span class="tag">email/whatsapp</span></div></td><td data-label="Notes" class="notes-cell">Summarizing is automatable; relevance judgment still needs a human pass.</td></tr>
+              <tr><td data-label="Task">6 · Schedule session</td><td data-label="Capability"><span class="pill full_execution">Full execution</span></td><td data-label="Access"><div class="tag-row"><span class="tag">calendar</span></div></td><td data-label="Notes" class="notes-cell">Best candidate — calendar integration already live.</td></tr>
+              <tr><td data-label="Task">7 · Decide starter task</td><td data-label="Capability"><span class="pill decision_support_only">Decision support</span></td><td data-label="Access"><div class="tag-row"><span class="tag">none</span></div></td><td data-label="Notes" class="notes-cell">Human call between two people; AI lays out options, doesn't pick.</td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section class="panel" data-panel="3" hidden>
+          <h2>Research</h2>
+          <p class="subhead">Running the "partial" task that's actually researchable right now.</p>
+          <div class="research-target">Task <b>5</b> · Jatinder Syall — share findings on iDictate &amp; ChatGPT Android repos, and feasibility for a click-to-solution flow-diagram demo</div>
+          <div class="finding-card"><div class="finding-head"><span class="finding-name">iDictate</span><a class="finding-link" href="https://petepiet.github.io/iDictate/" target="_blank" rel="noopener">petepiet.github.io/iDictate ↗</a></div><p class="finding-summary">Open-source Android &amp; Wear OS dictation app. Uses Whisper for transcription and Claude for summaries and action items. On-device encrypted storage, no accounts or tracking, GPL-3.0.</p><div class="finding-relevance"><b>Relevance:</b> near-identical pipeline to Happy Cue — record → transcribe → Claude-generated action items — already proven as a working open-source reference.</div></div>
+          <div class="finding-card"><div class="finding-head"><span class="finding-name">gpt_mobile (Taewan-P)</span><a class="finding-link" href="https://github.com/Taewan-P/gpt_mobile" target="_blank" rel="noopener">github.com/Taewan-P/gpt_mobile ↗</a></div><p class="finding-summary">Android chat app supporting multiple LLM providers at once (OpenAI, Anthropic, Google, Ollama), bring-your-own-key, Material3 + Compose.</p><div class="finding-relevance"><b>Relevance:</b> reference for a swappable-model backend if different workflow steps end up calling different LLMs.</div></div>
+          <div class="finding-card"><div class="finding-head"><span class="finding-name">chatAir (flyun)</span><a class="finding-link" href="https://github.com/flyun/chatAir" target="_blank" rel="noopener">github.com/flyun/chatAir ↗</a></div><p class="finding-summary">Native Android app supporting ChatGPT, Gemini, Claude and DeepSeek, with custom endpoint support and markdown/code rendering.</p><div class="finding-relevance"><b>Relevance:</b> more production-polished than gpt_mobile — useful UI patterns for rendering structured AI output.</div></div>
+          <div class="finding-card"><div class="finding-head"><span class="finding-name">chatgpt-android (skydoves)</span><a class="finding-link" href="https://github.com/skydoves/chatgpt-android" target="_blank" rel="noopener">github.com/skydoves/chatgpt-android ↗</a></div><p class="finding-summary">Architecture-sample repo: OpenAI chat API on Android via Jetpack Compose, Coroutines/Flow, Hilt, WorkManager.</p><div class="finding-relevance"><b>Relevance:</b> not diagram-specific, but a clean UI/data-layer separation worth copying for the app's architecture.</div></div>
+          <div class="feasibility-box">
+            <h3>Feasibility — click-to-solution flow diagram</h3>
+            <p><b>Not found:</b> none of the surveyed repos generate visual flow diagrams directly — that piece doesn't exist as a ready-made open-source component.</p>
+            <p><b>Recommended approach:</b> prompt an LLM to output a diagram in Mermaid syntax when a user taps an action item, then render it via a WebView loading Mermaid.js (or a lightweight native Canvas renderer for simple cases).</p>
+            <p><b>Effort estimate:</b> demoable inside the 30-60 min mob-programming session already planned — existing pieces cover it, nothing needs from-scratch engineering.</p>
+          </div>
+        </section>
+
+        <section class="panel" data-panel="4" hidden>
+          <h2>Export &amp; share</h2>
+          <p class="subhead">Take the whole workflow output with you.</p>
+          <div class="export-actions">
+            <button class="btn primary" onclick="copyJSON()">Copy JSON</button>
+            <button class="btn" onclick="downloadJSON()">Download .json</button>
+            <button class="btn" onclick="copyMarkdown()">Copy as Markdown</button>
+          </div>
+          <div class="json-preview" id="jsonPreview"></div>
+        </section>
+      </div>
+
+      <div class="nav-controls">
+        <button class="btn" id="backBtn" onclick="goStep(currentStep-1)">Back</button>
+        <button class="btn primary" id="nextBtn" onclick="goStep(currentStep+1)">Next</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= TO-DOS VIEW ================= -->
+  <div class="view" id="view-todos" hidden>
+
+    <div class="ai-input-bar">
+      <button class="icon-btn mic" id="micBtn" onclick="toggleMic()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v6a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/><path d="M19 10v1a7 7 0 0 1-14 0v-1M12 18v4"/></svg>
+      </button>
+      <input type="text" id="aiInput" placeholder="Ask Happy Cue to add, prioritize, or complete a task…">
+      <button class="icon-btn send" onclick="sendPrompt()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+      </button>
+    </div>
+
+    <div class="section-eyebrow">From meetings</div>
+    <div class="todo-list" id="todo-meetings"></div>
+
+    <div class="section-eyebrow">General</div>
+    <div class="todo-list" id="todo-daily"></div>
+
+  </div>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+  const workflowData = {
+    meeting: {
+      meeting_id: "8e6c9c46f337474e93fc908cf74d51e3",
+      title: "Jatinder Syall and Ian Moss",
+      date: "2026-07-13",
+      time: "13:30",
+      duration_minutes: 29,
+      attendees: [
+        { name: "Ian Moss", type: "human" },
+        { name: "Jatinder Syall", type: "human" },
+        { name: "HappyScribe", type: "ai_notetaker" }
+      ]
+    },
+    action_items: [
+      { task_id: "1", meeting_id: "8e6c9c46f337474e93fc908cf74d51e3", assignee: "Ian Moss", task: "Recruit additional contributors and invite them to the mob-programming session" },
+      { task_id: "2", meeting_id: "8e6c9c46f337474e93fc908cf74d51e3", assignee: "Ian Moss", task: "Share meeting notes and links to PostHog and relevant slides" },
+      { task_id: "3", meeting_id: "8e6c9c46f337474e93fc908cf74d51e3", assignee: "Ian Moss", task: "Send WhatsApp contact via LinkedIn" },
+      { task_id: "4", meeting_id: "8e6c9c46f337474e93fc908cf74d51e3", assignee: "Jatinder Syall", task: "Continue Android-native research" },
+      { task_id: "5", meeting_id: "8e6c9c46f337474e93fc908cf74d51e3", assignee: "Jatinder Syall", task: "Share findings on iDictate and ChatGPT Android repos, and feasibility for the click-to-solution flow (flow-diagram demo)" },
+      { task_id: "6", meeting_id: "8e6c9c46f337474e93fc908cf74d51e3", assignee: "Both", task: "Schedule a short mob-programming session (~30-60 mins)" },
+      { task_id: "7", meeting_id: "8e6c9c46f337474e93fc908cf74d51e3", assignee: "Both", task: "Decide the starter task" }
+    ],
+    ai_delegation_assessment: [
+      { task_id: "1", capability_tier: "partial", access_required: ["linkedin","calendar"], notes: "AI can source candidates and draft outreach; recruiting itself is a judgment call." },
+      { task_id: "2", capability_tier: "full_execution", access_required: ["drive","email_or_whatsapp"], notes: "Pure distribution, no judgment required." },
+      { task_id: "3", capability_tier: "full_execution", access_required: ["linkedin"], notes: "Single mechanical send." },
+      { task_id: "4", capability_tier: "research_only", access_required: ["web_search","github"], notes: "Exploratory work, not a completable to-do." },
+      { task_id: "5", capability_tier: "partial", access_required: ["github","email_or_whatsapp"], notes: "Summarizing is automatable; relevance judgment still needs a human pass." },
+      { task_id: "6", capability_tier: "full_execution", access_required: ["calendar"], notes: "Best candidate — calendar integration already live." },
+      { task_id: "7", capability_tier: "decision_support_only", access_required: [], notes: "Human call between two people; AI lays out options, doesn't pick." }
+    ],
+    research: {
+      task_id: "5",
+      meeting_id: "8e6c9c46f337474e93fc908cf74d51e3",
+      research_topic: "iDictate & ChatGPT Android repos — feasibility of a click-to-solution flow-diagram feature",
+      findings: [
+        { name: "iDictate", url: "https://petepiet.github.io/iDictate/", relevance: "Proves the record -> transcribe -> Claude action items pipeline already works." },
+        { name: "gpt_mobile (Taewan-P)", url: "https://github.com/Taewan-P/gpt_mobile", relevance: "Reference for a swappable multi-LLM backend layer." },
+        { name: "chatAir (flyun)", url: "https://github.com/flyun/chatAir", relevance: "Production-polished UI patterns for structured AI output." },
+        { name: "chatgpt-android (skydoves)", url: "https://github.com/skydoves/chatgpt-android", relevance: "Clean architecture reference (Compose + Coroutines + Hilt)." }
+      ],
+      feasibility: {
+        flow_diagram_capability_found: false,
+        recommended_approach: "Prompt an LLM for Mermaid syntax on tap, render via WebView + Mermaid.js.",
+        effort_estimate: "Demoable inside the planned 30-60 min mob-programming session."
+      }
+    }
+  };
+
+  // ---- personal to-do data for Ian Moss ----
+  const meetingTodos = [
+    { id: "t1", text: "Recruit additional contributors and invite them to the mob-programming session", tag: "Personal", meeting: "Jul 13 meeting" },
+    { id: "t2", text: "Share meeting notes and links to PostHog and relevant slides", tag: "Personal", meeting: "Jul 13 meeting" },
+    { id: "t3", text: "Send WhatsApp contact via LinkedIn", tag: "Personal", meeting: "Jul 13 meeting" },
+    { id: "t6", text: "Schedule a short mob-programming session (~30-60 mins)", tag: "Joint", meeting: "Jul 13 meeting" },
+    { id: "t7", text: "Decide the starter task", tag: "Joint", meeting: "Jul 13 meeting" }
+  ];
+  const dailyTodos = [
+    { id: "d1", text: "Take the bins out" },
+    { id: "d2", text: "Cook dinner for Maggie" }
+  ];
+  const doneState = {};
+
+  function renderTodos(){
+    const mWrap = document.getElementById('todo-meetings');
+    mWrap.innerHTML = meetingTodos.map(t => todoRowHTML(t.id, t.text, [t.tag, t.meeting])).join('');
+    const dWrap = document.getElementById('todo-daily');
+    dWrap.innerHTML = dailyTodos.map(t => todoRowHTML(t.id, t.text, [])).join('');
+    updateBadge();
+  }
+
+  function todoRowHTML(id, text, tags){
+    const done = doneState[id] ? 'is-done' : '';
+    const tagsHTML = tags.length ? `<div class="todo-tags">${tags.map(t=>`<span class="tag">${t}</span>`).join('')}</div>` : '';
+    return `<div class="todo-row ${done}" data-id="${id}" onclick="toggleTodo('${id}')">
+      <div class="todo-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12l5 5L20 6"/></svg></div>
+      <div class="todo-body"><div class="todo-text">${text}</div>${tagsHTML}</div>
+    </div>`;
+  }
+
+  function toggleTodo(id){
+    doneState[id] = !doneState[id];
+    renderTodos();
+  }
+
+  function updateBadge(){
+    const all = [...meetingTodos, ...dailyTodos];
+    const open = all.filter(t => !doneState[t.id]).length;
+    document.getElementById('todoBadge').textContent = open;
+  }
+
+  // ---- view switching ----
+  function switchView(view){
+    document.getElementById('view-meetings').hidden = view !== 'meetings';
+    document.getElementById('view-todos').hidden = view !== 'todos';
+    document.querySelectorAll('.nav-tab').forEach(t=>{
+      t.classList.toggle('is-active', t.dataset.view === view);
+    });
+  }
+
+  function openWorkflow(){
+    document.getElementById('meetings-list').hidden = true;
+    document.getElementById('meetings-workflow').hidden = false;
+    goStep(1);
+  }
+  function closeWorkflow(){
+    document.getElementById('meetings-workflow').hidden = true;
+    document.getElementById('meetings-list').hidden = false;
+  }
+
+  // ---- stepper logic ----
+  let currentStep = 1;
+  const totalSteps = 4;
+
+  function goStep(step){
+    step = Math.max(1, Math.min(totalSteps, step));
+    currentStep = step;
+    document.querySelectorAll('.panel').forEach(p=>{
+      p.hidden = Number(p.dataset.panel) !== step;
+    });
+    document.querySelectorAll('.step').forEach(s=>{
+      const n = Number(s.dataset.step);
+      s.classList.remove('is-active','is-done');
+      if(n === step) s.classList.add('is-active');
+      else if(n < step) s.classList.add('is-done');
+      const bubble = s.querySelector('.step-bubble');
+      if(n < step){
+        bubble.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12l5 5L20 6"/></svg>';
+      }
+    });
+    const pct = ((step-1)/(totalSteps-1))*100;
+    document.getElementById('trackFill').style.width = pct + '%';
+    document.getElementById('backBtn').disabled = step === 1;
+    document.getElementById('nextBtn').textContent = step === totalSteps ? 'Done' : 'Next';
+    document.getElementById('nextBtn').disabled = step === totalSteps;
+    if(step === 4){
+      document.getElementById('jsonPreview').textContent = JSON.stringify(workflowData, null, 2);
+    }
+  }
+
+  document.querySelectorAll('.step').forEach(s=>{
+    s.addEventListener('click', ()=> goStep(Number(s.dataset.step)));
+  });
+
+  function showToast(msg){
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(()=>t.classList.remove('show'), 1800);
+  }
+
+  function copyJSON(){
+    navigator.clipboard.writeText(JSON.stringify(workflowData, null, 2)).then(()=>showToast('JSON copied to clipboard'));
+  }
+  function downloadJSON(){
+    const blob = new Blob([JSON.stringify(workflowData, null, 2)], {type:'application/json'});
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'happy-cue-' + workflowData.meeting.meeting_id.slice(0,8) + '.json';
+    a.click();
+    showToast('Download started');
+  }
+  function copyMarkdown(){
+    let md = `**${workflowData.meeting.title}** — ${workflowData.meeting.date}\n\n`;
+    md += `**Action Items**\n`;
+    workflowData.action_items.forEach(a=>{ md += `- [${a.assignee}] ${a.task}\n`; });
+    navigator.clipboard.writeText(md).then(()=>showToast('Markdown copied to clipboard'));
+  }
+
+  // ---- AI input bar mockup ----
+  function toggleMic(){
+    const btn = document.getElementById('micBtn');
+    btn.classList.add('is-listening');
+    showToast('Listening… (voice input coming soon)');
+    setTimeout(()=>btn.classList.remove('is-listening'), 1600);
+  }
+  function sendPrompt(){
+    const input = document.getElementById('aiInput');
+    if(input.value.trim()){
+      showToast('Chat assistant coming soon');
+      input.value = '';
+    }
+  }
+  document.getElementById('aiInput').addEventListener('keydown', e=>{
+    if(e.key === 'Enter') sendPrompt();
+  });
+
+  renderTodos();
+  goStep(1);
+</script>
+</body>
+</html>
