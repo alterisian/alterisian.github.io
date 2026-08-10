@@ -26,15 +26,36 @@
     --radius:16px;
     --shadow:0 1px 2px rgba(20,23,31,0.04), 0 10px 28px rgba(20,23,31,0.07);
   }
+  /* Fallbacks for older browsers (IE) that don't support CSS custom properties */
+  /* Place explicit values before the var(...) declarations so IE will use these. */
+  body{background:#F5F7FA;color:#14171F;}
+  .brand-dot{background:#3454D1;box-shadow:0 0 0 6px #EEF1FC;}
+  .hero h1 span{color:#3454D1;}
+  .integrations{color:#8A93A3;}
+  .plan{background:#FFFFFF;border:1px solid #DCE1E8;box-shadow:0 1px 2px rgba(20,23,31,0.04), 0 10px 28px rgba(20,23,31,0.07);}
+  .plan:hover{border-color:#3454D1;}
+  .plan-icon{background:#EEF1FC;color:#3454D1;}
+  .plan.mid .plan-icon{background:#E7F6F1;color:#1F9E7C;}
+  .plan.pro .plan-icon{background:#F1ECFC;color:#7B4FE0;}
+  .plan-price{color:#8A93A3;}
+  .plan-cadence{color:#14171F}
+  .plan-desc{color:#14171F}
+  .plan-btn{background:#F5F7FA;color:#14171F;border:1px solid #DCE1E8;}
+  .plan.free .plan-btn{background:#5C6169;color:#fff;border-color:#5C6169;}
+  .plan.mid .plan-btn{background:#1F9E7C;color:#fff;border-color:#1F9E7C;}
+  .plan.pro .plan-btn{background:#D2412D;color:#fff;border-color:#D2412D;}
+  #mc-embedded-subscribe{background:#3454D1;color:#fff;border:none;border-radius:8px;padding:12px 18px;cursor:pointer}
   *{box-sizing:border-box;}
   html,body{margin:0;padding:0;height:100%;}
   body{
     background:var(--bg);color:var(--ink);
     font-family:'Inter',system-ui,sans-serif;-webkit-font-smoothing:antialiased;
-    height:100%;overflow:hidden;
+    /* Allow scrolling in embedded previews and older browsers */
+    height:auto;overflow:auto;-ms-overflow-style:auto;
   }
   .page{
-    min-height:100dvh;display:flex;flex-direction:column;
+    /* Use 100vh as a safer fallback for browsers that don't support 100dvh */
+    min-height:100vh;display:flex;flex-direction:column;
     justify-content:space-between;padding:clamp(16px,3vw,28px) clamp(18px,5vw,48px);
   }
 
@@ -298,12 +319,18 @@ const closeButton = document.querySelector(".modal-close");
 
 function closeModal() {
   modal.style.display = "none";
+  document.body.style.overflow = '';
+}
+
+function openModal() {
+  modal.style.display = 'flex';
+  document.body.style.overflow = 'hidden';
 }
 
 document.querySelectorAll(".plan-btn").forEach(button => {
   button.addEventListener("click", () => {
     hiddenField.value = button.dataset.rate;
-    modal.style.display = "flex";
+    openModal();
   });
 });
 
