@@ -33,6 +33,16 @@ h3 {
     margin: 3em auto;
 }
 
+.sidebar-avatar {
+    display: inline-block;
+    max-width: 140px;
+    width: 100%;
+    height: auto;
+    border-radius: 50%;
+    margin: 0 0 1em;
+    border: 3px solid rgba(255,255,255,0.3);
+}
+
 .sidebar {
     background: rgb(9 9 9);
     color: #fff;
