@@ -34,12 +34,13 @@ h3 {
 }
 
 .sidebar-avatar {
-    display: inline-block;
-    max-width: 140px;
+    display: block;
     width: 100%;
-    height: auto;
+    max-width: 140px;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
     border-radius: 50%;
-    margin: 0 0 1em;
+    margin: 0 auto 1em;
     border: 3px solid rgba(255,255,255,0.3);
 }
 
