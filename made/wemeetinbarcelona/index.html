@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WE MEET IN BARCELONA // People, Culture, History, and the city today.</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      /* Color Palette: Terracotta, Urban Canopy Green, Granite Slate, Warm Sand */
+      --color-bg: #121518;
+      --color-grid-street: #1C2128;
+      --color-street-green: #102A1F;
+      --color-block-roof: #22272E;
+      --color-block-hover: #2D333B;
+      --color-terracotta: #E05A47;
+      --color-terracotta-soft: #EE7A68;
+      --color-green-accent: #38C172;
+      --color-green-glow: rgba(56, 193, 114, 0.25);
+      --color-sand: #F4F1DE;
+      --color-text-muted: #768390;
+      --color-border: #373E47;
+      
+      --chamfer: 22px;
+      --font-main: 'Plus Jakarta Sans', sans-serif;
+      --font-code: 'JetBrains Mono', monospace;
+    }
+
+    [data-theme="day"] {
+      --color-bg: #EAE6DF;
+      --color-grid-street: #D1CBBF;
+      --color-street-green: #C8E6C9;
+      --color-block-roof: #FFFFFF;
+      --color-block-hover: #F8F6F0;
+      --color-terracotta: #D04836;
+      --color-terracotta-soft: #E86B5A;
+      --color-green-accent: #2E7D32;
+      --color-green-glow: rgba(46, 125, 50, 0.15);
+      --color-sand: #1C2128;
+      --color-text-muted: #656D76;
+      --color-border: #C1B9AC;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--color-bg);
+      color: var(--color-sand);
+      font-family: var(--font-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+      transition: background-color 0.4s ease, color 0.4s ease;
+    }
+
+    /* Future ideas: green canopy metric and acoustic comfort metric in header.
+       Keep these out of the current version. */
+    /* Top Navigation / Superblock Header Control */
+    header {
+      padding: 1.25rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #F4F1DE;
+      color: #1C2128;
+      border-bottom: 1px solid #D8D2C5;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .brand-icon {
+      width: 28px;
+      height: 28px;
+      background: var(--color-terracotta);
+      clip-path: polygon(6px 0%, calc(100% - 6px) 0%, 100% 6px, 100% calc(100% - 6px), calc(100% - 6px) 100%, 6px 100%, 0% calc(100% - 6px), 0% 6px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-weight: 800;
+      font-size: 0.8rem;
+    }
+
+    .brand-title {
+      font-size: 1.15rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      text-transform: uppercase;
+    }
+
+    .brand-title span,
+    .brand-title a {
+      color: var(--color-terracotta);
+      text-decoration: none;
+    }
+
+    .brand-title a:hover {
+      text-decoration: underline;
+    }
+
+    .header-controls {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    .stat-badge {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--color-border);
+      padding: 0.4rem 0.8rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 500;
+    }
+
+    .dot-green {
+      width: 8px;
+      height: 8px;
+      background-color: var(--color-green-accent);
+      border-radius: 50%;
+      box-shadow: 0 0 8px var(--color-green-accent);
+    }
+
+    .btn-toggle {
+      background: #FFFFFF;
+      border: 1px solid #C1B9AC;
+      color: #1C2128;
+      padding: 0.5rem 1rem;
+      font-family: var(--font-main);
+      font-size: 0.825rem;
+      font-weight: 600;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .btn-toggle:hover {
+      border-color: var(--color-terracotta);
+      color: var(--color-terracotta);
+    }
+
+    /* Black Editorial Title Block */
+    .title-block {
+      width: 100%;
+      max-width: 1100px;
+      background: #000;
+      color: #fff;
+      padding: 2rem 2.25rem 2.1rem;
+      margin-bottom: 1.5rem;
+      border-radius: 0;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.28);
+    }
+
+    .title-block-kicker {
+      font-family: var(--font-code);
+      font-size: 0.7rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--color-terracotta-soft);
+      margin-bottom: 0.55rem;
+    }
+
+    .title-block h1 {
+      font-size: clamp(2rem, 4vw, 3.5rem);
+      line-height: 1.02;
+      letter-spacing: -0.045em;
+      font-weight: 800;
+      margin: 0;
+    }
+
+    .title-block p {
+      max-width: 680px;
+      margin-top: 0.75rem;
+      color: #b8b8b8;
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+
+    /* Main Container & Grid Layout */
+    main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      position: relative;
+    }
+
+    /* Grid Background - Representing Pedestrian Axis & Streets */
+    .superblock-container {
+      position: relative;
+      width: 100%;
+      max-width: 1100px;
+      background: var(--color-grid-street);
+      padding: 18px;
+      border-radius: 16px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+      border: 1px solid var(--color-border);
+      transition: background 0.4s ease;
+    }
+
+    /* Eixample 3x3 Block Grid */
+    .eixample-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: repeat(3, 1fr);
+      gap: 22px; /* Streets / Passages */
+      position: relative;
+    }
+
+    /* Green Axis Street Overlays */
+    .green-axis-h {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: calc(33.33% + 2px);
+      height: 18px;
+      background: var(--color-street-green);
+      pointer-events: none;
+      z-index: 1;
+      opacity: 0.85;
+      border-top: 1px dashed var(--color-green-accent);
+      border-bottom: 1px dashed var(--color-green-accent);
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      overflow: hidden;
+    }
+
+    .green-axis-v {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: calc(33.33% + 2px);
+      width: 18px;
+      background: var(--color-street-green);
+      pointer-events: none;
+      z-index: 1;
+      opacity: 0.85;
+      border-left: 1px dashed var(--color-green-accent);
+      border-right: 1px dashed var(--color-green-accent);
+    }
+
+    .tree-icon {
+      font-size: 0.65rem;
+      color: var(--color-green-accent);
+      animation: pulseGreen 3s infinite alternate;
+    }
+
+    @keyframes pulseGreen {
+      0% { opacity: 0.4; transform: scale(0.9); }
+      100% { opacity: 1; transform: scale(1.1); }
+    }
+
+    /* Octagonal Block Design (Manzana / Island) */
+    .block {
+      position: relative;
+      z-index: 2;
+      background: var(--color-block-roof);
+      aspect-ratio: 1 / 1;
+      /* Iconic Cerdà Chamfered Octagonal Cutout */
+      clip-path: polygon(
+        var(--chamfer) 0%, 
+        calc(100% - var(--chamfer)) 0%, 
+        100% var(--chamfer), 
+        100% calc(100% - var(--chamfer)), 
+        calc(100% - var(--chamfer)) 100%, 
+        var(--chamfer) 100%, 
+        0% calc(100% - var(--chamfer)), 
+        0% var(--chamfer)
+      );
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+      border: 1px solid var(--color-border);
+    }
+
+    .block:hover {
+      background: var(--color-block-hover);
+      transform: translateY(-4px) scale(1.02);
+      box-shadow: 0 12px 30px rgba(0,0,0,0.3);
+    }
+
+    .block.active {
+      outline: 2px solid var(--color-terracotta);
+    }
+
+    /* Inner Courtyard (Patio de Manzana) */
+    .courtyard {
+      background: var(--color-bg);
+      flex: 1;
+      margin: 8px;
+      border-radius: 8px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 0.75rem;
+      position: relative;
+      overflow: hidden;
+      border: 1px dashed var(--color-border);
+      transition: background 0.3s ease;
+    }
+
+    .block:hover .courtyard {
+      border-color: var(--color-green-accent);
+      background: var(--color-street-green);
+    }
+
+    .courtyard-badge {
+      font-family: var(--font-code);
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--color-terracotta);
+      margin-bottom: 0.25rem;
+      font-weight: 600;
+    }
+
+    .courtyard-title {
+      font-size: 0.95rem;
+      font-weight: 700;
+      line-height: 1.2;
+      margin-bottom: 0.25rem;
+    }
+
+    .courtyard-desc {
+      font-size: 0.725rem;
+      color: var(--color-text-muted);
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    /* Block Header & Footer Labels */
+    .block-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.65rem;
+      font-family: var(--font-code);
+      color: var(--color-text-muted);
+      padding: 0 4px;
+    }
+
+    .block-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.7rem;
+      padding: 0 4px;
+    }
+
+    .chamfer-tag {
+      font-size: 0.6rem;
+      background: rgba(224, 90, 71, 0.15);
+      color: var(--color-terracotta);
+      padding: 2px 6px;
+      border-radius: 3px;
+      font-weight: 600;
+    }
+
+    /* Special Center Hub (Plaça Central / Tetuan analog) */
+    .block.center-hub {
+      background: linear-gradient(135deg, var(--color-block-roof) 0%, #1E2822 100%);
+      border: 1px solid var(--color-green-accent);
+    }
+
+    .block.center-hub .courtyard {
+      background: radial-gradient(circle, var(--color-street-green) 0%, var(--color-bg) 100%);
+      border: 1px solid var(--color-green-accent);
+    }
+
+    .center-hub .courtyard-title {
+      color: var(--color-green-accent);
+      font-size: 1.1rem;
+    }
+
+    /* Interactive Drawer / Modal for Block Inspection */
+    .inspector-panel {
+      margin-top: 2rem;
+      width: 100%;
+      max-width: 1100px;
+      background: var(--color-block-roof);
+      border: 1px solid var(--color-border);
+      border-radius: 12px;
+      padding: 1.5rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 2rem;
+      transition: all 0.3s ease;
+    }
+
+    .inspector-info {
+      flex: 1;
+    }
+
+    .inspector-tag {
+      font-family: var(--font-code);
+      font-size: 0.75rem;
+      color: var(--color-terracotta);
+      text-transform: uppercase;
+    }
+
+    .inspector-title {
+      font-size: 1.35rem;
+      font-weight: 700;
+      margin: 0.2rem 0 0.5rem 0;
+    }
+
+    .inspector-text {
+      font-size: 0.875rem;
+      color: var(--color-text-muted);
+      line-height: 1.5;
+    }
+
+    .inspector-stats {
+      display: flex;
+      gap: 1.5rem;
+    }
+
+    .metric-card {
+      background: var(--color-bg);
+      border: 1px solid var(--color-border);
+      padding: 0.75rem 1.25rem;
+      border-radius: 8px;
+      text-align: center;
+    }
+
+    .metric-val {
+      font-family: var(--font-code);
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--color-green-accent);
+    }
+
+    .metric-label {
+      font-size: 0.675rem;
+      color: var(--color-text-muted);
+      text-transform: uppercase;
+      margin-top: 2px;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 868px) {
+      .eixample-grid {
+        grid-template-columns: 1fr;
+      }
+      .green-axis-h, .green-axis-v {
+        display: none;
+      }
+      .inspector-panel {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .inspector-stats {
+        width: 100%;
+        justify-content: space-between;
+      }
+    }
+  </style>
+</head>
+<body data-theme="night">
+
+  <!-- Header Section -->
+  <header>
+    <div class="brand">
+      <div class="brand-icon">B</div>
+      <div class="brand-title">WeMeetInBarcelona <span>// <a href="about.html">About</a></span></div>
+    </div>
+
+    <div class="header-controls">
+      <button class="btn-toggle" id="themeToggle">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+        <span>Toggle Lighting</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Superblock Interactive Grid -->
+  <main>
+    <section class="title-block">
+      <div class="title-block-kicker">Barcelona // Eixample</div>
+      <h1>We Meet In Barcelona</h1>
+      <p>The superblock — where streets become public space, and the city is organised around people.</p>
+    </section>
+
+    <div class="superblock-container">
+      
+      <!-- Green Pedestrian Street Axes (Superblock Intersections) -->
+      <div class="green-axis-h">
+        <span class="tree-icon">🌳</span>
+        <span class="tree-icon">🚴</span>
+        <span class="tree-icon">🌳</span>
+        <span class="tree-icon">☕</span>
+        <span class="tree-icon">🌳</span>
+      </div>
+      <div class="green-axis-v"></div>
+
+      <div class="eixample-grid" id="grid">
+        
+        <!-- Block 01 -->
+        <article class="block" data-id="1" data-name="Illa d'Innovació" data-type="Tech & Design Hub" data-desc="A community tech incubator situated inside a renovated industrial courtyard with solar canopy roof tiles." data-noise="-14 dB" data-green="78%">
+          <div class="block-header">
+            <span>M-01</span>
+            <span>CHAFLÁN N.W.</span>
+          </div>
+          <div class="courtyard">
+            <span class="courtyard-badge">Tech Core</span>
+            <h3 class="courtyard-title">Innovation Hub</h3>
+            <p class="courtyard-desc">Startups, open labs & coworking spaces</p>
+          </div>
+          <div class="block-footer">
+            <span class="chamfer-tag">45° Cut</span>
+            <span style="color: var(--color-green-accent);">● Active</span>
+          </div>
+        </article>
+
+        <!-- Block 02 -->
+        <article class="block" data-id="2" data-name="Mercat de Sant Antoni Axis" data-type="Gastronomy & Local Produce" data-desc="Fresh food stalls, artisanal bakeries, and zero-waste local culinary workshops built around a serene courtyard garden." data-noise="-18 dB" data-green="92%">
+          <div class="block-header">
+            <span>M-02</span>
+            <span>CARRER GIRONA</span>
+          </div>
+          <div class="courtyard">
+            <span class="courtyard-badge">Culinary</span>
+            <h3 class="courtyard-title">Artisan Market</h3>
+            <p class="courtyard-desc">Local food ecosystem & urban gardens</p>
+          </div>
+          <div class="block-footer">
+            <span class="chamfer-tag">Pedestrian</span>
+            <span style="color: var(--color-terracotta);">★ 4.9</span>
+          </div>
+        </article>
+
+        <!-- Block 03 -->
+        <article class="block" data-id="3" data-name="Illa de les Arts" data-type="Creative Studio & Gallery" data-desc="A vibrant residential and studio cluster dedicated to digital media, ceramics, and local Catalan craft design." data-noise="-10 dB" data-green="65%">
+          <div class="block-header">
+            <span>M-03</span>
+            <span>CHAFLÁN N.E.</span>
+          </div>
+          <div class="courtyard">
+            <span class="courtyard-badge">Culture</span>
+            <h3 class="courtyard-title">Arts Precinct</h3>
+            <p class="courtyard-desc">Galleries, ateliers & performance space</p>
+          </div>
+          <div class="block-footer">
+            <span class="chamfer-tag">45° Cut</span>
+            <span style="color: var(--color-green-accent);">● Active</span>
+          </div>
+        </article>
+
+        <!-- Block 04 -->
+        <article class="block" data-id="4" data-name="Consell de Cent Green Axis" data-type="Civic Promenade" data-desc="Car-free linear park corridor prioritising pedestrians, native Mediterranean flora, and outdoor seating plazas." data-noise="-22 dB" data-green="96%">
+          <div class="block-header">
+            <span>M-04</span>
+            <span>EIX VERD</span>
+          </div>
+          <div class="courtyard">
+            <span class="courtyard-badge">Ecology</span>
+            <h3 class="courtyard-title">Green Axis Park</h3>
+            <p class="courtyard-desc">Permeable pavement & rain gardens</p>
+          </div>
+          <div class="block-footer">
+            <span class="chamfer-tag">Car-Free</span>
+            <span style="color: var(--color-green-accent);">● Active</span>
+          </div>
+        </article>
+
+        <!-- Center Hub (Plaça Central / Tetuan) -->
+        <article class="block center-hub active" data-id="5" data-name="Plaça Central Hub" data-type="Community Agora" data-desc="The heart of the Superblock. An open circular plaza equipped with outdoor amphitheaters, children's play structures, and rainwater retention basins." data-noise="-25 dB" data-green="99%">
+          <div class="block-header">
+            <span style="color: var(--color-green-accent);">PLAÇA TETUAN</span>
+            <span>CORE HUB</span>
+          </div>
+          <div class="courtyard">
+            <span class="courtyard-badge">Central Forum</span>
+            <h3 class="courtyard-title">Superilla Plaza</h3>
+            <p class="courtyard-desc">Civic square, shade canopy & children's park</p>
+          </div>
+          <div class="block-footer">
+            <span class="chamfer-tag" style="background: var(--color-green-accent); color: #fff;">Superblock Core</span>
+            <span style="color: var(--color-green-accent);">100% Pedestrian</span>
+          </div>
+        </article>
+
+        <!-- Block 06 -->
+        <article class="block" data-id="6" data-name="Illa Salut i Benestar" data-type="Health & Wellness" data-desc="Neighborhood health clinics, yoga courtyards, and tranquil shaded rest zones for senior citizens and families." data-noise="-16 dB" data-green="88%">
+          <div class="block-header">
+            <span>M-06</span>
+            <span>EIX VERD</span>
+          </div>
+          <div class="courtyard">
+            <span class="courtyard-badge">Wellness</span>
+            <h3 class="courtyard-title">Health Oasis</h3>
+            <p class="courtyard-desc">Quiet courtyards & civic wellbeing</p>
+          </div>
+          <div class="block-footer">
+            <span class="chamfer-tag">Car-Free</span>
+            <span style="color: var(--color-green-accent);">● Active</span>
+          </div>
+        </article>
+
+        <!-- Block 07 -->
+        <article class="block" data-id="7" data-name="Illa Sostenible" data-type="Clean Energy & Mobility" data-desc="Electric bike sharing hub, underground pneumatic waste management, and solar micro-grid monitoring center." data-noise="-12 dB" data-green="70%">
+          <div class="block-header">
+            <span>M-07</span>
+            <span>CHAFLÁN S.W.</span>
+          </div>
+          <div class="courtyard">
+            <span class="courtyard-badge">Mobility</span>
+            <h3 class="courtyard-title">Clean Energy Grid</h3>
+            <p class="courtyard-desc">EV charging, Bicing hub & micro-grid</p>
+          </div>
+          <div class="block-footer">
+            <span class="chamfer-tag">45° Cut</span>
+            <span style="color: var(--color-green-accent);">● Active</span>
+          </div>
+        </article>
+
+        <!-- Block 08 -->
+        <article class="block" data-id="8" data-name="Carrer d'Aragó Transit Edge" data-type="Urban Transit Edge" data-desc="Controlled perimeter access road ensuring necessary delivery vehicles and emergency transit can seamlessly interface." data-noise="-5 dB" data-green="55%">
+          <div class="block-header">
+            <span>M-08</span>
+            <span>CARRER D'ARAGÓ</span>
+          </div>
+          <div class="courtyard">
+            <span class="courtyard-badge">Transit Boundary</span>
+            <h3 class="courtyard-title">Perimeter Belt</h3>
+            <p class="courtyard-desc">Filtered logistics & public transit connection</p>
+          </div>
+          <div class="block-footer">
+            <span class="chamfer-tag">Speed: 10km/h</span>
+            <span style="color: var(--color-terracotta);">Filter Zone</span>
+          </div>
+        </article>
+
+        <!-- Block 09 -->
+        <article class="block" data-id="9" data-name="Illa Residencial Cerdà" data-type="Co-Living & Housing" data-desc="Modernized historic apartments featuring passive cooling systems, green rooftop terraces, and shared interior gardens." data-noise="-20 dB" data-green="85%">
+          <div class="block-header">
+            <span>M-09</span>
+            <span>CHAFLÁN S.E.</span>
+          </div>
+          <div class="courtyard">
+            <span class="courtyard-badge">Living</span>
+            <h3 class="courtyard-title">Eco Residences</h3>
+            <p class="courtyard-desc">Sustainable living & shared gardens</p>
+          </div>
+          <div class="block-footer">
+            <span class="chamfer-tag">45° Cut</span>
+            <span style="color: var(--color-green-accent);">● Active</span>
+          </div>
+        </article>
+
+      </div>
+    </div>
+
+    <!-- Inspector Panel (Displays detail when block is clicked) -->
+    <div class="inspector-panel" id="inspector">
+      <div class="inspector-info">
+        <span class="inspector-tag" id="inspectType">Community Agora</span>
+        <h2 class="inspector-title" id="inspectName">Plaça Central Hub</h2>
+        <p class="inspector-text" id="inspectDesc">
+          The heart of the Superblock. An open circular plaza equipped with outdoor amphitheaters, children's play structures, and rainwater retention basins.
+        </p>
+      </div>
+
+      <div class="inspector-stats">
+        <div class="metric-card">
+          <div class="metric-val" id="inspectNoise">-25 dB</div>
+          <div class="metric-label">Noise Level</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-val" id="inspectGreen">99%</div>
+          <div class="metric-label">Permeability</div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    // Theme Toggle Handler
+    const themeBtn = document.getElementById('themeToggle');
+    const body = document.body;
+
+    themeBtn.addEventListener('click', () => {
+      const currentTheme = body.getAttribute('data-theme');
+      const newTheme = currentTheme === 'night' ? 'day' : 'night';
+      body.setAttribute('data-theme', newTheme);
+    });
+
+    // Block Selection & Inspection Handler
+    const blocks = document.querySelectorAll('.block');
+    const inspectName = document.getElementById('inspectName');
+    const inspectType = document.getElementById('inspectType');
+    const inspectDesc = document.getElementById('inspectDesc');
+    const inspectNoise = document.getElementById('inspectNoise');
+    const inspectGreen = document.getElementById('inspectGreen');
+
+    blocks.forEach(block => {
+      block.addEventListener('click', () => {
+        // Remove active class from all blocks
+        blocks.forEach(b => b.classList.remove('active'));
+        
+        // Add active class to clicked block
+        block.classList.add('active');
+
+        // Update inspector information
+        inspectName.textContent = block.getAttribute('data-name');
+        inspectType.textContent = block.getAttribute('data-type');
+        inspectDesc.textContent = block.getAttribute('data-desc');
+        inspectNoise.textContent = block.getAttribute('data-noise');
+        inspectGreen.textContent = block.getAttribute('data-green');
+      });
+    });
+  </script>
+</body>
+</html>

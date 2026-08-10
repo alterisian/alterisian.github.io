@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About — We Meet in Barcelona</title>
+  <meta name="description" content="We Meet in Barcelona — people, ideas, conversations and connections in Barcelona.">
+  <style>
+    :root {
+      --paper: #f4f1e8;
+      --ink: #171717;
+      --red: #d71920;
+      --yellow: #f2c94c;
+      --blue: #1d5fa7;
+      --green: #4d8b63;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; background: var(--paper); color: var(--ink);
+      font-family: Arial, Helvetica, sans-serif; line-height: 1.5;
+    }
+    header {
+      border-bottom: 2px solid var(--ink); padding: 22px 5vw;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .brand {
+      display: block;
+      text-decoration: none;
+      line-height: 0;
+    }
+
+    .brand img {
+      width: 190px;
+      height: 58px;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+      mix-blend-mode: multiply;
+    }
+    nav a {
+      color: var(--ink); text-decoration: none; margin-left: 28px;
+      font-size: .85rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: .08em;
+    }
+    nav a:hover { color: var(--red); }
+    main { max-width: 1100px; margin: 0 auto; padding: 8vw 5vw 10vw; }
+    .eyebrow, .section-label {
+      font-size: .8rem; font-weight: 800; letter-spacing: .14em;
+      text-transform: uppercase;
+    }
+    .eyebrow { margin-bottom: 28px; }
+    h1 {
+      max-width: 950px; margin: 0; font-size: clamp(4rem, 10vw, 9rem);
+      line-height: .86; letter-spacing: -.085em; font-weight: 900;
+    }
+    h1 .red { color: var(--red); }
+    .intro {
+      max-width: 760px; margin: 8vw 0 0;
+      font-size: clamp(1.5rem, 3vw, 2.4rem);
+      line-height: 1.2; letter-spacing: -.035em;
+    }
+    .section {
+      margin-top: 12vw; padding-top: 35px; border-top: 2px solid var(--ink);
+    }
+    .section-label { margin-bottom: 30px; }
+    .section-content {
+      display: grid; grid-template-columns: 1fr 2fr; gap: 8vw;
+    }
+    h2 {
+      margin: 0; font-size: clamp(2.5rem, 5vw, 5rem);
+      line-height: .9; letter-spacing: -.07em;
+    }
+    .text { font-size: 1.25rem; max-width: 650px; }
+    .text p { margin-top: 0; margin-bottom: 1.5em; }
+    .people {
+      margin-top: 8vw; display: grid; grid-template-columns: repeat(2, 1fr);
+      gap: 2px; background: var(--ink); border: 2px solid var(--ink);
+    }
+    .person { background: var(--paper); padding: 35px; min-height: 190px; }
+    .person:nth-child(2) { background: var(--yellow); }
+    .person:nth-child(3) { background: var(--blue); color: white; }
+    .person:nth-child(4) { background: var(--green); color: white; }
+    .person-number {
+      font-size: .75rem; font-weight: 800; letter-spacing: .1em; margin-bottom: 35px;
+    }
+    .person h3 { margin: 0 0 10px; font-size: 1.8rem; letter-spacing: -.04em; }
+    .person p { margin: 0; font-size: 1rem; }
+    .principle {
+      margin-top: 10vw; padding: 7vw 6vw; background: var(--ink); color: var(--paper);
+    }
+    .principle h2 { max-width: 850px; }
+    .principle p { max-width: 650px; margin: 45px 0 0; font-size: 1.25rem; }
+    .closing { margin-top: 12vw; max-width: 900px; }
+    .closing p {
+      font-size: clamp(2rem, 4vw, 3.5rem); line-height: 1;
+      letter-spacing: -.055em; margin: 0;
+    }
+    footer {
+      border-top: 2px solid var(--ink); padding: 25px 5vw;
+      display: flex; justify-content: space-between; gap: 30px;
+      font-size: .8rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: .08em;
+    }
+    @media (max-width: 700px) {
+      header { padding: 18px 5vw; }
+      nav a { margin-left: 12px; font-size: .7rem; }
+      main { padding-top: 15vw; }
+      .section-content, .people { grid-template-columns: 1fr; }
+      .section-content { gap: 35px; }
+      .person { min-height: 160px; }
+      footer { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+<header>
+  <a class="brand" href="/" aria-label="We Meet in Barcelona"><img src="images/logo.png" alt="We Meet in Barcelona logo"></a>
+  <nav><a href="index.html">Home</a><a href="about.html">About</a><a href="https://www.instagram.com/wemeetinbarcelona/" target="_blank" rel="noopener">Instagram</a></nav>
+</header>
+<main>
+  <div class="eyebrow">About</div>
+  <h1>We Meet<br><span class="red">in Barcelona.</span></h1>
+  <p class="intro">We're not entirely sure what <strong>We Meet in Barcelona</strong> is yet. And perhaps that's the point.</p>
+
+  <section class="section">
+    <div class="section-label">01 — The idea</div>
+    <div class="section-content">
+      <h2>Who<br>meets<br>who?</h2>
+      <div class="text">
+        <p>The title probably comes first: <strong>we meet in Barcelona.</strong> Which naturally raises the questions of who we meet, and when.</p>
+        <p>Part of it is social. Meeting people. Making friends. Dating. Going for a drink. Finding people to do things with.</p>
+        <p>Part of it is professional. Meeting people to work with, collaborate with, start something with, or simply exchange ideas.</p>
+        <p>But there is another part emerging alongside it: <strong>the people of Barcelona.</strong></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-label">02 — The people</div>
+    <div class="section-content">
+      <h2>Very<br>Barcelona.</h2>
+      <div class="text">
+        <p>We're interested in conversations with people who have a genuine connection to Barcelona.</p>
+        <p>People who were born here. People who have lived here for decades. People who arrived from somewhere else and made a life here. And people who spent an important part of their lives here before moving on.</p>
+        <p>An artist. A startup founder. A housing activist. A neighbourhood bar owner. A musician. A slightly notorious local character.</p>
+        <p>Not necessarily famous people. Just people with a <strong>Barcelona story.</strong></p>
+      </div>
+    </div>
+    <div class="people">
+      <article class="person"><div class="person-number">01 / 04</div><h3>Born here.</h3><p>The people whose families have been part of Barcelona for generations.</p></article>
+      <article class="person"><div class="person-number">02 / 04</div><h3>Made a life here.</h3><p>People who arrived from somewhere else and became part of the city.</p></article>
+      <article class="person"><div class="person-number">03 / 04</div><h3>Left something behind.</h3><p>People whose Barcelona chapter mattered, even if they now live somewhere else.</p></article>
+      <article class="person"><div class="person-number">04 / 04</div><h3>Still becoming.</h3><p>People building their lives, businesses, friendships and communities here now.</p></article>
+    </div>
+  </section>
+
+  <section class="principle">
+    <div class="section-label">03 — Not tourism</div>
+    <h2>Barcelona isn't a backdrop. It's the connection.</h2>
+    <p>We Meet in Barcelona isn't about seeing the city. It's about knowing people in it.</p>
+    <p>We're interested in the people who live here, grew up here, moved here, built something here, changed something here, or left a little bit of themselves here.</p>
+  </section>
+
+  <section class="section">
+    <div class="section-label">04 — The magazine</div>
+    <div class="section-content">
+      <h2>Meet<br>someone.</h2>
+      <div class="text">
+        <p>Alongside the social and professional side of We Meet in Barcelona, we're building a collection of conversations with people who have something to say about the city.</p>
+        <p>Some will be obvious choices. Others probably won't be.</p>
+        <p>We want to know what Barcelona looks like from different perspectives — the old neighbourhoods, the new businesses, the artists, the activists, the people who arrived yesterday and the people whose families have been here for generations.</p>
+        <p>And perhaps every interview leads to another person. <strong>Who should we meet next?</strong></p>
+      </div>
+    </div>
+  </section>
+
+  <div class="closing">
+    <p>Maybe it's a social network. Maybe it's a magazine. Maybe it's a series of events. <strong>Maybe it's all three.</strong></p>
+  </div>
+</main>
+<footer>
+  <div>We Meet in Barcelona</div>
+  <div>People · Ideas · Opportunities</div><div><a href="https://www.instagram.com/wemeetinbarcelona/" target="_blank" rel="noopener" style="color: inherit; text-decoration: none;">@wemeetinbarcelona</a></div>
+</footer>
+</body>
+</html>
