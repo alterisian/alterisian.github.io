@@ -100,17 +100,46 @@
     }
   }
 
+  function ensureTallyLoaded() {
+    return new Promise((resolve) => {
+      if (window.Tally) return resolve();
+      const existing = document.querySelector('script[src="https://tally.so/widgets/embed.js"]');
+      if (existing) {
+        existing.addEventListener('load', () => resolve());
+        existing.addEventListener('error', () => resolve());
+        return;
+      }
+      const s = document.createElement('script');
+      s.src = 'https://tally.so/widgets/embed.js';
+      s.async = true;
+      s.onload = () => resolve();
+      s.onerror = () => resolve();
+      document.head.appendChild(s);
+    });
+  }
+
   document.getElementById('feedback-trigger').addEventListener('click', async () => {
     const project_id = await getProjectId(PROJECT_SLUG);
-    Tally.openPopup(TALLY_FORM_ID, {
-      layout: 'modal',
-      hiddenFields: {
-        project_id,
-        page_url: window.location.href
-        // set manually because Tally's auto-capture only fires for a hidden field
-        // named exactly "originPage" — renaming it to page_url turned that off
-      }
-    });
+    const origin = window.location.href;
+    const hidden = { 'project_id': String(project_id), 'originPage': origin };
+    console.log('Tally widget: opening popup with', hidden);
+    await ensureTallyLoaded();
+    if (typeof Tally === 'undefined') {
+      console.warn('Tally did not load; opening fallback URL');
+      const url = `https://tally.so/embed/${TALLY_FORM_ID}?originPage=${encodeURIComponent(origin)}&project_id=${encodeURIComponent(project_id)}`;
+      window.open(url, '_blank', 'noopener');
+      return;
+    }
+    try {
+      Tally.openPopup(TALLY_FORM_ID, {
+        layout: 'modal',
+        hiddenFields: hidden
+      });
+    } catch (e) {
+      console.warn('Tally.openPopup failed, opening fallback', e);
+      const url = `https://tally.so/embed/${TALLY_FORM_ID}?originPage=${encodeURIComponent(origin)}&project_id=${encodeURIComponent(project_id)}`;
+      window.open(url, '_blank', 'noopener');
+    }
   });
 </script>
 

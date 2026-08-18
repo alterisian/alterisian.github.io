@@ -366,25 +366,54 @@ document.addEventListener("keydown", event => {
 <!-- Tally feedback trigger (bottom-left) -->
 <button id="feedback-trigger" aria-label="Feedback" style="position:fixed;left:20px;bottom:20px;height:36px;padding:0 14px;border-radius:18px;background:#F5A623;color:#1a1a1a;border:none;font-size:13px;font-weight:600;cursor:pointer;z-index:9999;">Feedback</button>
 
-<script src="https://tally.so/widgets/embed.js"></script>
 <script>
   (function(){
     const TALLY_FORM_ID = 'xXE2Ek';
     const PROJECT_ID = 3; // per request
+
+    function ensureTallyLoaded() {
+      return new Promise((resolve) => {
+        if (window.Tally) return resolve();
+        const existing = document.querySelector('script[src="https://tally.so/widgets/embed.js"]');
+        if (existing) {
+          existing.addEventListener('load', () => resolve());
+          existing.addEventListener('error', () => resolve());
+          return;
+        }
+        const s = document.createElement('script');
+        s.src = 'https://tally.so/widgets/embed.js';
+        s.async = true;
+        s.onload = () => resolve();
+        s.onerror = () => resolve();
+        document.head.appendChild(s);
+      });
+    }
+
     const btn = document.getElementById('feedback-trigger');
     if (!btn) return;
-    btn.addEventListener('click', function () {
+
+    btn.addEventListener('click', async function () {
+      const origin = window.location.href;
+      const hidden = { 'project_id': String(PROJECT_ID), 'originPage': origin };
+      console.log('Tally: opening popup with hiddenFields', hidden);
+      await ensureTallyLoaded();
       if (typeof Tally === 'undefined') {
-        console.warn('Tally script not loaded');
+        console.warn('Tally did not load — opening fallback link');
+        // fallback: open Tally form page in a new tab with query params
+        const url = `https://tally.so/embed/${TALLY_FORM_ID}?originPage=${encodeURIComponent(origin)}&project_id=${encodeURIComponent(PROJECT_ID)}`;
+        window.open(url, '_blank', 'noopener');
         return;
       }
-      Tally.openPopup(TALLY_FORM_ID, {
-        layout: 'modal',
-        hiddenFields: {
-          project_id: PROJECT_ID,
-          originPage: window.location.href
-        }
-      });
+      try {
+        Tally.openPopup(TALLY_FORM_ID, {
+          layout: 'modal',
+          hiddenFields: hidden
+        });
+      } catch (e) {
+        console.warn('Tally.openPopup failed, falling back to new tab', e);
+        const url = `https://tally.so/embed/${TALLY_FORM_ID}?originPage=${encodeURIComponent(origin)}&project_id=${encodeURIComponent(PROJECT_ID)}`;
+        window.open(url, '_blank', 'noopener');
+      }
     });
   })();
 </script>
