@@ -1,0 +1,205 @@
+Make the Leaderboard real: a points system
+
+Where points stand today
+
+
+
+
+
+Every member currently has 0 points (6 members, no completed sessions, no accepted invites), so the leaderboard renders but has nothing to rank.
+
+
+
+The only place points are awarded today is when an organiser marks a session Completed — each participant gets +10 points, +1 session, hours, and a streak bump. Since no session has been completed yet, nothing has been earned.
+
+
+
+Invites already award credits (1 when you create an invite, 1 more when it's accepted), but credits are a separate counter and never turn into points.
+
+Points that will exist after this change
+
+
+
+
+
+
+
+Action
+
+
+
+Points
+
+
+
+Who gets them
+
+
+
+
+
+Complete a session you attended
+
+
+
+10
+
+
+
+each participant
+
+
+
+
+
+Bonus per hour of session time
+
+
+
+5 / hour
+
+
+
+each participant
+
+
+
+
+
+Organise a session that completes
+
+
+
+5 extra
+
+
+
+organiser
+
+
+
+
+
+Attendance streak bonus
+
+
+
+5 at 3 in a row, 15 at 7
+
+
+
+the member
+
+
+
+
+
+Create a project
+
+
+
+15
+
+
+
+owner, once per project
+
+
+
+
+
+Complete onboarding (profile + availability)
+
+
+
+20
+
+
+
+the member, once
+
+
+
+
+
+Refer someone who joins
+
+
+
+50
+
+
+
+referrer
+
+
+
+
+
+Referred person earns points (first 3 months)
+
+
+
+20% of their points
+
+
+
+referrer, ongoing
+
+The 20% referral share is capped to the first 3 months after the referral is accepted, tracked per referral so it stops automatically.
+
+How it works
+
+
+
+
+
+Referral record — a referrals table (referrer, referred user, accepted date, expiry = accepted + 3 months). Populated by the existing invite-accept flow, plus a backfill from any already-accepted project invites.
+
+
+
+Points ledger — a point_events table (user, kind, points, source id, created at) so every award is auditable and idempotent (unique key per kind + source, so no double awards). participation_stats.points becomes the running total, kept in sync by a trigger on the ledger.
+
+
+
+Awarding — a single security-definer function award_points(user, kind, points, source_id) inserts into the ledger, then checks for an active referral for that user and, if within 3 months, awards the referrer 20% as a referral_share event. Session completion, project creation, onboarding, and invite acceptance all call it instead of writing points directly.
+
+
+
+Backfill — award points retroactively for existing completed sessions (none yet), created projects, and onboarded profiles so the board isn't empty on day one.
+
+Leaderboard UI
+
+
+
+
+
+Show points prominently with rank medals for the top 3, plus a breakdown chip (sessions · hours · streak) as today.
+
+
+
+Add a "How points work" popover listing the table above, so the scoring is visible rather than mysterious.
+
+
+
+Show each member's own rank and point breakdown on their profile page (points by category: sessions, referrals, projects).
+
+Technical notes
+
+
+
+
+
+New tables public.referrals and public.point_events with GRANTs, RLS (everyone signed-in can read, only the security-definer function writes).
+
+
+
+award_points and the referral-share logic run as SECURITY DEFINER in the private schema, called from accept_project_invite and from a new complete_session(session_id) RPC that replaces the client-side loop in src/routes/sessions.$id.tsx (that loop currently writes stats straight from the browser).
+
+
+
+Trigger on point_events keeps participation_stats.points, total_sessions, total_hours, and streaks correct.
+
+Also included: two blocking build errors
+
+Two "New session" links (dashboard and sessions list) no longer compile because the new-session route expects an optional project search param. Both links need search={{ project: undefined }}. These are fixed as part of this change (plan mode can't edit source files).

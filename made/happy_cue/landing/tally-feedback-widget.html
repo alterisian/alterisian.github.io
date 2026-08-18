@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Feedback widget — preview</title>
+<style>
+  :root {
+    /* Match these two to the real "Edit with Lovable" badge (inspect it in devtools on a live
+       Lovable site — its exact CSS isn't published anywhere). Once matched, the button below
+       will sit level with it, mirrored on the opposite side. */
+    --badge-offset: 20px;
+    --badge-height: 36px;
+    --badge-radius: 18px;
+
+    /* Trigger color — default is a warm amber: visible against a black/dark badge without
+       reading as an error state the way red does. Swap these two lines for other options:
+         indigo/blue : --trigger-bg: #4F46E5;  --trigger-fg: #fff;   (calm, common "help" color)
+         white pill  : --trigger-bg: #fff;     --trigger-fg: #1a1a1a; border: 1px solid #ddd
+         stay black  : --trigger-bg: #1a1a1a;  --trigger-fg: #fff;   (pair with a pulse animation instead) */
+    --trigger-bg: #F5A623;
+    --trigger-fg: #1a1a1a;
+  }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    background: #fafafa;
+    min-height: 100vh;
+  }
+  .page-content { padding: 40px; color: #444; max-width: 560px; }
+  .page-content code { background: #eee; padding: 2px 6px; border-radius: 4px; }
+
+  /* Reference only — approximates the Lovable badge so you can compare proportions.
+     Delete this block once --badge-offset / --badge-height above are set to the real values. */
+  .lovable-badge-reference {
+    position: fixed;
+    bottom: var(--badge-offset);
+    right: var(--badge-offset);
+    height: var(--badge-height);
+    padding: 0 14px;
+    border-radius: var(--badge-radius);
+    background: #1a1a1a;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    font-size: 13px;
+    opacity: 0.45;
+  }
+
+  /* The actual feedback trigger — mirrored on the left, same offset/height/radius */
+  #feedback-trigger {
+    position: fixed;
+    bottom: var(--badge-offset);
+    left: var(--badge-offset);
+    height: var(--badge-height);
+    padding: 0 14px;
+    border-radius: var(--badge-radius);
+    background: var(--trigger-bg);
+    color: var(--trigger-fg);
+    border: none;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    z-index: 9999;
+  }
+  #feedback-trigger:hover { filter: brightness(0.92); }
+</style>
+</head>
+<body>
+
+<div class="page-content">
+  <h1>Project page (preview)</h1>
+  <p>The faded pill on the right approximates the Lovable badge for comparison. The
+  <strong>Feedback</strong> button on the left is the real trigger — click it to test the live form.</p>
+  <p>Per-project change needed: just <code>PROJECT_SLUG</code> below.</p>
+</div>
+
+<div class="lovable-badge-reference">Edit with Lovable</div>
+<button id="feedback-trigger">Feedback</button>
+
+<script src="https://tally.so/widgets/embed.js"></script>
+<script>
+  // ---- Set per project when you paste this into a new site ----
+  const TALLY_FORM_ID      = 'xXE2Ek';
+  const PROJECT_SLUG       = 'totravelto';
+  const DEFAULT_PROJECT_ID = 1; // used until the sheet below is wired up, and as a fallback after
+
+  // ---- Set up once, shared across every project ----
+  const SHEET_ID  = '15mV954gCDg4_DHawYB5NoO5H-5bukXr7mQzaCKiIydk';
+  const SHEET_TAB = 'Sheet1';             // columns: slug | project_id
+
+  async function getProjectId(slug) {
+    if (SHEET_ID === 'YOUR_SHEET_ID_HERE') return DEFAULT_PROJECT_ID;
+    try {
+      const res = await fetch(`https://opensheet.elk.sh/${SHEET_ID}/${SHEET_TAB}`);
+      const rows = await res.json();
+      const match = rows.find(r => r.slug === slug);
+      return match ? match.project_id : DEFAULT_PROJECT_ID;
+    } catch (e) {
+      return DEFAULT_PROJECT_ID;
+    }
+  }
+
+  document.getElementById('feedback-trigger').addEventListener('click', async () => {
+    const project_id = await getProjectId(PROJECT_SLUG);
+    Tally.openPopup(TALLY_FORM_ID, {
+      layout: 'modal',
+      hiddenFields: {
+        project_id,
+        page_url: window.location.href
+        // set manually because Tally's auto-capture only fires for a hidden field
+        // named exactly "originPage" — renaming it to page_url turned that off
+      }
+    });
+  });
+</script>
+
+</body>
+</html>

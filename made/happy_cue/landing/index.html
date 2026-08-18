@@ -360,6 +360,34 @@ document.addEventListener("keydown", event => {
   <div class="foot">Cancel anytime · No credit card for Free</div>
 
 </div>
+</body>
+</div>
+
+<!-- Tally feedback trigger (bottom-left) -->
+<button id="feedback-trigger" aria-label="Feedback" style="position:fixed;left:20px;bottom:20px;height:36px;padding:0 14px;border-radius:18px;background:#F5A623;color:#1a1a1a;border:none;font-size:13px;font-weight:600;cursor:pointer;z-index:9999;">Feedback</button>
+
+<script src="https://tally.so/widgets/embed.js"></script>
+<script>
+  (function(){
+    const TALLY_FORM_ID = 'xXE2Ek';
+    const PROJECT_ID = 3; // per request
+    const btn = document.getElementById('feedback-trigger');
+    if (!btn) return;
+    btn.addEventListener('click', function () {
+      if (typeof Tally === 'undefined') {
+        console.warn('Tally script not loaded');
+        return;
+      }
+      Tally.openPopup(TALLY_FORM_ID, {
+        layout: 'modal',
+        hiddenFields: {
+          project_id: PROJECT_ID,
+          originPage: window.location.href
+        }
+      });
+    });
+  })();
+</script>
 
 </body>
 </html>
