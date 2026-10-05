@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><title>Coses De l’Estació</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#faf9f7;--fg:#1c1917;--mut:#78716c;--card:#fff;--line:#e9e5e0;--acc:#ea580c;--c-food:#FF7F00;--c-bar:#8E44AD;--c-shop:#00A6D6;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#141210;--fg:#f5f2ee;--mut:#a8a29e;--card:#1d1a17;--line:#2f2a26;--acc:#fb7a2f;--c-food:#FF7F00;--c-bar:#8E44AD;--c-shop:#00A6D6}}
+:root[data-theme=dark]{--bg:#141210;--fg:#f5f2ee;--mut:#a8a29e;--card:#1d1a17;--line:#2f2a26;--acc:#fb7a2f;--c-food:#FF7F00;--c-bar:#8E44AD;--c-shop:#00A6D6}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.45 "Montserrat","Gotham","Helvetica Neue",Arial,sans-serif;-webkit-font-smoothing:antialiased}
+header{padding:18px 24px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+h1{margin:0;font-size:20px;font-weight:650;letter-spacing:-.015em}header p{margin:0;color:var(--mut);font-size:13px;flex-basis:100%;order:3}
+.pill{font-size:11px;font-weight:700;letter-spacing:.04em;color:#fff;background:var(--acc);border-radius:999px;padding:3px 10px}
+main{display:flex;align-items:flex-start;min-height:calc(100vh - 90px)}
+#list{width:260px;flex:none;border-right:1px solid var(--line);padding:16px 0}
+.rail{position:relative;padding:4px 16px 4px 0}
+.rail:before{content:"";position:absolute;left:20px;top:22px;bottom:34px;width:4px;background:var(--acc);border-radius:2px}
+.st{display:block;width:calc(100% - 46px);margin:0 0 16px 46px;text-align:left;background:none;border:1.5px dashed color-mix(in srgb,var(--mut) 55%,transparent);border-radius:10px;color:inherit;font:inherit;padding:9px 12px;position:relative;cursor:pointer}
+.st:hover{background:color-mix(in srgb,var(--fg) 4%,transparent)}
+.st:after{content:"";position:absolute;left:-35px;top:12px;width:16px;height:16px;border-radius:50%;background:var(--bg);border:3px solid var(--acc)}
+.st.sel{font-weight:600;background:color-mix(in srgb,var(--acc) 8%,transparent);border-style:solid;border-color:var(--acc)}.st.sel:after{background:var(--acc);box-shadow:0 0 0 4px color-mix(in srgb,var(--acc) 22%,transparent)}
+.lns{display:flex;flex-wrap:wrap;gap:4px;margin-top:7px;min-height:22px}
+.ln{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:3px;font-style:normal;font-size:10px;font-weight:700;line-height:1}
+.near{display:inline-block;margin-left:6px;font-size:10.5px;font-weight:700;letter-spacing:.03em;color:var(--acc);border:1px solid var(--acc);border-radius:999px;padding:0 7px}
+.dist{display:block;font-size:12px;color:var(--mut);font-weight:400}
+#right{flex:1;padding:24px 28px;min-width:0;position:sticky;top:0;align-self:flex-start}h2{margin:0 0 2px;font-size:26px;font-weight:650;letter-spacing:-.02em}.sub{color:var(--mut);margin:0 0 20px;font-size:14px}
+#boxes{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:2%;max-width:720px;width:100%}
+.box{--t:var(--acc);container-type:inline-size;min-width:0;min-height:0;width:100%;overflow:hidden;aspect-ratio:1/1;border:1px solid transparent;border-radius:16px;background:var(--t);padding:7%;display:flex;flex-direction:column;justify-content:space-between;align-items:flex-start;text-align:left;color:#fff;font:inherit;cursor:pointer;transition:transform .15s,box-shadow .15s,border-color .15s}
+.box[data-c=Food]{--t:var(--c-food)}.box[data-c=Bar]{--t:var(--c-bar)}.box[data-c=Shop]{--t:var(--c-shop)}
+.box:hover{transform:translateY(-2px);box-shadow:0 10px 24px -10px color-mix(in srgb,var(--t) 45%,transparent)}
+.box.sel{box-shadow:0 0 0 3px var(--bg),0 0 0 6px var(--t)}
+.box.empty{border:1px dashed var(--line);background:transparent;cursor:default;color:var(--mut);box-shadow:none;transform:none;font-size:clamp(10px,6.4cqw,13px)}
+.cat{display:inline-block;max-width:100%;font-size:clamp(8px,5.2cqw,10.5px);text-transform:uppercase;letter-spacing:.09em;font-weight:800;color:#fff;background:rgba(255,255,255,.24);border-radius:3px;padding:4px 8px}
+.box.empty .cat{background:none;padding:0;color:var(--mut)}
+.nm{font-weight:700;text-shadow:0 1px 1px rgba(0,0,0,.18);font-size:clamp(10px,7.8cqw,15px);line-height:1.2;letter-spacing:-.01em;overflow-wrap:anywhere;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.rt{font-size:clamp(10px,6.2cqw,13px);line-height:1.3;color:rgba(255,255,255,.94)}.rt b{color:#fff}
+#detail{--t:var(--acc);max-width:720px;margin-top:16px;border-radius:14px;padding:16px 18px;background:var(--t);color:#fff;display:none}
+#detail[data-c=Food]{--t:var(--c-food)}#detail[data-c=Bar]{--t:var(--c-bar)}#detail[data-c=Shop]{--t:var(--c-shop)}
+#detail p{margin:8px 0}#detail .rt,#detail .rt b{color:#fff}#detail a{color:#fff;font-weight:700;text-decoration:underline;text-underline-offset:3px}
+#status{font-size:12px;color:var(--mut);margin-top:14px;max-width:720px}
+@media(max-width:640px){main{flex-direction:column;align-items:stretch}#list{width:100%;border-right:0}#right{position:sticky;bottom:0;top:auto;align-self:stretch;z-index:5;background:var(--bg);border-top:1px solid var(--line);box-shadow:0 -8px 20px -12px rgba(0,0,0,.25);padding:12px 16px;max-height:62vh;overflow-y:auto}h2{font-size:19px}.sub{font-size:12px;margin:0 0 10px}.box{border-radius:12px}#detail{margin-top:10px}}
+</style></head><body>
+<header><h1>Coses De l’Estació: Sant Cugat → Plaça Catalunya</h1><span class="pill">S1 · S2</span><p>Every stop, with under-the-radar places within a ~5 min walk</p></header>
+<main><nav id="list"></nav><section id="right"><h2 id="t"></h2><p class="sub" id="s"></p><div id="boxes"></div><div id="detail"></div><div id="status"></div></section></main>
+<script>
+// Station coordinates for Sant Cugat, Valldoreix, La Floresta, Les Planes and Baixador de Vallvidrera are from Google; the rest are approximate.
+const S=[
+{n:"Sant Cugat",la:41.4679,lo:2.0784,p:[
+ {c:"Food",n:"La Griega",r:4.9,k:45,la:41.4682,lo:2.0793,id:"ChIJj8XpsH6XpBIRRuMTD8fDWUc",d:"Greek restaurant a minute from the station, with a relaxed atmosphere and flavourful food. Open daily."},
+ {c:"Bar",n:"La Bodegueta de Sant Cugat",r:4.6,k:206,la:41.4731,lo:2.0827,id:"ChIJo47KdTeXpBIRCCQ4ckvM7CU",d:"Busy tapas bar on Carrer Major with eggplant chips, tomato bread and cheese plates. Around 10 min walk into the old town."},
+ {c:"Shop",n:"Ciprina",r:4.9,k:37,la:41.4702,lo:2.0805,id:"ChIJPUisOwCXpBIRCQhp8p5rfUM",d:"Women's clothing boutique in the centre known for its personal service from the owner. Closed Sundays."}]},
+{n:"Valldoreix",la:41.4578,lo:2.0682,p:[
+ {c:"Food",n:"El Tapes de Valldoreix",r:4.2,k:393,la:41.4582,lo:2.0612,id:"ChIJP2cjr9aQpBIR1jsVMuSZ8pk",d:"Friendly tapas place with a sunny terrace and changing daily specials at fair prices. Closed weekends. Around 7 min walk."},
+ {c:"Bar",n:"GDB Valldoreix",r:4.6,k:417,la:41.4581,lo:2.0649,id:"ChIJOT83nNSQpBIR-sdbeSHb1m0",d:"Wine bar and shop with a big beer and wine selection, tapas and the area's best vermut by reviews."},
+ {c:"Shop",n:"Mercat setmanal de Valldoreix",r:4.2,k:10,la:41.4577,lo:2.068,id:"ChIJMSu4RgCXpBIRLKpuNOLFhrU",d:"Saturday-morning farmers' market right by the station: local fruit and veg, honey, charcuterie, sometimes live music. Saturdays only."}]},
+{n:"La Floresta",la:41.4449,lo:2.0731,p:[
+ {c:"Food",n:"CORRELOLA",r:4.6,k:235,la:41.4472,lo:2.0753,id:"ChIJJd3GSTeXpBIRaICjJqZQBxE",d:"Terrace lunch spot with empanadas and croquetas, jazz in the background. Closed Thursdays."},
+ {c:"Bar",n:"Forn Cultural La Floresta",r:4.4,k:136,la:41.4450,lo:2.0728,id:"ChIJSSZZj8-XpBIRDJ5gLPbZtfk",d:"Greek-run bar-café in the lower square, right by the station. Live music Wednesday and Thursday nights (Greek rebetika, folk jams), plus Greek fiestas and great tiropita."},
+ {c:"Shop",n:"Norma Supermarket",r:4.4,k:76,la:41.4455,lo:2.0725,id:"ChIJI-3YXzaXpBIRTyVbd6rkWCo",d:"Organic and local grocer with a good selection of hard-to-find products. Closed Sunday afternoons."}]},
+{n:"Les Planes",la:41.4272,lo:2.0915,p:[
+ null,
+ {c:"Bar",n:"La Botigueta",r:4.1,k:21,la:41.4271,lo:2.0891,id:"ChIJ_dTZLWGXpBIRx6wiUNEvbi8",d:"Neighbourhood bar with a terrace and good tapas. Closed Sundays and Mondays."},
+ {c:"Shop",n:"The Refill Concept",r:5.0,k:31,la:41.4256,lo:2.0873,id:"ChIJUwZx_keXpBIROgutUvN9eZE",d:"Refillable natural cosmetics and cleaning products. Check opening times before you go."}]},
+{n:"Baixador de Vallvidrera",la:41.42,lo:2.0969,p:[
+ null,
+ null,
+ null]},
+{n:"Peu del Funicular",la:41.4091,lo:2.1114,p:[
+ {c:"Food",n:"Bar Bodega Peu del Funicular",r:4.3,k:145,la:41.4089,lo:2.1108,id:"ChIJS3sofTGYpBIRLwrjVUCnIGg",d:"Family-run bar by the funicular with homemade food: reviewers rave about the quiches and the value. Basic set menu and sandwiches."},
+ null,
+ null]},
+{n:"Sarrià",m:["L6"],la:41.3995,lo:2.1207,p:[
+ {c:"Food",n:"GoodNews",r:4.7,k:89,la:41.4,lo:2.1218,id:"ChIJMfYTYPOZpBIRiJqAjrLco-M",d:"Coffee stand on Plaça de Sarrià with alternative milks, juices, snacks, books and magazines. Grab a bench in the square."},
+ null,
+ {c:"Shop",n:"Scrap Sarrià",r:4.9,k:19,la:41.3983,lo:2.1233,id:"ChIJaYQQnHaZpBIRdDE0GEF8LNM",d:"Tiny scrapbooking and crafts shop with workshops run by the owner, Júlia. Closed weekends."}]},
+{n:"Les Tres Torres",m:["L6"],x:1,la:41.4,lo:2.1325,p:[
+ {c:"Food",n:"La Tasca d'en Joan",r:4.6,k:371,la:41.3959,lo:2.1289,id:"ChIJHW7mfTq9pBIRnXKxcjO0efM",d:"Tiny, homely breakfast and lunch spot: great sandwiches and a cheap menu del día. Closed weekends, closes 5pm. Bit over 5 min."},
+ {c:"Bar",n:"Bar Café Mestres",r:4.4,k:328,la:41.3996,lo:2.131,id:"ChIJWX0yjmyYpBIR-WzpL6jrfrs",d:"Old-school neighbourhood bar with homemade food, big sandwich list and low prices. Weekdays only."},
+ {c:"Shop",n:"Mercat de les Tres Torres",r:4.0,k:352,la:41.3999,lo:2.1313,id:"ChIJfbqTk2yYpBIRpUyNdRNLHDk",d:"Small 1950s municipal market, being a local hub with a bar inside. Closed Sundays."}]},
+{n:"La Bonanova",m:["L6"],x:1,la:41.4043,lo:2.1354,p:[
+ {c:"Food",n:"La Terrassa de Bonanova",r:4.1,k:72,la:41.4041,lo:2.1293,id:"ChIJ_ZNKiBSYpBIRLNMXp4W1urQ",d:"Hidden on the top floor of the doctors' college, with a terrace over Passeig de la Bonanova. Coffee or weekday lunch at fair prices. Closed weekends, about 8 min walk."},
+ null,
+ null]},
+{n:"Muntaner",m:["L6"],la:41.4008,lo:2.1415,p:[
+ {c:"Food",n:"Saó d'Orígens",r:4.7,k:108,la:41.3985,lo:2.1434,id:"ChIJ0SrQPlqZpBIR4htGyebPCnM",d:"Spanish-Japanese fusion from chef-owner Claudia: nigiri, croquetas, slow-cooked beef rib, a short good wine list. Closed Sundays."},
+ {c:"Bar",n:"Canela en Rama",r:4.8,k:97,la:41.403,lo:2.1376,id:"ChIJx-m2gEqZpBIR9QXKIXU8SFg",d:"Cocktail bar where the bartender builds drinks to your taste, with Spanish food to share. Opens 5pm, closed Sundays. Around 7 min walk."},
+ {c:"Shop",n:"DAMZELLA",r:4.7,k:6,la:41.3974,lo:2.145,id:"ChIJxbgrHp6ipBIRxUbB3d1memk",d:"Women's clothing shop run by the same family for 48 years: good quality, personal advice. Closed Sundays. Around 8 min walk."}]},
+{n:"Sant Gervasi",m:["L6", "L7"],x:1,la:41.4005,lo:2.1488,p:[
+ {c:"Food",n:"Disío",r:4.9,k:407,la:41.3969,lo:2.147,id:"ChIJTeARBfGjpBIRqlBQeMgQwIY",d:"Italian lunch spot run by a couple, Dario (kitchen) and Lorena (desserts), with a daily-changing menú del día. Lunch only, closed Sundays. Around 7 min walk."},
+ {c:"Bar",n:"Quatre Cocteleria",r:4.9,k:493,la:41.4,lo:2.1504,id:"ChIJyYtzKrGjpBIRFwYd2di7_ts",d:"Cocktail bar with live music, art and Venezuelan rums. Opens 9pm, closed Sundays."},
+ {c:"Shop",n:"Rue 31",r:5.0,k:31,la:41.4015,lo:2.1469,id:"ChIJe69KH3ejpBIRH7WmXLUZX7k",d:"Small women's boutique with unique pieces and personal styling from the owner, Olga. Weekdays only."}]},
+{n:"Gràcia",m:["L6", "L7"],la:41.3984,lo:2.1537,p:[
+ {c:"Food",n:"GoodNews Cafeteria",r:4.6,k:117,la:41.4012,lo:2.1536,id:"ChIJTZryHDSjpBIRZgcmo9B_idY",d:"Takeaway-style coffee spot on Gran de Gràcia: matcha lattes, gluten-free snacks, alternative milks. Little room to sit."},
+ {c:"Bar",n:"Bar Gràcia's",r:4.0,k:68,la:41.4007,lo:2.1592,id:"ChIJcZK9BJaipBIRP8OoB0915cs",d:"Small traditional bar run by a friendly family: cheap beer, honest sandwiches and some Chinese dishes. About 8 min walk."},
+ {c:"Shop",n:"Gra de gràcia",r:4.5,k:190,la:41.4016,lo:2.1591,id:"ChIJPxzq-r2ipBIRGYTdP153O6k",d:"Zero-waste shop selling spices, nuts, flours and pasta by weight, loved for gluten-free finds. Closed Sundays. About 9 min walk."}]},
+{n:"Provença",m:["L3", "L5", "L6", "L7"],la:41.3938,lo:2.1585,p:[
+ null,
+ {c:"Bar",n:"La Alcoba Azul",r:4.9,k:1541,la:41.3933,lo:2.1608,id:"ChIJs3-imnajpBIRMVE_VIfGPhA",d:"Not under the radar, but the best-rated cocktail bar and tapas spot on this stretch of Rambla de Catalunya. Terrace; open until 2am."},
+ {c:"Shop",n:"MASSCOB Barcelona",r:4.0,k:16,la:41.3932,lo:2.1597,id:"ChIJm6rLgJGipBIRIOJrLnP6jOc",d:"Small fashion boutique on Carrer de Provença with elegant cuts. Closed Sundays."}]},
+{n:"Plaça Catalunya",m:["L1", "L3", "L6", "L7"],la:41.387,lo:2.1699,p:[
+ {c:"Food",n:"Tapas87",r:4.7,k:475,la:41.3849,lo:2.1697,id:"ChIJYzHWdIWjpBIR0g7gj2uUZs8",d:"Reviewers call it underrated: fresh gazpacho, grilled baby squid and huge portions on a calm side street just off the Ramblas. Open all day."},
+ {c:"Bar",n:"La Llibertària",r:4.6,k:631,la:41.3849,lo:2.1676,id:"ChIJ_87YZfSipBIRMzbbjXT4f1w",d:"Historic Raval-edge bar with generous cava pours, tapas and craft beers, run by a welcoming owner. Closed Sundays."},
+ {c:"Shop",n:"Vendimia Vintage & Upcycling",r:4.8,k:65,la:41.3847,lo:2.1689,id:"ChIJnSiJtzyjpBIRXu1EEynVjNQ",d:"Well-curated vintage and upcycled clothing; the staff will even repair a jacket for you. Open daily."}]}];
+const CAT=["Food","Bar","Shop"];
+const LC={L1:"#E30613",L2:"#8E44AD",L3:"#009E49",L4:"#FFD100",L5:"#0066CC",L6:"#8B7DBE",L7:"#8B5E3C",L8:"#E5007D",L9:"#FF7F00",L10:"#00A6D6",L11:"#8CC63E",FM:"#9aa0a6"};
+const bd=m=>(m||[]).map(l=>`<i class="ln" style="background:${LC[l]};color:${l=="L4"?"#222":"#fff"}">${l}</i>`).join("");
+const $=id=>document.getElementById(id);
+function dist(a,b,c,d){const R=6371000,x=Math.PI/180,dl=(c-a)*x,dn=(d-b)*x,h=Math.sin(dl/2)**2+Math.cos(a*x)*Math.cos(c*x)*Math.sin(dn/2)**2;return 2*R*Math.asin(Math.sqrt(h))}
+const walk=m=>Math.max(1,Math.round(m*1.3/80));
+let cur=0,near=-1,me=null;
+function renderList(){$("list").innerHTML='<div class="rail">'+S.map((s,i)=>`<button class="st${i==cur?" sel":""}" data-i="${i}">${s.n}${i==near?'<span class="near">nearest</span>':""}<span class="lns">${bd(s.m)}</span>${me?`<span class="dist">${(dist(me[0],me[1],s.la,s.lo)/1000).toFixed(1)} km away</span>`:""}</button>`).join("")+"</div>";
+ document.querySelectorAll(".st").forEach(b=>b.onclick=()=>{cur=+b.dataset.i;renderList();renderBoxes()})}
+function renderBoxes(){const s=S[cur];$("t").textContent=s.n;$("s").innerHTML="Good places that deserve more attention"+(s.m?`<br><span style="display:inline-block;margin-top:8px">Metro connections</span><span class="lns">${bd(s.m)}</span>`:"")+(s.x?`<br><span style="color:var(--acc);font-weight:600">S1/S2 trains skip this stop (L6 only).</span>`:"");$("detail").style.display="none";
+ $("boxes").innerHTML=CAT.map((c,i)=>{const p=s.p[i];
+  if(!p)return`<div class="box empty"><span class="cat">${c}</span><span>${s.p.length?"Nothing qualifying found yet":"Not searched yet"}</span></div>`;
+  return`<button class="box" data-c="${c}" data-i="${i}"><span class="cat">${c}</span><span class="nm">${p.n}</span><span class="rt"><b>★ ${p.r}</b> · ${p.k} reviews<br>${walk(dist(s.la,s.lo,p.la,p.lo))} min walk</span></button>`}).join("");
+ document.querySelectorAll(".box:not(.empty)").forEach(b=>b.onclick=()=>{document.querySelectorAll(".box").forEach(x=>x.classList.remove("sel"));b.classList.add("sel");
+  const p=s.p[+b.dataset.i],d=$("detail");d.style.display="block";d.dataset.c=p.c;
+  d.innerHTML=`<b>${p.n}</b> <span class="cat">${p.c}</span><p>${p.d}</p><p class="rt"><b>★ ${p.r}</b> from ${p.k} reviews · about ${walk(dist(s.la,s.lo,p.la,p.lo))} min on foot from ${s.n}</p><a target="_blank" rel="noopener" href="https://www.google.com/maps/dir/?api=1&origin=${encodeURIComponent(s.n+" FGC station, Catalonia")}&destination=${encodeURIComponent(p.n)}&destination_place_id=${p.id}&travelmode=walking">Walk it from ${s.n} →</a> &nbsp;·&nbsp; <a target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(p.n)}&query_place_id=${p.id}">View place</a>`})}
+function locate(){try{if(!navigator.geolocation)throw 0;navigator.geolocation.getCurrentPosition(pos=>{me=[pos.coords.latitude,pos.coords.longitude];
+ let b=1e12;S.forEach((s,i)=>{const d=dist(me[0],me[1],s.la,s.lo);if(d<b){b=d;near=i}});cur=near;$("status").textContent="Nearest station: "+S[near].n+" ("+(b/1000).toFixed(1)+" km).";renderList();renderBoxes();const e=document.querySelector(".st.sel");if(e)e.scrollIntoView({block:"center",behavior:"smooth"})},
+ ()=>{$("status").textContent="Couldn't get your location (permission denied or blocked here). Pick a station on the left."},{timeout:8000})}catch(e){$("status").textContent="Location isn't available in this browser."}}
+renderList();renderBoxes();locate();
+</script></body></html>
