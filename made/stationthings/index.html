@@ -40,7 +40,10 @@ main{display:flex;align-items:flex-start;min-height:calc(100vh - 90px)}
 @media(max-width:640px){main{flex-direction:column;align-items:stretch}#list{width:100%;border-right:0}#right{position:sticky;bottom:0;top:auto;align-self:stretch;z-index:5;background:var(--bg);border-top:1px solid var(--line);box-shadow:0 -8px 20px -12px rgba(0,0,0,.25);padding:12px 16px;max-height:62vh;overflow-y:auto}h2{font-size:19px}.sub{font-size:12px;margin:0 0 10px}.box{border-radius:12px}#detail{margin-top:10px}}
 </style></head><body>
 <header><h1>Coses De l’Estació: Sant Cugat → Plaça Catalunya</h1><span class="pill">S1 · S2</span><p>Every stop, with under-the-radar places within a ~5 min walk</p></header>
-<main><nav id="list"></nav><section id="right"><h2 id="t"></h2><p class="sub" id="s"></p><div id="boxes"></div><div id="detail"></div><div id="status"></div></section></main>
+<main>
+  <nav id="list"></nav><section id="right"><h2 id="t"></h2><p class="sub" id="s"></p><div id="boxes"></div><div id="detail"></div><div id="status"></div></section>
+</main>
+
 <script>
 // Station coordinates for Sant Cugat, Valldoreix, La Floresta, Les Planes and Baixador de Vallvidrera are from Google; the rest are approximate.
 const S=[
@@ -120,4 +123,50 @@ function locate(){try{if(!navigator.geolocation)throw 0;navigator.geolocation.ge
  let b=1e12;S.forEach((s,i)=>{const d=dist(me[0],me[1],s.la,s.lo);if(d<b){b=d;near=i}});cur=near;$("status").textContent="Nearest station: "+S[near].n+" ("+(b/1000).toFixed(1)+" km).";renderList();renderBoxes();const e=document.querySelector(".st.sel");if(e)e.scrollIntoView({block:"center",behavior:"smooth"})},
  ()=>{$("status").textContent="Couldn't get your location (permission denied or blocked here). Pick a station on the left."},{timeout:8000})}catch(e){$("status").textContent="Location isn't available in this browser."}}
 renderList();renderBoxes();locate();
-</script></body></html>
+</script>
+
+<!-- Feedback button: start -->
+<script async src="https://tally.so/widgets/embed.js"></script>
+<script>
+  // ===== CONFIG: only edit these two lines =====
+  var PROJECT_ID = "4";      // from the Google Sheet
+  var SIDE = "right";         // "left" or "right"
+  // =============================================
+
+  var FORM_ID = "xXE2Ek";
+
+  window.addEventListener("DOMContentLoaded", function () {
+    var btn = document.createElement("button");
+    btn.textContent = "Feedback";
+    btn.setAttribute("aria-label", "Give feedback");
+
+    btn.style.position = "fixed";
+    btn.style.bottom = "16px";
+    btn.style[SIDE] = "16px";
+    btn.style.zIndex = "9999";
+    btn.style.height = "40px";
+    btn.style.padding = "0 16px";
+    btn.style.border = "none";
+    btn.style.borderRadius = "20px";
+    btn.style.background = "#111";
+    btn.style.color = "#fff";
+    btn.style.font = "500 14px system-ui, sans-serif";
+    btn.style.cursor = "pointer";
+    btn.style.boxShadow = "0 2px 8px rgba(0,0,0,0.25)";
+
+    btn.addEventListener("click", function () {
+      if (window.Tally) {
+        Tally.openPopup(FORM_ID, {
+          layout: "modal",
+          width: 480,
+          hiddenFields: { project_id: PROJECT_ID }
+        });
+      }
+    });
+
+    document.body.appendChild(btn);
+  });
+</script>
+<!-- Feedback button: end -->
+
+</body></html>
