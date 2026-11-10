@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Stick &amp; Co. — Dress the figure (Copy)</title>
+<style>
+:root{--bg:#fff;--ink:#000;--mute:#6b6b6b;--line:#e3e3e3;color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e0e0e;--ink:#fff;--mute:#9a9a9a;--line:#2a2a2a;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0e0e0e;--ink:#fff;--mute:#9a9a9a;--line:#2a2a2a;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.4 "Helvetica Neue",Arial,sans-serif;padding-bottom:calc(76px + env(safe-area-inset-bottom,0px))}
+.wrap{max-width:1100px;margin:0 auto;padding:0 20px}
+header{border-bottom:1px solid var(--ink);padding:18px 0 0}
+.top{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.logo{font-weight:800;letter-spacing:.18em;font-size:18px}
+.sw{display:flex;border:1px solid var(--ink)}
+.sw button{border:0;background:var(--bg);color:var(--ink);padding:6px 10px;font:inherit;font-size:12px;cursor:pointer}
+.sw button.on{background:var(--ink);color:var(--bg)}
+nav{display:flex;gap:20px;overflow-x:auto;padding:14px 0;white-space:nowrap}
+nav button{border:0;background:none;color:var(--mute);font:inherit;font-size:12px;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;padding:0 0 4px;border-bottom:2px solid transparent}
+nav button.on{color:var(--ink);border-color:var(--ink)}
+.main{display:grid;gap:32px;grid-template-columns:1fr;padding:28px 0}
+@media(min-width:900px){.main{grid-template-columns:1fr 340px}aside{position:sticky;top:16px;align-self:start}.bar{display:none!important}}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:20px 16px}
+.img{aspect-ratio:1;border:1px solid var(--line);display:grid;place-items:center;padding:14px}
+.img svg{width:100%;height:100%}
+.card h3{margin:10px 0 2px;font-size:13px;font-weight:600}
+.card p{margin:0 0 8px;color:var(--mute);font-size:12px}
+.card button,.btn{width:100%;border:1px solid var(--ink);background:var(--bg);color:var(--ink);padding:9px;font:inherit;font-size:12px;letter-spacing:.08em;text-transform:uppercase;cursor:pointer}
+.card button.on{background:var(--ink);color:var(--bg)}
+.btn.pri{background:var(--ink);color:var(--bg);padding:13px}
+.btn:disabled{opacity:.3;cursor:default}
+.look{border:1px solid var(--ink);padding:16px}
+.look h2{margin:0 0 4px;font-size:12px;letter-spacing:.14em;text-transform:uppercase}
+.hint{color:var(--mute);font-size:12px;margin:0 0 8px;min-height:18px}
+#fig svg{display:block;margin:0 auto;height:min(52vh,380px);max-width:100%}
+.s{stroke:var(--ink);stroke-width:2;fill:var(--bg);stroke-linejoin:round;stroke-linecap:round;vector-effect:non-scaling-stroke}
+.s.n{fill:none}.fk{fill:var(--ink)}.fh{fill:url(#hatch)}.fs{fill:url(#stripe)}.fd{fill:url(#dots)}
+.b{stroke:var(--ink);stroke-width:3;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.hd{fill:var(--bg)}
+.pbg{fill:var(--bg)}.pl{stroke:var(--ink);stroke-width:1.2}.pd{fill:var(--ink)}
+.drop{animation:drop .45s ease-out}
+@keyframes drop{from{transform:translateY(-34px);opacity:0}to{transform:none;opacity:1}}
+.hop svg{animation:hop .5s ease 4}
+@keyframes hop{50%{transform:translateY(-14px)}}
+.row{display:flex;justify-content:space-between;gap:8px;padding:7px 0;border-top:1px solid var(--line);font-size:13px}
+.row button{border:0;background:none;color:var(--mute);cursor:pointer;font-size:16px;padding:0 4px}
+.tot{border-top:1px solid var(--ink);margin-top:6px;padding-top:8px;font-size:13px}
+.tot div{display:flex;justify-content:space-between;padding:2px 0}
+.tot .g{font-weight:700;font-size:15px}
+.done{text-align:center;padding:8px 0}
+#toast{position:fixed;left:50%;bottom:calc(88px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:8px 14px;font-size:12px;opacity:0;pointer-events:none;transition:opacity .2s;max-width:90vw;text-align:center}
+#toast.show{opacity:1}
+.bar{position:fixed;left:0;right:0;bottom:0;background:var(--bg);border-top:1px solid var(--ink);padding:10px 20px calc(10px + env(safe-area-inset-bottom,0px));display:block}
+#pop{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%) scale(.92);background:var(--bg);border:1px solid var(--ink);padding:12px 18px 10px;opacity:0;pointer-events:none;transition:opacity .18s,transform .18s;z-index:20;text-align:center;max-width:90vw}
+#pop.show{opacity:1;transform:translate(-50%,-50%) scale(1)}
+#pop svg{display:block;margin:0 auto;height:min(40vh,280px)}
+#pop p{margin:6px 0 0;font-size:12px;letter-spacing:.06em;text-transform:uppercase}
+#co{position:fixed;inset:0;background:var(--bg);z-index:30;overflow:auto;padding:calc(16px + env(safe-area-inset-top,0px)) 20px calc(24px + env(safe-area-inset-bottom,0px))}
+#co[hidden]{display:none}
+.cogrid{max-width:900px;margin:16px auto 0;display:grid;gap:24px}
+@media(min-width:760px){.cogrid{grid-template-columns:320px 1fr}}
+#cofig svg{display:block;margin:0 auto;height:min(40vh,340px);max-width:100%}
+.btn.sm{width:auto;padding:8px 12px}
+.sug{display:grid;grid-template-columns:64px 1fr auto;gap:12px;align-items:center;padding:10px 0;border-top:1px solid var(--line)}
+.sug .img{padding:6px}.sug h3{margin:0;font-size:13px}.sug p{margin:0;color:var(--mute);font-size:12px}
+#co h2{margin:0 0 6px;font-size:12px;letter-spacing:.14em;text-transform:uppercase}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+<pattern id="hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="6" height="6" class="pbg"/><line x1="0" y1="0" x2="0" y2="6" class="pl"/></pattern>
+<pattern id="stripe" width="8" height="8" patternUnits="userSpaceOnUse"><rect width="8" height="8" class="pbg"/><line x1="0" y1="2" x2="8" y2="2" class="pl" style="stroke-width:3"/></pattern>
+<pattern id="dots" width="8" height="8" patternUnits="userSpaceOnUse"><rect width="8" height="8" class="pbg"/><circle cx="4" cy="4" r="1.3" class="pd"/></pattern>
+</defs></svg>
+
+<header><div class="wrap">
+  <div class="top"><div class="logo">STICK &amp; CO.</div>
+  <div class="sw" id="sw"><button data-g="m" class="on">Man</button><button data-g="f">Lady</button></div></div>
+  <nav id="nav"></nav>
+</div></header>
+
+<div class="wrap main">
+  <section><div class="grid" id="grid"></div></section>
+  <aside id="look"><div class="look">
+    <h2>Your look</h2>
+    <p class="hint" id="hint"></p>
+    <div id="fig"></div>
+    <div id="bag"></div>
+  </div></aside>
+</div>
+
+<div class="bar"><button class="btn pri" id="barbtn"></button></div>
+<div id="toast"></div>
+<div id="pop" aria-live="polite"></div>
+<div id="co" hidden></div>
+
+<script>
+const SH={
+tee:{d:'M72 92 L128 92 L150 122 L136 134 L128 120 L128 192 L72 192 L72 120 L64 134 L50 122 Z',v:'44 86 112 112'},
+ls:{d:'M72 92 L128 92 L156 168 L142 174 L128 128 L128 200 L72 200 L72 128 L58 174 L44 168 Z',v:'38 86 124 120'},
+jeans:{d:'M74 190 L126 190 L122 366 L104 366 L100 236 L96 366 L78 366 Z',v:'62 184 76 188'},
+shorts:{d:'M74 190 L126 190 L128 262 L104 262 L100 230 L96 262 L72 262 Z',v:'62 184 76 84'},
+skirt:{d:'M74 190 L126 190 L142 292 L58 292 Z',v:'50 184 100 114'},
+dress:{d:'M74 92 L126 92 L130 128 L128 190 L148 296 L52 296 L72 190 L70 128 Z',v:'44 86 112 216'},
+midi:{d:'M72 92 L128 92 L132 130 L128 188 L152 330 L48 330 L72 188 L68 130 Z',v:'40 86 120 250'},
+jacket:{d:'M70 92 L130 92 L158 172 L144 178 L128 130 L128 214 L72 214 L72 130 L56 178 L42 172 Z',e:'M100 92 L100 214',v:'36 86 128 134'},
+coat:{d:'M68 92 L132 92 L160 176 L146 182 L130 130 L136 300 L64 300 L70 130 L54 182 L40 176 Z',e:'M100 92 L100 300',v:'34 86 132 220'},
+sneak:{d:'M66 366 L92 366 L92 380 L62 380 L62 374 Z M108 366 L134 366 L138 374 L138 380 L108 380 Z',v:'56 360 88 26'},
+boots:{d:'M72 340 L94 340 L94 380 L60 380 L60 372 L72 366 Z M106 340 L128 340 L140 372 L140 380 L106 380 Z',v:'54 334 92 52'},
+cap:{d:'M78 46 A22 22 0 0 1 122 46 Z M118 46 L148 46 L148 52 L118 52 Z',v:'72 22 82 36'},
+beanie:{d:'M77 44 A23 23 0 0 1 123 44 Z M75 44 L125 44 L125 54 L75 54 Z',v:'70 22 60 38'},
+scarf:{d:'M82 74 L118 74 L118 86 L82 86 Z M104 86 L118 86 L120 126 L106 126 Z',v:'76 68 50 64'},
+tote:{d:'M32 170 L70 170 L72 210 L30 210 Z',e:'M42 170 Q51 146 60 170',v:'24 140 54 76'}
+};
+const F={w:'',k:'fk',h:'fh',s:'fs',d:'fd'};
+const ORDER=['bottom','top','body','shoes','outer','neck','hat','hand'];
+const CATS=['All','Tops','Bottoms','Dresses','Outerwear','Shoes','Accessories'];
+const P=[
+['Tops','Classic Tee',19,'top','tee','w'],['Tops','Breton Stripe Tee',29,'top','tee','s'],['Tops','Rib Knit Jumper',49,'top','ls','d'],
+['Bottoms','Straight Jeans',59,'bottom','jeans','h'],['Bottoms','Black Jeans',59,'bottom','jeans','k'],['Bottoms','Chino Shorts',35,'bottom','shorts','w'],['Bottoms','Pleated Skirt',39,'bottom','skirt','s'],
+['Dresses','Slip Dress',79,'body','dress','w'],['Dresses','Midi Dress',89,'body','midi','d'],
+['Outerwear','Denim Jacket',79,'outer','jacket','h'],['Outerwear','Trench Coat',129,'outer','coat','w'],
+['Shoes','Canvas Sneakers',55,'shoes','sneak','w'],['Shoes','Leather Boots',109,'shoes','boots','k'],
+['Accessories','Baseball Cap',25,'hat','cap','w'],['Accessories','Wool Beanie',22,'hat','beanie','k'],['Accessories','Silk Scarf',35,'neck','scarf','s'],['Accessories','Canvas Tote',45,'hand','tote','d']
+].map((a,i)=>({id:i,cat:a[0],name:a[1],price:a[2],slot:a[3],shape:a[4],fill:a[5]}));
+
+let cat='All',g='m',worn={},last=null,done=false,tt,pt,stage='shop';
+const WHY={top:'Needs something up top',bottom:'Needs something below',shoes:'Currently barefoot',outer:'For layering',neck:'A finishing touch',hat:'Top it off',hand:'Something to carry'};
+const $=s=>document.querySelector(s);
+const eur=n=>'€'+n.toFixed(2);
+const art=p=>{const s=SH[p.shape];return '<path class="s '+F[p.fill]+'" d="'+s.d+'"/>'+(s.e?'<path class="s n" d="'+s.e+'"/>':'')};
+const icon=p=>'<svg viewBox="'+SH[p.shape].v+'" aria-hidden="true">'+art(p)+'</svg>';
+const items=()=>ORDER.filter(s=>worn[s]!==undefined).map(s=>P[worn[s]]);
+
+function toast(t){const e=$('#toast');e.textContent=t;e.classList.add('show');clearTimeout(tt);tt=setTimeout(()=>e.classList.remove('show'),1800)}
+
+function figure(){
+  const hair=g==='f'?'<path class="b" d="M78 52 Q72 22 100 26 Q128 22 122 52 L128 90 M78 52 L72 90"/>':'';
+  const layers=ORDER.map(s=>worn[s]!==undefined?'<g class="'+(last===s?'drop':'')+'">'+art(P[worn[s]])+'</g>':'').join('');
+  return '<svg viewBox="0 0 200 400" role="img" aria-label="Stick figure wearing your items"><circle class="b hd" cx="100" cy="50" r="22"/>'+hair+
+  '<path class="b" d="M100 72V208M100 95L48 165M100 95L152 165M100 205L88 365M100 205L112 365"/>'+layers+'</svg>';
+}
+
+function render(){
+  $('#nav').innerHTML=CATS.map(c=>'<button data-c="'+c+'" class="'+(c===cat?'on':'')+'">'+c+'</button>').join('');
+  $('#sw').querySelectorAll('button').forEach(b=>b.classList.toggle('on',b.dataset.g===g));
+  $('#grid').innerHTML=P.filter(p=>cat==='All'||p.cat===cat).map(p=>{
+    const on=worn[p.slot]===p.id;
+    return '<article class="card"><div class="img">'+icon(p)+'</div><h3>'+p.name+'</h3><p>'+eur(p.price)+'</p><button data-i="'+p.id+'" class="'+(on?'on':'')+'">'+(on?'On ✓ Remove':'Add to bag')+'</button></article>';
+  }).join('');
+  const it=items(),sub=it.reduce((a,p)=>a+p.price,0),ship=!it.length||sub>=75?0:4.95,tot=sub+ship;
+  $('#fig').className=done?'hop':'';
+  $('#fig').innerHTML=figure();
+  $('#hint').textContent=done?'':(it.length?'':'Your figure is a bit underdressed. Add something.');
+  let h='';
+  if(done){
+    h='<div class="done"><p><b>Order placed.</b><br>Fully dressed and on its way.</p><button class="btn" id="again">Start again</button></div>';
+  }else if(it.length){
+    h=it.map(p=>'<div class="row"><span>'+p.name+'</span><span>'+eur(p.price)+' <button data-r="'+p.slot+'" aria-label="Remove '+p.name+'">×</button></span></div>').join('')+
+    '<div class="tot"><div><span>Subtotal</span><span>'+eur(sub)+'</span></div><div><span>Shipping</span><span>'+(ship?eur(ship):'Free')+'</span></div><div class="g"><span>Total</span><span>'+eur(tot)+'</span></div></div>'+
+    '<button class="btn pri" id="pay" style="margin-top:12px">Checkout</button>'+(sub<75?'<p class="hint" style="margin-top:8px">Free shipping over €75</p>':'');
+  }
+  $('#bag').innerHTML=h;
+  $('#barbtn').textContent=it.length?'Your look · '+it.length+' item'+(it.length>1?'s':'')+' · '+eur(tot):'Your look · empty';
+  renderCheckout(it,sub,ship,tot);
+}
+
+function suggest(){
+  const fills=new Set(items().map(p=>p.fill)),has=s=>worn[s]!==undefined,need=[];
+  if(!has('body')){if(!has('top'))need.push('top');if(!has('bottom'))need.push('bottom')}
+  if(!has('shoes'))need.push('shoes');
+  if(!has('outer'))need.push('outer');
+  ['neck','hat','hand'].forEach(s=>{if(!has(s))need.push(s)});
+  return need.slice(0,4).map(s=>{const c=P.filter(p=>p.slot===s);return c.find(p=>!fills.has(p.fill))||c[0]});
+}
+function popup(p,out){
+  const e=$('#pop');
+  e.innerHTML=figure()+'<p>'+(out.length?'Swapped out '+out.join(' + '):p.name+' is on')+'</p>';
+  e.classList.add('show');clearTimeout(pt);pt=setTimeout(()=>e.classList.remove('show'),1500);
+}
+function renderCheckout(it,sub,ship,tot){
+  const co=$('#co');
+  if(stage!=='check'){co.hidden=true;document.body.style.overflow='';return}
+  co.hidden=false;document.body.style.overflow='hidden';
+  let r;
+  if(done){r='<div class="done"><p><b>Order placed.</b><br>Fully dressed and on its way.</p><button class="btn sm" id="again">Start again</button></div>'}
+  else{
+    const sug=suggest();
+    r='<h2>Your order</h2>'+it.map(p=>'<div class="row"><span>'+p.name+'</span><span>'+eur(p.price)+'</span></div>').join('')+
+    '<h2 style="margin:22px 0 0">Complete the look</h2>'+
+    (sug.length?sug.map(p=>'<div class="sug"><div class="img">'+icon(p)+'</div><div><h3>'+p.name+'</h3><p>'+WHY[p.slot]+' · '+eur(p.price)+'</p></div><button class="btn sm" data-s="'+p.id+'">Add</button></div>').join(''):'<p class="hint">Fully dressed. Nothing left to suggest.</p>')+
+    '<div class="tot"><div><span>Subtotal</span><span>'+eur(sub)+'</span></div><div><span>Shipping</span><span>'+(ship?eur(ship):'Free')+'</span></div><div class="g"><span>Total</span><span>'+eur(tot)+'</span></div></div>'+
+    '<button class="btn pri" id="place" style="margin-top:12px">Place order · '+eur(tot)+'</button>';
+  }
+  co.innerHTML='<button class="btn sm" id="back">← Back to shop</button><div class="cogrid"><div class="look"><h2>Checkout</h2><div id="cofig" class="'+(done?'hop':'')+'">'+figure()+'</div></div><div>'+r+'</div></div>';
+}
+function toggle(id){
+  const p=P[id];done=false;
+  if(worn[p.slot]===id){delete worn[p.slot];last=null;render();return}
+  const out=[];
+  const drop=s=>{if(worn[s]!==undefined){out.push(P[worn[s]].name);delete worn[s]}};
+  drop(p.slot);
+  if(p.slot==='body'){drop('top');drop('bottom')}
+  if(p.slot==='top'||p.slot==='bottom')drop('body');
+  worn[p.slot]=id;last=p.slot;
+  render();
+  if(stage==='check')toast(out.length?'Swapped out '+out.join(' + '):p.name+' is on');else popup(p,out);
+}
+
+document.addEventListener('click',e=>{
+  const t=e.target.closest('button');if(!t)return;
+  if(t.dataset.c){cat=t.dataset.c;render()}
+  else if(t.dataset.g){g=t.dataset.g;render()}
+  else if(t.dataset.i!==undefined)toggle(+t.dataset.i);
+  else if(t.dataset.r){delete worn[t.dataset.r];last=null;render()}
+  else if(t.id==='pay'){stage='check';done=false;last=null;render()}
+  else if(t.id==='again'){worn={};done=false;stage='shop';last=null;render()}
+  else if(t.id==='place'){done=true;last=null;render()}
+  else if(t.id==='back'){stage='shop';last=null;render()}
+  else if(t.dataset.s!==undefined)toggle(+t.dataset.s);
+  else if(t.id==='barbtn')$('#look').scrollIntoView({behavior:'smooth'});
+});
+render();
+</script>
+</body>
+</html>
